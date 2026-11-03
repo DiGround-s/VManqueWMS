@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --surface: #eef0f2;
+  --panel: #ffffff;
+  --panel-2: #f6f7f8;
+  --border: #c9ced4;
+  --border-strong: #8f98a3;
+  --text: #15191e;
+  --muted: #5b6570;
+  --accent: #f59e0b;
+  --accent-strong: #c2410c;
+  --accent-ink: #111111;
+  --success: #15803d;
+  --success-bg: #dcfce7;
+  --danger: #b91c1c;
+  --danger-bg: #fee2e2;
+  --info: #1d4ed8;
+  --info-bg: #dbeafe;
+  --warn-bg: #fef3c7;
+  --focus: #ea580c;
+}
+
+.dark {
+  --surface: #0e1013;
+  --panel: #171a1f;
+  --panel-2: #1e2228;
+  --border: #2d333b;
+  --border-strong: #4b5563;
+  --text: #e8eaed;
+  --muted: #9aa3ad;
+  --accent: #f59e0b;
+  --accent-strong: #fb923c;
+  --accent-ink: #111111;
+  --success: #4ade80;
+  --success-bg: #12301d;
+  --danger: #f87171;
+  --danger-bg: #3a1414;
+  --info: #60a5fa;
+  --info-bg: #13243f;
+  --warn-bg: #3a2a0a;
+  --focus: #fb923c;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-ink: var(--accent-ink);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-warn-bg: var(--warn-bg);
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --radius-sm: 3px;
+  --radius-md: 5px;
+}
+
+html,
+body {
+  background: var(--surface);
+  color: var(--text);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.hazard {
+  background: repeating-linear-gradient(-45deg, var(--accent) 0 10px, #111 10px 20px);
+}
+
+.label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
+
+@keyframes flash-bad {
+  0%, 100% { background: var(--danger-bg); }
+  50% { background: var(--danger); }
+}
+.flash-bad {
+  animation: flash-bad 0.25s ease-in-out 3;
+}
+
+@media print {
+  .no-print { display: none !important; }
+}
