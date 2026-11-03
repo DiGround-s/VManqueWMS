@@ -1,0 +1,384 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SUPERVISOR
+  OPERATOR
+}
+
+enum LocationRole {
+  PICK
+  RESERVE
+  DOCK
+}
+
+enum MovementType {
+  RECEIPT
+  PUTAWAY
+  TRANSFER
+  ADJUSTMENT
+  PICK
+  RETURN
+  SHIP
+}
+
+enum OrderSource {
+  MANUAL
+  IMPORT
+  API
+}
+
+enum OrderStatus {
+  PENDING
+  IN_WAVE
+  PICKED
+  SORTED
+  PACKED
+  SHIPPED
+  CANCELLED
+}
+
+enum WaveStatus {
+  OPEN
+  PICKING
+  SORTING
+  DONE
+  CANCELLED
+}
+
+enum PickTaskStatus {
+  PENDING
+  DONE
+  SHORT
+}
+
+enum ReceptionStatus {
+  DRAFT
+  CONFIRMED
+}
+
+enum PutbackStatus {
+  PENDING
+  DONE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(OPERATOR)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  movements     StockMovement[]
+  orderEvents   OrderEvent[]
+  assignedWaves Wave[]          @relation("WaveAssignee")
+  createdWaves  Wave[]          @relation("WaveCreator")
+  pickTasks     PickTask[]
+  receptions    Reception[]
+  putbacks      PutbackTask[]
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+model Warehouse {
+  id        String     @id @default(cuid())
+  code      String     @unique
+  name      String
+  createdAt DateTime   @default(now())
+  locations Location[]
+}
+
+model Location {
+  id          String       @id @default(cuid())
+  warehouseId String
+  code        String
+  zone        String
+  aisle       Int?
+  rack        Int?
+  level       Int?
+  position    Int?
+  role        LocationRole @default(PICK)
+  active      Boolean      @default(true)
+  sortKey     Int          @default(0)
+  createdAt   DateTime     @default(now())
+
+  warehouse      Warehouse        @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  stock          StockLevel[]
+  movementsFrom  StockMovement[]  @relation("MovementFrom")
+  movementsTo    StockMovement[]  @relation("MovementTo")
+  pickTasks      PickTask[]
+  receptionLines ReceptionLine[]
+  putbacks       PutbackTask[]
+
+  @@unique([warehouseId, code])
+  @@index([code])
+  @@index([warehouseId, zone, sortKey])
+  @@index([role, active, sortKey])
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  sku       String   @unique
+  name      String
+  barcode   String?  @unique
+  imageUrl  String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stock          StockLevel[]
+  movements      StockMovement[]
+  orderLines     OrderLine[]
+  pickTasks      PickTask[]
+  receptionLines ReceptionLine[]
+  putbacks       PutbackTask[]
+
+  @@index([name])
+}
+
+/// qty >= 0 is enforced by a CHECK constraint in the migration.
+model StockLevel {
+  id         String   @id @default(cuid())
+  locationId String
+  productId  String
+  qty        Int      @default(0)
+  minQty     Int?
+  maxQty     Int?
+  updatedAt  DateTime @updatedAt
+
+  location Location @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([locationId, productId])
+  @@index([productId])
+}
+
+/// Append-only ledger. Written only by src/server/inventory/stock.ts.
+model StockMovement {
+  id             String       @id @default(cuid())
+  productId      String
+  fromLocationId String?
+  toLocationId   String?
+  qty            Int
+  type           MovementType
+  reference      String?
+  userId         String?
+  note           String?
+  createdAt      DateTime     @default(now())
+
+  product      Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  fromLocation Location? @relation("MovementFrom", fields: [fromLocationId], references: [id], onDelete: Restrict)
+  toLocation   Location? @relation("MovementTo", fields: [toLocationId], references: [id], onDelete: Restrict)
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([productId, createdAt])
+  @@index([fromLocationId])
+  @@index([toLocationId])
+  @@index([userId])
+  @@index([type, createdAt])
+  @@index([reference])
+  @@index([createdAt])
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  code         String      @unique
+  externalRef  String?     @unique
+  source       OrderSource @default(MANUAL)
+  customerName String
+  address      String
+  commune      String
+  phone        String?
+  carrier      String?
+  notes        String?
+  priority     Int         @default(0)
+  status       OrderStatus @default(PENDING)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  pickedAt     DateTime?
+  sortedAt     DateTime?
+  packedAt     DateTime?
+  shippedAt    DateTime?
+  cancelledAt  DateTime?
+
+  lines      OrderLine[]
+  events     OrderEvent[]
+  waveOrders WaveOrder[]
+  putbacks   PutbackTask[]
+
+  @@index([status, priority, createdAt])
+  @@index([status, carrier])
+  @@index([shippedAt])
+  @@index([createdAt])
+}
+
+model OrderLine {
+  id         String @id @default(cuid())
+  orderId    String
+  productId  String
+  qty        Int
+  pickedQty  Int    @default(0)
+  sortedQty  Int    @default(0)
+  packedQty  Int    @default(0)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model OrderEvent {
+  id         String       @id @default(cuid())
+  orderId    String
+  fromStatus OrderStatus?
+  toStatus   OrderStatus?
+  message    String
+  userId     String?
+  createdAt  DateTime     @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+  @@index([userId])
+}
+
+model Wave {
+  id             String     @id @default(cuid())
+  code           String     @unique
+  status         WaveStatus @default(OPEN)
+  assignedUserId String?
+  createdById    String
+  createdAt      DateTime   @default(now())
+  startedAt      DateTime?
+  pickedAt       DateTime?
+  doneAt         DateTime?
+
+  assignedUser User?       @relation("WaveAssignee", fields: [assignedUserId], references: [id], onDelete: SetNull)
+  createdBy    User        @relation("WaveCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  orders       WaveOrder[]
+  tasks        PickTask[]
+
+  @@index([status, createdAt])
+  @@index([assignedUserId])
+  @@index([createdById])
+}
+
+model WaveOrder {
+  id      String @id @default(cuid())
+  waveId  String
+  orderId String
+  slot    Int
+
+  wave  Wave  @relation(fields: [waveId], references: [id], onDelete: Cascade)
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  @@unique([waveId, slot])
+  @@unique([waveId, orderId])
+  @@index([orderId])
+}
+
+model PickTask {
+  id          String         @id @default(cuid())
+  waveId      String
+  productId   String
+  /// null for a shortage found at allocation time (no shelf stock to pick from)
+  locationId  String?
+  qtyRequired Int
+  qtyPicked   Int            @default(0)
+  status      PickTaskStatus @default(PENDING)
+  sequence    Int
+  pickedById  String?
+  updatedAt   DateTime       @updatedAt
+
+  wave     Wave      @relation(fields: [waveId], references: [id], onDelete: Cascade)
+  product  Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  location Location? @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  pickedBy User?     @relation(fields: [pickedById], references: [id], onDelete: SetNull)
+
+  @@index([waveId, sequence])
+  @@index([locationId, productId, status])
+  @@index([productId])
+  @@index([pickedById])
+}
+
+model Reception {
+  id          String          @id @default(cuid())
+  code        String          @unique
+  status      ReceptionStatus @default(DRAFT)
+  supplier    String?
+  note        String?
+  createdById String
+  createdAt   DateTime        @default(now())
+  confirmedAt DateTime?
+
+  createdBy User            @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  lines     ReceptionLine[]
+
+  @@index([status, createdAt])
+  @@index([createdById])
+}
+
+model ReceptionLine {
+  id          String @id @default(cuid())
+  receptionId String
+  productId   String
+  locationId  String
+  qty         Int
+
+  reception Reception @relation(fields: [receptionId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  location  Location  @relation(fields: [locationId], references: [id], onDelete: Restrict)
+
+  @@index([receptionId])
+  @@index([productId])
+  @@index([locationId])
+}
+
+/// Units picked for an order that was cancelled afterwards: they must go back to a shelf.
+model PutbackTask {
+  id         String        @id @default(cuid())
+  orderId    String
+  productId  String
+  qty        Int
+  status     PutbackStatus @default(PENDING)
+  locationId String?
+  doneById   String?
+  createdAt  DateTime      @default(now())
+  doneAt     DateTime?
+
+  order    Order     @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  product  Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  location Location? @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  doneBy   User?     @relation(fields: [doneById], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([orderId])
+  @@index([productId])
+  @@index([locationId])
+  @@index([doneById])
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  keyHash    String    @unique
+  prefix     String
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+}
