@@ -47,14 +47,20 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between text-sm">
-        <span className="font-mono font-semibold">{waveCode}</span>
-        <span className="font-mono text-muted">Parada {progress.done + 1} de {progress.total}</span>
+        <span className="font-mono font-bold">{waveCode}</span>
+        <span className="font-semibold text-muted">Parada {progress.done + 1} de {progress.total}</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-sm bg-panel-2"><div className="h-full bg-accent" style={{ width: `${(progress.done / Math.max(1, progress.total)) * 100}%` }} /></div>
+      <div className="flex gap-1" aria-hidden>
+        {Array.from({ length: progress.total }, (_, i) => (
+          <span key={i} className={cn("h-2 flex-1 rounded-full", i < progress.done ? "bg-success" : i === progress.done ? "bg-accent" : "bg-border")} />
+        ))}
+      </div>
 
-      <div className={cn("rounded-md border-2 p-4 text-center", atLocation ? "border-success bg-success-bg" : "border-accent bg-warn-bg")}>
-        <div className="label flex items-center justify-center gap-1"><MapPin className="size-4" /> Ve a</div>
-        <div className="font-mono text-5xl font-bold tracking-tight">{task.location}</div>
+      <div className={cn("rounded-xl border-2 px-4 py-5 text-center transition-colors", atLocation ? "border-success bg-success-bg" : "border-accent bg-accent-soft")}>
+        <div className="flex items-center justify-center gap-1.5 text-sm font-bold text-muted">
+          <MapPin className="size-4" aria-hidden /> {atLocation ? "Estás en" : "Ve a la ubicación"}
+        </div>
+        <div className="mt-1 font-mono text-[clamp(2.75rem,14vw,4.5rem)] font-bold leading-none tracking-tight">{task.location}</div>
       </div>
 
       {!atLocation ? (
@@ -69,16 +75,23 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
         />
       ) : (
         <>
-          <div className="flex gap-3 rounded-md border border-border bg-panel p-3">
+          <div className="flex items-center gap-3 rounded-xl border-2 border-border bg-panel p-3">
             <ProductThumb src={task.imageUrl} size="lg" />
             <div className="min-w-0">
               <div className="font-mono text-lg font-bold">{task.sku}</div>
-              <div className="text-lg leading-snug">{task.name}</div>
+              <div className="text-lg font-semibold leading-snug">{task.name}</div>
             </div>
           </div>
-          <div className="text-center font-mono text-6xl font-bold">
-            <span className={count === task.left ? "text-success" : undefined}>{count}</span>
-            <span className="text-muted">/{task.left}</span>
+          <div>
+            <div className="text-center font-mono text-6xl font-bold">
+              <span className={count === task.left ? "text-success" : undefined}>{count}</span>
+              <span className="text-muted">/{task.left}</span>
+            </div>
+            <div className="mt-2 flex gap-1" aria-hidden>
+              {Array.from({ length: Math.min(task.left, 40) }, (_, i) => (
+                <span key={i} className={cn("h-3 flex-1 rounded-sm", i < Math.round((count / task.left) * Math.min(task.left, 40)) ? "bg-success" : "bg-border")} />
+              ))}
+            </div>
           </div>
           <ScanInput size="xl" pending={pending} placeholder="Escanea cada unidad" onScan={onProduct} />
           <div className="flex items-center gap-2">

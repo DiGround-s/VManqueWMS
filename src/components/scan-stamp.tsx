@@ -5,7 +5,7 @@ import { Check, X } from "lucide-react";
 import { SCAN_EVENT, type ScanFeedback } from "@/lib/beep";
 import { cn } from "@/lib/cn";
 
-const time = () => new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+const time = () => new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
 
 /** The postmark: every scan presses a round stamp in the corner — green when it matched, red when it did not. */
 export function ScanStamp() {
@@ -28,7 +28,7 @@ export function ScanStamp() {
 
   if (!stamp) return null;
   return (
-    <div className="pointer-events-none fixed right-4 top-20 z-50 no-print" role="status" aria-live="polite">
+    <div className="pointer-events-none fixed bottom-28 right-4 z-50 no-print lg:bottom-auto lg:top-20" role="status" aria-live="polite">
       <div
         key={stamp.key}
         className={cn(
