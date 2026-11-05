@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T18:58:12.189Z",
+  "title": "Design System: VManque WMS",
+  "extensions": {
+    "colorMeta": {
+      "envelope-paper": {
+        "role": "neutral",
+        "displayName": "Papel de sobre",
+        "canonical": "#f3efe4",
+        "dark": "#0e1525",
+        "cssVar": "--surface",
+        "tonalRamp": [
+          "oklch(15.0% 0.007 90.2)",
+          "oklch(26.0% 0.009 90.2)",
+          "oklch(37.0% 0.011 90.2)",
+          "oklch(48.0% 0.014 90.2)",
+          "oklch(60.0% 0.014 90.2)",
+          "oklch(72.0% 0.012 90.2)",
+          "oklch(84.0% 0.009 90.2)",
+          "oklch(95.0% 0.007 90.2)"
+        ]
+      },
+      "letter-sheet": {
+        "role": "neutral",
+        "displayName": "Hoja de carta",
+        "canonical": "#fffdf8",
+        "dark": "#151e33",
+        "cssVar": "--panel",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 88.6)",
+          "oklch(26.0% 0.004 88.6)",
+          "oklch(37.0% 0.005 88.6)",
+          "oklch(48.0% 0.006 88.6)",
+          "oklch(60.0% 0.006 88.6)",
+          "oklch(72.0% 0.005 88.6)",
+          "oklch(84.0% 0.004 88.6)",
+          "oklch(95.0% 0.004 88.6)"
+        ]
+      },
+      "folded-sheet": {
+        "role": "neutral",
+        "displayName": "Hoja doblada",
+        "canonical": "#f7f2e6",
+        "dark": "#1b2640",
+        "cssVar": "--panel-2",
+        "tonalRamp": [
+          "oklch(15.0% 0.007 88.0)",
+          "oklch(26.0% 0.010 88.0)",
+          "oklch(37.0% 0.013 88.0)",
+          "oklch(48.0% 0.015 88.0)",
+          "oklch(60.0% 0.016 88.0)",
+          "oklch(72.0% 0.013 88.0)",
+          "oklch(84.0% 0.010 88.0)",
+          "oklch(95.0% 0.007 88.0)"
+        ]
+      },
+      "pigeonhole-line": {
+        "role": "neutral",
+        "displayName": "Línea de casillero",
+        "canonical": "#ddd3bd",
+        "dark": "#283655",
+        "cssVar": "--border",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 86.5)",
+          "oklch(26.0% 0.019 86.5)",
+          "oklch(37.0% 0.024 86.5)",
+          "oklch(48.0% 0.028 86.5)",
+          "oklch(60.0% 0.029 86.5)",
+          "oklch(72.0% 0.024 86.5)",
+          "oklch(84.0% 0.019 86.5)",
+          "oklch(95.0% 0.014 86.5)"
+        ]
+      },
+      "pigeonhole-line-strong": {
+        "role": "neutral",
+        "displayName": "Línea de casillero fuerte",
+        "canonical": "#b3a68a",
+        "dark": "#3d5078",
+        "cssVar": "--border-strong",
+        "tonalRamp": [
+          "oklch(15.0% 0.018 86.0)",
+          "oklch(26.0% 0.025 86.0)",
+          "oklch(37.0% 0.031 86.0)",
+          "oklch(48.0% 0.038 86.0)",
+          "oklch(60.0% 0.039 86.0)",
+          "oklch(72.0% 0.032 86.0)",
+          "oklch(84.0% 0.025 86.0)",
+          "oklch(95.0% 0.018 86.0)"
+        ]
+      },
+      "postal-ink": {
+        "role": "neutral",
+        "displayName": "Tinta postal",
+        "canonical": "#1b2333",
+        "dark": "#ede8dc",
+        "cssVar": "--text",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 263.7)",
+          "oklch(26.0% 0.019 263.7)",
+          "oklch(37.0% 0.024 263.7)",
+          "oklch(48.0% 0.029 263.7)",
+          "oklch(60.0% 0.030 263.7)",
+          "oklch(72.0% 0.025 263.7)",
+          "oklch(84.0% 0.019 263.7)",
+          "oklch(95.0% 0.014 263.7)"
+        ]
+      },
+      "pencil-gray": {
+        "role": "neutral",
+        "displayName": "Gris lápiz",
+        "canonical": "#5a6273",
+        "dark": "#a3adc2",
+        "cssVar": "--muted",
+        "tonalRamp": [
+          "oklch(15.0% 0.013 265.4)",
+          "oklch(26.0% 0.017 265.4)",
+          "oklch(37.0% 0.022 265.4)",
+          "oklch(48.0% 0.026 265.4)",
+          "oklch(60.0% 0.027 265.4)",
+          "oklch(72.0% 0.022 265.4)",
+          "oklch(84.0% 0.017 265.4)",
+          "oklch(95.0% 0.013 265.4)"
+        ]
+      },
+      "postal-blue": {
+        "role": "primary",
+        "displayName": "Azul postal",
+        "canonical": "#1f3b6d",
+        "dark": "#8fb0f5",
+        "cssVar": "--accent",
+        "tonalRamp": [
+          "oklch(15.0% 0.041 261.0)",
+          "oklch(26.0% 0.055 261.0)",
+          "oklch(37.0% 0.070 261.0)",
+          "oklch(48.0% 0.084 261.0)",
+          "oklch(60.0% 0.087 261.0)",
+          "oklch(72.0% 0.071 261.0)",
+          "oklch(84.0% 0.055 261.0)",
+          "oklch(95.0% 0.041 261.0)"
+        ]
+      },
+      "postal-blue-soft": {
+        "role": "primary",
+        "displayName": "Azul postal suave",
+        "canonical": "#e2e9f5",
+        "dark": "#1d2d52",
+        "cssVar": "--accent-soft",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 261.3)",
+          "oklch(26.0% 0.011 261.3)",
+          "oklch(37.0% 0.013 261.3)",
+          "oklch(48.0% 0.016 261.3)",
+          "oklch(60.0% 0.017 261.3)",
+          "oklch(72.0% 0.014 261.3)",
+          "oklch(84.0% 0.011 261.3)",
+          "oklch(95.0% 0.008 261.3)"
+        ]
+      },
+      "postal-blue-ink": {
+        "role": "primary",
+        "displayName": "Tinta sobre azul",
+        "canonical": "#ffffff",
+        "dark": "#0e1525",
+        "cssVar": "--accent-ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 89.9)",
+          "oklch(26.0% 0.004 89.9)",
+          "oklch(37.0% 0.004 89.9)",
+          "oklch(48.0% 0.004 89.9)",
+          "oklch(60.0% 0.004 89.9)",
+          "oklch(72.0% 0.004 89.9)",
+          "oklch(84.0% 0.004 89.9)",
+          "oklch(95.0% 0.004 89.9)"
+        ]
+      },
+      "rail-blue": {
+        "role": "secondary",
+        "displayName": "Riel azul",
+        "canonical": "#1f3b6d",
+        "dark": "#0a1020",
+        "cssVar": "--rail",
+        "tonalRamp": [
+          "oklch(15.0% 0.041 261.0)",
+          "oklch(26.0% 0.055 261.0)",
+          "oklch(37.0% 0.070 261.0)",
+          "oklch(48.0% 0.084 261.0)",
+          "oklch(60.0% 0.087 261.0)",
+          "oklch(72.0% 0.071 261.0)",
+          "oklch(84.0% 0.055 261.0)",
+          "oklch(95.0% 0.041 261.0)"
+        ]
+      },
+      "rail-blue-raised": {
+        "role": "secondary",
+        "displayName": "Riel azul alzado",
+        "canonical": "#2a4a82",
+        "dark": "#17223b",
+        "cssVar": "--rail-2",
+        "tonalRamp": [
+          "oklch(15.0% 0.045 260.8)",
+          "oklch(26.0% 0.060 260.8)",
+          "oklch(37.0% 0.076 260.8)",
+          "oklch(48.0% 0.091 260.8)",
+          "oklch(60.0% 0.094 260.8)",
+          "oklch(72.0% 0.077 260.8)",
+          "oklch(84.0% 0.060 260.8)",
+          "oklch(95.0% 0.045 260.8)"
+        ]
+      },
+      "rail-mist": {
+        "role": "secondary",
+        "displayName": "Neblina del riel",
+        "canonical": "#b5c3de",
+        "dark": "#8e9bb8",
+        "cssVar": "--rail-muted",
+        "tonalRamp": [
+          "oklch(15.0% 0.018 263.6)",
+          "oklch(26.0% 0.024 263.6)",
+          "oklch(37.0% 0.031 263.6)",
+          "oklch(48.0% 0.037 263.6)",
+          "oklch(60.0% 0.038 263.6)",
+          "oklch(72.0% 0.031 263.6)",
+          "oklch(84.0% 0.024 263.6)",
+          "oklch(95.0% 0.018 263.6)"
+        ]
+      },
+      "stamp-green": {
+        "role": "tertiary",
+        "displayName": "Verde timbre",
+        "canonical": "#2f7d4f",
+        "dark": "#74c995",
+        "cssVar": "--success",
+        "tonalRamp": [
+          "oklch(15.0% 0.046 154.4)",
+          "oklch(26.0% 0.063 154.4)",
+          "oklch(37.0% 0.079 154.4)",
+          "oklch(48.0% 0.095 154.4)",
+          "oklch(60.0% 0.098 154.4)",
+          "oklch(72.0% 0.081 154.4)",
+          "oklch(84.0% 0.063 154.4)",
+          "oklch(95.0% 0.046 154.4)"
+        ]
+      },
+      "stamp-green-wash": {
+        "role": "tertiary",
+        "displayName": "Lavado verde timbre",
+        "canonical": "#dcefe2",
+        "dark": "#143022",
+        "cssVar": "--success-bg",
+        "tonalRamp": [
+          "oklch(15.0% 0.012 156.0)",
+          "oklch(26.0% 0.016 156.0)",
+          "oklch(37.0% 0.020 156.0)",
+          "oklch(48.0% 0.024 156.0)",
+          "oklch(60.0% 0.025 156.0)",
+          "oklch(72.0% 0.020 156.0)",
+          "oklch(84.0% 0.016 156.0)",
+          "oklch(95.0% 0.012 156.0)"
+        ]
+      },
+      "postmark-red": {
+        "role": "tertiary",
+        "displayName": "Rojo matasellos",
+        "canonical": "#c7372f",
+        "dark": "#f07a70",
+        "cssVar": "--danger",
+        "tonalRamp": [
+          "oklch(15.0% 0.080 27.9)",
+          "oklch(26.0% 0.108 27.9)",
+          "oklch(37.0% 0.136 27.9)",
+          "oklch(48.0% 0.164 27.9)",
+          "oklch(60.0% 0.169 27.9)",
+          "oklch(72.0% 0.139 27.9)",
+          "oklch(84.0% 0.108 27.9)",
+          "oklch(95.0% 0.080 27.9)"
+        ]
+      },
+      "postmark-red-wash": {
+        "role": "tertiary",
+        "displayName": "Lavado rojo matasellos",
+        "canonical": "#fbe3df",
+        "dark": "#3a1a1c",
+        "cssVar": "--danger-bg",
+        "tonalRamp": [
+          "oklch(15.0% 0.012 29.0)",
+          "oklch(26.0% 0.016 29.0)",
+          "oklch(37.0% 0.020 29.0)",
+          "oklch(48.0% 0.024 29.0)",
+          "oklch(60.0% 0.025 29.0)",
+          "oklch(72.0% 0.021 29.0)",
+          "oklch(84.0% 0.016 29.0)",
+          "oklch(95.0% 0.012 29.0)"
+        ]
+      },
+      "mailbag-amber": {
+        "role": "tertiary",
+        "displayName": "Ámbar saca",
+        "canonical": "#8a5a00",
+        "dark": "#f0c95a",
+        "cssVar": "--warn",
+        "tonalRamp": [
+          "oklch(15.0% 0.048 73.3)",
+          "oklch(26.0% 0.064 73.3)",
+          "oklch(37.0% 0.081 73.3)",
+          "oklch(48.0% 0.097 73.3)",
+          "oklch(60.0% 0.100 73.3)",
+          "oklch(72.0% 0.082 73.3)",
+          "oklch(84.0% 0.064 73.3)",
+          "oklch(95.0% 0.048 73.3)"
+        ]
+      },
+      "mailbag-amber-wash": {
+        "role": "tertiary",
+        "displayName": "Lavado ámbar saca",
+        "canonical": "#fbecc6",
+        "dark": "#352a0e",
+        "cssVar": "--warn-bg",
+        "tonalRamp": [
+          "oklch(15.0% 0.023 89.0)",
+          "oklch(26.0% 0.031 89.0)",
+          "oklch(37.0% 0.039 89.0)",
+          "oklch(48.0% 0.047 89.0)",
+          "oklch(60.0% 0.048 89.0)",
+          "oklch(72.0% 0.040 89.0)",
+          "oklch(84.0% 0.031 89.0)",
+          "oklch(95.0% 0.023 89.0)"
+        ]
+      },
+      "mailbag-yellow": {
+        "role": "tertiary",
+        "displayName": "Amarillo saca de correo",
+        "canonical": "#e2b33c",
+        "dark": "#e8bf4f",
+        "cssVar": "--yellow",
+        "tonalRamp": [
+          "oklch(15.0% 0.062 86.3)",
+          "oklch(26.0% 0.084 86.3)",
+          "oklch(37.0% 0.106 86.3)",
+          "oklch(48.0% 0.127 86.3)",
+          "oklch(60.0% 0.131 86.3)",
+          "oklch(72.0% 0.108 86.3)",
+          "oklch(84.0% 0.084 86.3)",
+          "oklch(95.0% 0.062 86.3)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Sólo el titular del ingreso; 2.25rem en móvil, 3rem desde sm."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Título de página en oficina (PageHeader) y teléfono (PhoneTitle)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Cabeceras de tarjeta; 1.125rem en diálogos y filas de tarea."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Tablas, formularios y texto corrido; descripciones a 15px, máx. 65ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Clase .label: mayúsculas, gris lápiz; cabeceras de tabla y rótulo de casillero.",
+        "textTransform": "uppercase"
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Conteo de cada casillero del rack."
+      },
+      "specimen-code": {
+        "displayName": "Código de muestrario",
+        "purpose": "Código de ubicación a buscar o escaneado, en el teléfono."
+      },
+      "code": {
+        "displayName": "Código",
+        "purpose": "SKU, ubicaciones, olas, pedidos y cantidades."
+      }
+    },
+    "shadows": [
+      {
+        "name": "button-edge",
+        "value": "0 1px 0 rgb(0 0 0 / 0.12)",
+        "purpose": "Canto duro del botón primario."
+      },
+      {
+        "name": "scanner-mask",
+        "value": "0 0 0 200vmax rgb(0 0 0 / 0.45)",
+        "purpose": "Oscurece el video fuera del marco del lector; no es elevación."
+      },
+      {
+        "name": "scan-focus-ring",
+        "value": "0 0 0 4px rgb(31 59 109 / 0.15)",
+        "purpose": "Anillo del campo de escaneo en foco."
+      },
+      {
+        "name": "focus-outline",
+        "value": "outline: 2px solid var(--focus); outline-offset: 2px",
+        "purpose": "Foco visible global en amarillo saca de correo."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Curva del matasellos (--ease-out-expo)."
+      },
+      {
+        "name": "stamp-in",
+        "value": "420ms ease-out-expo; scale 1.6→1, rotate −14°→−10°, blur 2px→0",
+        "purpose": "Caída del matasellos tras cada escaneo; quieto con movimiento reducido."
+      },
+      {
+        "name": "flash-bad",
+        "value": "250ms ease-in-out × 3, danger-bg ↔ danger",
+        "purpose": "Parpadeo de error; desactivado con movimiento reducido."
+      },
+      {
+        "name": "state-transition",
+        "value": "150ms",
+        "purpose": "Fondo, borde, color y filtro de botones, filas e inputs."
+      },
+      {
+        "name": "stamp-dwell",
+        "value": "1100ms acierto / 1800ms error",
+        "purpose": "Tiempo que el matasellos queda en pantalla."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Aparece el riel lateral de 248px."
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ],
+    "darkMode": {
+      "selector": ".dark",
+      "note": "Azul tinta nocturno; cada color trae su valor oscuro en colorMeta.<token>.dark."
+    }
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal: azul postal lleno con canto duro de 1px.",
+      "html": "<button class=\"ds-btn-primary\">Confirmar 4</button>",
+      "css": ".ds-btn-primary{font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;font-size:14px;font-weight:700;border:2px solid;border-radius:7px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s,filter .15s;background:var(--accent,#1f3b6d);color:var(--accent-ink,#fff);border-color:var(--accent,#1f3b6d);box-shadow:0 1px 0 rgb(0 0 0/.12);}.ds-btn-primary:hover{filter:brightness(1.1);}.ds-btn-primary:active{filter:brightness(.95);}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#e2b33c);outline-offset:2px;}"
+    },
+    {
+      "name": "Botón secundario",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Acción por defecto: hoja de carta con marco fuerte.",
+      "html": "<button class=\"ds-btn-secondary\">Anterior</button>",
+      "css": ".ds-btn-secondary{font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;font-size:14px;font-weight:700;border:2px solid;border-radius:7px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s,filter .15s;background:var(--panel,#fffdf8);color:var(--text,#1b2333);border-color:var(--border-strong,#b3a68a);}.ds-btn-secondary:hover{background:var(--panel-2,#f7f2e6);border-color:rgb(27 35 51/.4);}.ds-btn-secondary:focus-visible{outline:2px solid var(--focus,#e2b33c);outline-offset:2px;}"
+    },
+    {
+      "name": "Botón de peligro",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Contorno rojo matasellos que se llena al pasar; p. ej. «Falta».",
+      "html": "<button class=\"ds-btn-danger\">Falta</button>",
+      "css": ".ds-btn-danger{font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;font-size:14px;font-weight:700;border:2px solid;border-radius:7px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s,filter .15s;background:var(--panel,#fffdf8);color:var(--danger,#c7372f);border-color:rgb(199 55 47/.6);}.ds-btn-danger:hover{background:var(--danger,#c7372f);color:#fff;border-color:var(--danger,#c7372f);}.ds-btn-danger:focus-visible{outline:2px solid var(--focus,#e2b33c);outline-offset:2px;}"
+    },
+    {
+      "name": "Campo de escaneo XL",
+      "kind": "input",
+      "refersTo": "scan-input-xl",
+      "description": "Acción principal del teléfono: lector de teclado más botón de cámara.",
+      "html": "<form class=\"ds-scan\" onsubmit=\"return false\"><div class=\"ds-scan-field\"><span class=\"ds-scan-icon\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/></svg></span><input class=\"ds-scan-input\" placeholder=\"Escanea la ubicación\" /></div><button type=\"button\" class=\"ds-scan-cam\" aria-label=\"Escanear con la cámara\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/></svg></button></form>",
+      "css": ".ds-scan{display:flex;gap:8px;font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;}.ds-scan-field{position:relative;flex:1;}.ds-scan-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--accent,#1f3b6d);display:flex;}.ds-scan-input{width:100%;height:64px;padding:0 48px;font-family:'Overpass Mono', var(--font-overpass-mono), ui-monospace, monospace;font-size:20px;color:var(--text,#1b2333);background:var(--panel,#fffdf8);border:2px solid rgb(31 59 109/.5);border-radius:10px;transition:border-color .15s,box-shadow .15s;}.ds-scan-input::placeholder{font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;color:rgb(90 98 115/.8);}.ds-scan-input:hover{border-color:var(--accent,#1f3b6d);}.ds-scan-input:focus{outline:none;border-color:var(--accent,#1f3b6d);box-shadow:0 0 0 4px rgb(31 59 109/.15);}.ds-scan-cam{width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:var(--accent,#1f3b6d);color:var(--accent-ink,#fff);border:2px solid var(--accent,#1f3b6d);border-radius:10px;cursor:pointer;}.ds-scan-cam:hover{filter:brightness(1.1);}.ds-scan-cam:focus-visible{outline:2px solid var(--focus,#e2b33c);outline-offset:2px;}"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo de formulario con rótulo encima y ayuda debajo.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Cantidad</span><input class=\"ds-input\" value=\"12\" /><span class=\"ds-field-hint\">Unidades en la ubicación</span></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;color:var(--text,#1b2333);}.ds-field-label{font-size:13px;font-weight:700;}.ds-field-hint{font-size:12px;color:var(--muted,#5a6273);}.ds-input{height:40px;padding:0 12px;font-size:14px;font-family:inherit;color:inherit;background:var(--panel,#fffdf8);border:2px solid var(--border,#ddd3bd);border-radius:7px;transition:border-color .15s;}.ds-input:hover{border-color:var(--border-strong,#b3a68a);}.ds-input:focus{outline:none;border-color:var(--accent,#1f3b6d);}"
+    },
+    {
+      "name": "Badges de estado",
+      "kind": "chip",
+      "refersTo": "badge-success",
+      "description": "Marca impresa por estado; el tono sale del mapa de estados.",
+      "html": "<span class=\"ds-badge ds-badge-neutral\">Abierta</span> <span class=\"ds-badge ds-badge-accent\">En ola</span> <span class=\"ds-badge ds-badge-success\">Despachado</span> <span class=\"ds-badge ds-badge-warn\">Ajuste</span> <span class=\"ds-badge ds-badge-danger\">Cancelado</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;font-size:12px;font-weight:700;white-space:nowrap;border:1px solid;border-radius:4px;}.ds-badge-neutral{background:var(--panel-2,#f7f2e6);color:var(--muted,#5a6273);border-color:rgb(179 166 138/.6);}.ds-badge-accent{background:var(--accent-soft,#e2e9f5);color:var(--accent-strong,#1f3b6d);border-color:rgb(31 59 109/.4);}.ds-badge-success{background:var(--success-bg,#dcefe2);color:var(--success,#2f7d4f);border-color:rgb(47 125 79/.4);}.ds-badge-warn{background:var(--warn-bg,#fbecc6);color:var(--warn,#8a5a00);border-color:rgb(138 90 0/.4);}.ds-badge-danger{background:var(--danger-bg,#fbe3df);color:var(--danger,#c7372f);border-color:rgb(199 55 47/.4);}"
+    },
+    {
+      "name": "Navegación del riel",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Riel lateral azul postal de la oficina con grupo y enlace activo.",
+      "html": "<nav class=\"ds-rail\"><div class=\"ds-rail-group\">Salidas</div><a class=\"ds-rail-link ds-rail-active\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/><path d=\"M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/><path d=\"M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/></svg>Olas</a><a class=\"ds-rail-link\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z\"/><path d=\"m3.3 7 8.7 5 8.7-5\"/><path d=\"M12 22V12\"/></svg>Inventario</a></nav>",
+      "css": ".ds-rail{display:flex;flex-direction:column;gap:2px;width:220px;padding:20px 12px;background:var(--rail,#1f3b6d);font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;}.ds-rail-group{padding:0 12px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--rail-muted,#b5c3de);}.ds-rail-link{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:7px;font-size:15px;font-weight:600;text-decoration:none;color:rgb(243 239 228/.85);transition:background-color .15s,color .15s;}.ds-rail-link svg{color:var(--rail-muted,#b5c3de);}.ds-rail-link:hover{background:var(--rail-2,#2a4a82);color:var(--rail-ink,#f3efe4);}.ds-rail-link:focus-visible{outline:2px solid var(--focus,#e2b33c);outline-offset:2px;}.ds-rail-active,.ds-rail-active:hover{background:var(--surface,#f3efe4);color:var(--accent,#1f3b6d);font-weight:800;}.ds-rail-active svg{color:var(--accent,#1f3b6d);}"
+    },
+    {
+      "name": "Rack de casilleros",
+      "kind": "card",
+      "refersTo": "rack",
+      "description": "Fila de casilleros del flujo de pedidos: conteo y barra de largo exacto.",
+      "html": "<div class=\"ds-rack\"><a class=\"ds-hole\" href=\"#\"><span class=\"ds-postmark-mini\">3 sin ola</span><span class=\"ds-label\">Pendiente</span><span class=\"ds-num ds-danger\">3</span><span class=\"ds-bar\"><span class=\"ds-bar-fill ds-bar-danger\" style=\"width:30%\"></span></span></a><a class=\"ds-hole\" href=\"#\"><span class=\"ds-label\">En ola</span><span class=\"ds-num\">7</span><span class=\"ds-bar\"><span class=\"ds-bar-fill\" style=\"width:70%\"></span></span></a><a class=\"ds-hole\" href=\"#\"><span class=\"ds-label\">Despachados hoy</span><span class=\"ds-num\">10</span><span class=\"ds-bar\"><span class=\"ds-bar-fill\" style=\"width:100%\"></span></span></a></div>",
+      "css": ".ds-rack{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;background:var(--panel,#fffdf8);border:2px solid var(--accent,#1f3b6d);border-radius:10px;font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;color:var(--text,#1b2333);}.ds-hole{position:relative;display:flex;flex-direction:column;gap:8px;padding:16px;min-height:120px;text-decoration:none;color:inherit;transition:background-color .15s;}.ds-hole+.ds-hole{border-left:2px solid rgb(31 59 109/.25);}.ds-hole:hover{background:var(--panel-2,#f7f2e6);}.ds-hole:focus-visible{outline:2px solid var(--focus,#e2b33c);outline-offset:-4px;}.ds-label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,#5a6273);}.ds-num{font-size:36px;font-weight:900;line-height:1;letter-spacing:-.025em;font-variant-numeric:tabular-nums;}.ds-danger{color:var(--danger,#c7372f);}.ds-bar{margin-top:auto;height:6px;border-radius:999px;background:rgb(221 211 189/.7);overflow:hidden;}.ds-bar-fill{display:block;height:100%;border-radius:999px;background:var(--accent,#1f3b6d);}.ds-bar-danger{background:var(--danger,#c7372f);}.ds-postmark-mini{position:absolute;right:12px;top:8px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 6px;border:2.5px solid currentColor;border-radius:999px;transform:rotate(-12deg);font-family:'Overpass Mono', var(--font-overpass-mono), ui-monospace, monospace;font-size:11px;font-weight:700;line-height:1.1;text-transform:uppercase;color:var(--danger,#c7372f);}"
+    },
+    {
+      "name": "Matasellos de escaneo",
+      "kind": "custom",
+      "refersTo": "postmark",
+      "description": "Firma del sistema: sello redondo rotado que confirma cada escaneo.",
+      "html": "<div class=\"ds-postmark\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg><span>Escaneado</span><span class=\"ds-postmark-time\">14:32</span></div>",
+      "css": "@keyframes ds-stamp-in{0%{opacity:0;transform:scale(1.6) rotate(-14deg);filter:blur(2px);}60%{opacity:1;transform:scale(.96) rotate(-9deg);filter:blur(0);}100%{opacity:1;transform:scale(1) rotate(-10deg);}}.ds-postmark{width:96px;height:96px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2.5px solid currentColor;border-radius:999px;background:var(--panel,#fffdf8);color:var(--success,#2f7d4f);font-family:'Overpass Mono', var(--font-overpass-mono), ui-monospace, monospace;font-size:11px;font-weight:700;line-height:1;text-transform:uppercase;transform:rotate(-10deg);animation:ds-stamp-in .42s cubic-bezier(.16,1,.3,1) both;}.ds-postmark:hover{color:var(--danger,#c7372f);}.ds-postmark-time{font-size:10px;opacity:.8;}@media (prefers-reduced-motion:reduce){.ds-postmark{animation:none;}}"
+    },
+    {
+      "name": "Pasos con tachado",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Avance de un flujo de escaneo: hecho = tachado verde, actual = azul.",
+      "html": "<ol class=\"ds-steps\"><li class=\"ds-step ds-step-done\"><span>1. Origen</span><i></i></li><li class=\"ds-step ds-step-now\" aria-current=\"step\"><span>2. Producto</span><i></i></li><li class=\"ds-step\"><span>3. Destino</span><i></i></li></ol>",
+      "css": ".ds-steps{display:flex;gap:6px;margin:0;padding:0;list-style:none;font-family:Overpass, var(--font-overpass), ui-sans-serif, system-ui, sans-serif;}.ds-step{flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--muted,#5a6273);}.ds-step i{height:6px;border-radius:999px;background:var(--border,#ddd3bd);}.ds-step-done span{text-decoration:line-through;text-decoration-color:var(--success,#2f7d4f);text-decoration-thickness:2px;}.ds-step-done i{background:var(--success,#2f7d4f);}.ds-step-now{color:var(--text,#1b2333);}.ds-step-now i{background:var(--accent,#1f3b6d);}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La sala de correos",
+    "overview": "La bodega se dibuja como una sala de correos: papel de sobre cálido de fondo, un riel lateral azul postal, casilleros enmarcados con líneas de 2 px y un matasellos redondo que cae sobre cada escaneo. Los números y códigos son protagonistas: los conteos se leen en grande, los códigos de ubicación se muestran a escala de muestrario en el teléfono y todo lo que se escanea está en Overpass Mono. La densidad es la de una herramienta de trabajo: la oficina muestra tablas y la fila de casilleros del flujo de pedidos; el teléfono muestra una sola tarea a la vez, con objetivos táctiles grandes.\n\nEl sistema rechaza el panel SaaS gris con tarjetas de métricas y el oscuro industrial con franjas de peligro. El modo oscuro no es negro industrial sino azul tinta nocturno (`#0e1525`), con el papel convertido en texto (`#ede8dc`). El color es semántico y escaso: azul para estructura y acción, rojo matasellos para error y alerta, verde timbre para confirmado, amarillo saca de correo para foco y marca sobre el riel.",
+    "keyCharacteristics": [
+      "Papel de sobre cálido + riel azul postal; modo nocturno azul tinta.",
+      "Casilleros: marcos de 2 px, sin sombras difusas, profundidad por tono (hoja sobre papel).",
+      "Matasellos redondo y rotado (−10°/−12°) como firma de confirmación, conteo y hora.",
+      "Códigos y cantidades en Overpass Mono, cifras tabulares en toda la app.",
+      "Cantidades como barras de largo exacto; capacidad mín/máx como medidor; paso hecho = tachado verde."
+    ],
+    "rules": [
+      {
+        "name": "The Semáforo de Timbres Rule",
+        "body": "Rojo es error o alerta, verde es confirmado, azul es estructura o acción; ninguno se usa como decoración. Si un elemento rojo no pide atención, está mal.",
+        "section": "colors"
+      },
+      {
+        "name": "The Amarillo Sobre Azul Rule",
+        "body": "El amarillo saca de correo se usa como texto o trazo sólo sobre el riel azul (o sobre video, en el lector de cámara); sobre papel aparece únicamente como anillo de foco. No hay texto amarillo sobre papel claro.",
+        "section": "colors"
+      },
+      {
+        "name": "The Muestrario Rule",
+        "body": "En el teléfono, el código que hay que ir a buscar se muestra a escala de muestrario (≥ 2.5rem mono 700) y es lo más grande de la pantalla.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lo-Escaneable-Es-Mono Rule",
+        "body": "Todo valor que se escanea, se cuenta o se imprime en una etiqueta va en Overpass Mono; los nombres y las instrucciones van en Overpass. El campo de escaneo escribe en mono y su placeholder en sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The Casillero Plano Rule",
+        "body": "Nada flota sobre sombra difusa. Si algo necesita separarse, recibe un marco de 2px o un tono de superficie distinto.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Timbre Redondo Rule",
+        "body": "El círculo con borde de 2.5px en `currentColor` es exclusivo del matasellos. Siempre va rotado entre −10° y −12°, en mono 700, y su color dice el resultado.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** poner el campo de escaneo como acción principal de cada pantalla de bodega, en tamaño `xl` (64px).",
+      "**Do** mostrar el código de ubicación a escala de muestrario (≥ 2.5rem, Overpass Mono 700) cuando el operador debe ir a buscarlo.",
+      "**Do** responder cada escaneo con el matasellos: verde \"Escaneado\" o rojo \"Rechazado\", con hora.",
+      "**Do** expresar cantidades y capacidad como barras de largo exacto, y marcar lo terminado con tachado verde.",
+      "**Do** separar superficies con marcos de 2px y el tono hoja sobre papel.",
+      "**Do** usar los tonos de badge desde el mapa de estados, nunca a mano."
+    ],
+    "donts": [
+      "**Don't** usar sombras difusas para elevar tarjetas, menús o diálogos.",
+      "**Don't** construir tarjetas de métricas grises de panel SaaS; los conteos viven en un rack de casilleros.",
+      "**Don't** usar franjas de peligro, negro industrial ni amarillo como texto sobre papel claro.",
+      "**Don't** usar el círculo con borde para nada que no sea un matasellos.",
+      "**Don't** escribir códigos, SKU o cantidades en la fuente sans."
+    ]
+  }
+}
