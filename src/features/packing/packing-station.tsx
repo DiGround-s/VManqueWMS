@@ -1,5 +1,6 @@
 "use client";
 
+import { ProductThumb } from "@/components/product-thumb";
 import { useState } from "react";
 import { CheckCircle2, Printer } from "lucide-react";
 import { ScanInput } from "@/components/ui/scan-input";
@@ -111,12 +112,7 @@ export function PackingStation({ phone }: { phone?: boolean }) {
               const ok = l.packedQty >= l.qty;
               return (
                 <li key={l.id} className={cn("flex items-center gap-3 rounded-md border p-3", ok ? "border-success bg-success-bg" : "border-border bg-panel")}>
-                  {l.product.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element -- arbitrary external product URLs
-                    <img src={l.product.imageUrl} alt="" className="size-14 rounded-sm border border-border bg-white object-contain" />
-                  ) : (
-                    <div className="size-14 rounded-sm border border-dashed border-border" />
-                  )}
+                  <ProductThumb src={l.product.imageUrl} size="md" />
                   <div className="min-w-0 flex-1">
                     <div className="font-mono text-sm font-semibold">{l.product.sku}</div>
                     <div className={cn("truncate", phone && "text-lg")}>{l.product.name}</div>

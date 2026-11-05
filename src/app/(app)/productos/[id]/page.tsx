@@ -1,3 +1,4 @@
+import { ProductThumb } from "@/components/product-thumb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Printer } from "lucide-react";
@@ -29,8 +30,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
   return (
     <>
       <PageHeader
-       
-        title={<span className="font-mono">{product.sku}</span>}
+        title={<span className="flex items-center gap-4"><ProductThumb src={product.imageUrl} size="md" /><span className="font-mono">{product.sku}</span></span>}
         description={product.name}
         actions={<Link href={`/print/productos?ids=${product.id}`} target="_blank" className={buttonClass("secondary")}><Printer className="size-4" /> Etiqueta</Link>}
       />

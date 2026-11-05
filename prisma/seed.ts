@@ -78,7 +78,10 @@ async function main() {
   const dock = locations.find((l) => l.role === "DOCK")!;
 
   await db.product.createMany({
-    data: PRODUCTS.map((name, i) => ({ sku: `VM-${String(i + 1).padStart(4, "0")}`, name, barcode: ean13(`780${String(1000000 + i * 37).padStart(9, "0")}`) })),
+    data: PRODUCTS.map((name, i) => {
+      const n = String(i + 1).padStart(4, "0");
+      return { sku: `VM-${n}`, name, barcode: ean13(`780${String(1000000 + i * 37).padStart(9, "0")}`), imageUrl: `/products/vm-${n}.svg` };
+    }),
   });
   const products = await db.product.findMany({ orderBy: { sku: "asc" } });
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { ProductThumb } from "@/components/product-thumb";
 import { useState } from "react";
 import Link from "next/link";
 import { ScanInput } from "@/components/ui/scan-input";
@@ -34,8 +35,7 @@ export function ConsultView() {
       {info?.type === "product" && (
         <div className="space-y-3">
           <div className="flex gap-3">
-            {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary external product URLs */}
-            {info.imageUrl && <img src={info.imageUrl} alt="" className="size-24 rounded-md border border-border bg-white object-contain" />}
+            <ProductThumb src={info.imageUrl} size="lg" />
             <div className="min-w-0">
               <div className="font-mono text-xl font-bold">{info.sku}</div>
               <div className="text-lg">{info.name}</div>

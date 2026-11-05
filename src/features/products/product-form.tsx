@@ -27,7 +27,7 @@ export function ProductForm({ product, readOnly }: { product?: P; readOnly?: boo
           <Field label="SKU"><Input name="sku" required defaultValue={product?.sku} className="font-mono uppercase" maxLength={40} /></Field>
           <Field label="Código de barras" hint="EAN/UPC, opcional"><Input name="barcode" defaultValue={product?.barcode ?? ""} className="font-mono" maxLength={40} /></Field>
           <Field label="Nombre" className="sm:col-span-2"><Input name="name" required defaultValue={product?.name} maxLength={200} /></Field>
-          <Field label="URL de foto" className="sm:col-span-2"><Input name="imageUrl" type="url" defaultValue={product?.imageUrl ?? ""} maxLength={500} placeholder="https://…" /></Field>
+          <Field label="URL de foto" className="sm:col-span-2"><Input name="imageUrl" type="text" defaultValue={product?.imageUrl ?? ""} maxLength={500} placeholder="https://… o /products/archivo.svg" /></Field>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={product?.active ?? true} className="size-4 accent-[var(--accent)]" /> Activo</label>
           {!readOnly && <div className="flex justify-end sm:col-span-2"><Button type="submit" variant="primary" pending={pending}>{product ? "Guardar" : "Crear producto"}</Button></div>}
         </fieldset>

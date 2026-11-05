@@ -1,3 +1,4 @@
+import { ProductThumb } from "@/components/product-thumb";
 import Link from "next/link";
 import { Plus, Printer, Upload } from "lucide-react";
 import type { Prisma } from "@prisma/client";
@@ -55,8 +56,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
               {products.map((p) => (
                 <Tr key={p.id} className={p.active ? undefined : "opacity-50"}>
                   <Td>
-                    {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary external product URLs */}
-                    {p.imageUrl ? <img src={p.imageUrl} alt="" className="size-9 rounded-sm border border-border bg-white object-contain" /> : <div className="size-9 rounded-sm border border-dashed border-border" />}
+                    <ProductThumb src={p.imageUrl} />
                   </Td>
                   <Td><Link href={`/productos/${p.id}`} className="font-mono font-semibold hover:underline">{p.sku}</Link></Td>
                   <Td>{p.name}</Td>

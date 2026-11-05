@@ -1,5 +1,6 @@
 "use client";
 
+import { ProductThumb } from "@/components/product-thumb";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -69,8 +70,7 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
       ) : (
         <>
           <div className="flex gap-3 rounded-md border border-border bg-panel p-3">
-            {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary external product URLs */}
-            {task.imageUrl ? <img src={task.imageUrl} alt="" className="size-24 shrink-0 rounded-md border border-border bg-white object-contain" /> : <div className="size-24 shrink-0 rounded-md border border-dashed border-border" />}
+            <ProductThumb src={task.imageUrl} size="lg" />
             <div className="min-w-0">
               <div className="font-mono text-lg font-bold">{task.sku}</div>
               <div className="text-lg leading-snug">{task.name}</div>
