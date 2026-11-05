@@ -44,29 +44,29 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   return (
     <div className="space-y-6">
       <PageHeader title="Inicio" description={<span className="first-letter:uppercase">{today} · estado de la bodega en este momento</span>} />
-      {denied && <p className="rounded-md border-2 border-danger/40 bg-danger-bg px-3 py-2 text-sm font-semibold text-danger">No tienes permiso para esa sección.</p>}
+      {denied && <p className="rounded-xl border border-danger/40 bg-danger-bg px-3 py-2 text-sm font-semibold text-danger">No tienes permiso para esa sección.</p>}
 
       <section aria-label="Pedidos por etapa">
-        <Rack className="md:grid-cols-6">
+        <Rack className="lg:grid-cols-6">
           {flow.map(({ s, n }) => (
-            <Stat key={s} label={ORDER_STATUS[s].label} value={n} share={n / flowMax} tone={s === "PENDING" && n > 0 ? "danger" : undefined} stamp={s === "PENDING" && n > 0 ? `${n} sin ola` : undefined} href={`/pedidos?estado=${s}`} />
+            <Stat key={s} label={ORDER_STATUS[s].label} value={n} share={n / flowMax} tone={s === "PENDING" && n > 0 ? "danger" : undefined} href={`/pedidos?estado=${s}`} />
           ))}
           <Stat label="Despachados hoy" value={shippedToday} share={shippedToday / flowMax} href="/despacho" />
         </Rack>
       </section>
 
       {(lowSlots > 0 || putbacks > 0) && (
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-lg border-2 border-dashed border-danger/60 bg-warn-bg px-4 py-3 text-sm">
-          <span className="inline-flex items-center gap-1.5 rounded-sm bg-danger px-2 py-1 text-xs font-black uppercase tracking-wide text-white">
-            <AlertTriangle className="size-3.5" aria-hidden /> Atención
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-2xl bg-warn-bg px-4 py-3 text-sm text-warn">
+          <span className="flex size-8 items-center justify-center rounded-full bg-yellow/30">
+            <AlertTriangle className="size-4" aria-hidden />
           </span>
           {lowSlots > 0 && (
-            <Link href="/inventario/reposicion" className="font-bold underline-offset-4 hover:underline">
+            <Link href="/inventario/reposicion" className="font-semibold underline-offset-4 hover:underline">
               {lowSlots} casillas de picking bajo el mínimo
             </Link>
           )}
           {putbacks > 0 && (
-            <Link href="/inventario/devoluciones" className="font-bold underline-offset-4 hover:underline">
+            <Link href="/inventario/devoluciones" className="font-semibold underline-offset-4 hover:underline">
               {putbacks} unidades por reponer de pedidos cancelados
             </Link>
           )}
@@ -75,10 +75,10 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <Card>
-          <CardHeader title="Olas en curso" action={<Link className="text-sm font-semibold text-accent hover:underline" href="/olas">Ver todas</Link>} />
+          <CardHeader title="Olas en curso" action={<Link className="text-sm font-medium text-success hover:underline" href="/olas">Ver todas</Link>} />
           {waves.length === 0 ? (
             <EmptyState title="No hay olas en curso">
-              <Link href="/olas/nueva" className="font-semibold text-accent hover:underline">Crea una ola</Link> con los pedidos pendientes.
+              <Link href="/olas/nueva" className="font-medium text-success hover:underline">Crea una ola</Link> con los pedidos pendientes.
             </EmptyState>
           ) : (
             <ul>
@@ -95,7 +95,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           )}
         </Card>
         <Card>
-          <CardHeader title="Últimos movimientos" action={<Link className="text-sm font-semibold text-accent hover:underline" href="/inventario/movimientos">Ver todos</Link>} />
+          <CardHeader title="Últimos movimientos" action={<Link className="text-sm font-medium text-success hover:underline" href="/inventario/movimientos">Ver todos</Link>} />
           {movements.length === 0 ? (
             <EmptyState title="Sin movimientos todavía" />
           ) : (
@@ -104,7 +104,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                 {movements.map((m) => (
                   <Tr key={m.id}>
                     <Td className="w-0">
-                      <span className="postmark h-7 w-14 text-[11px] text-success" title={fmtDateTime(m.createdAt)}>{fmtTime(m.createdAt)}</span>
+                      <span className="text-xs tabular-nums text-muted" title={fmtDateTime(m.createdAt)}>{fmtTime(m.createdAt)}</span>
                     </Td>
                     <Td><Badge tone={MOVEMENT_TYPE[m.type].tone}>{MOVEMENT_TYPE[m.type].label}</Badge></Td>
                     <Td><Mono className="font-semibold">{m.product.sku}</Mono></Td>

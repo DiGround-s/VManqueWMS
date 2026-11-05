@@ -80,7 +80,7 @@ export function LocationCounter({ mode, phone }: { mode: "count" | "adjust"; pho
         {rows.map((r, i) => {
           const diff = r.counted === "" ? null : Number(r.counted) - r.expected;
           return (
-            <li key={r.productId} className="flex items-center gap-3 rounded-md border border-border bg-panel p-3">
+            <li key={r.productId} className="flex items-center gap-3 rounded-xl border border-border bg-panel p-3">
               <div className="min-w-0 flex-1">
                 <div className="font-mono text-sm font-semibold">{r.sku} {r.added && <Badge tone="info">nuevo</Badge>}</div>
                 <div className={cn("truncate", phone && "text-lg")}>{r.name}</div>

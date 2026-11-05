@@ -35,6 +35,8 @@ Sistema de gestión de bodega (WMS) para una pyme: stock por ubicación, picking
 
 - Nombre: VManque WMS. Empresa configurable en Ajustes (sale en las etiquetas).
 - Sin logo ni assets de marca adicionales.
+- Estilo pedido por el usuario (2026-11-05): moderno, como las apps móviles de reparto actuales (referencia de sensación: Rappi, Uber). Botones grandes y redondeados, tarjetas con foto, muy táctil en el teléfono. Se toma la sensación, nunca su marca, colores ni logos. Aplica a toda la aplicación (oficina y teléfono) y reemplaza la dirección «Sala de correos».
+- Fotos de productos: fotos reales con licencia libre, con créditos en `public/products/photos/CREDITS.md`.
 
 ## Evidence on Hand
 

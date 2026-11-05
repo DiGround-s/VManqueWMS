@@ -12,6 +12,8 @@ import { Pagination, parsePage } from "@/components/ui/pagination";
 import { FilterForm } from "@/components/filter-form";
 import { InventoryTabs } from "@/features/inventory/tabs";
 import { cn } from "@/lib/cn";
+import { ProductThumb } from "@/components/product-thumb";
+import { StockPill } from "@/components/stock-pill";
 
 export const metadata = { title: "Inventario" };
 const PAGE_SIZE = 50;
@@ -25,7 +27,7 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
     ? { OR: [{ sku: { contains: q, mode: "insensitive" } }, { name: { contains: q, mode: "insensitive" } }, { barcode: q }] }
     : {};
   const [products, total] = await Promise.all([
-    db.product.findMany({ where, orderBy: { sku: "asc" }, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE, select: { id: true, sku: true, name: true, active: true, _count: { select: { stock: { where: { qty: { gt: 0 } } } } } } }),
+    db.product.findMany({ where, orderBy: { sku: "asc" }, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE, select: { id: true, sku: true, name: true, imageUrl: true, active: true, _count: { select: { stock: { where: { qty: { gt: 0 } } } } } } }),
     db.product.count({ where }),
   ]);
   const summary = await stockSummary(products.map((p) => p.id));
@@ -41,20 +43,27 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
         {products.length === 0 ? <EmptyState title="Sin productos" /> : (
           <Table>
             <thead>
-              <tr><Th>SKU</Th><Th>Producto</Th><Th className="text-right">Estantería</Th><Th className="text-right">Andén</Th><Th className="text-right">Comprometido</Th><Th className="text-right">En proceso</Th><Th className="text-right">Disponible</Th><Th className="text-right">Ubic.</Th></tr>
+              <tr><Th>Producto</Th><Th className="text-right">Estantería</Th><Th className="text-right">Andén</Th><Th className="text-right">Comprometido</Th><Th className="text-right">En proceso</Th><Th className="text-right">Disponible</Th><Th className="text-right">Ubic.</Th></tr>
             </thead>
             <tbody>
               {products.map((p) => {
                 const s = summary.get(p.id)!;
                 return (
                   <Tr key={p.id} className={cn(!p.active && "opacity-50")}>
-                    <Td><Link href={`/productos/${p.id}`} className="font-mono font-semibold hover:underline">{p.sku}</Link></Td>
-                    <Td>{p.name}</Td>
+                    <Td>
+                      <Link href={`/productos/${p.id}`} className="flex items-center gap-3 hover:underline">
+                        <ProductThumb src={p.imageUrl} />
+                        <span className="min-w-0">
+                          <span className="block font-medium">{p.name}</span>
+                          <Mono className="text-xs text-muted">{p.sku}</Mono>
+                        </span>
+                      </Link>
+                    </Td>
                     <Td className="text-right"><Mono>{s.shelf}</Mono></Td>
                     <Td className="text-right"><Mono className="text-muted">{s.dock}</Mono></Td>
                     <Td className="text-right"><Mono className="text-muted">{s.committed}</Mono></Td>
                     <Td className="text-right"><Mono className="text-muted">{s.inProcess}</Mono></Td>
-                    <Td className="text-right"><Mono className={cn("font-semibold", s.available < 0 ? "text-danger" : s.available === 0 && "text-accent-strong")}>{s.available}</Mono></Td>
+                    <Td className="text-right"><StockPill available={s.available} className="shadow-none ring-1 ring-border" /></Td>
                     <Td className="text-right"><Mono className="text-muted">{p._count.stock}</Mono></Td>
                   </Tr>
                 );

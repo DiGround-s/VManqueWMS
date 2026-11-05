@@ -46,7 +46,7 @@ export function DispatchStation({ phone }: { phone?: boolean }) {
           <li
             key={e.key}
             className={cn(
-              "rounded-md border-2 px-4",
+              "rounded-xl border px-4",
               phone ? "py-4" : "py-2.5",
               e.tone === "ok" && "border-success bg-success-bg",
               e.tone === "warn" && "border-accent bg-warn-bg",

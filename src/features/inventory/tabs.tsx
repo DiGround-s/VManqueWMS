@@ -9,11 +9,20 @@ const TABS = [
   { href: "/inventario/devoluciones", label: "Por reponer" },
 ];
 
+/** Segmented pill tabs for the inventory views. */
 export function InventoryTabs({ active }: { active: string }) {
   return (
-    <nav className="mb-4 flex gap-1 overflow-x-auto border-b border-border">
+    <nav className="-mx-1 mb-5 flex gap-1.5 overflow-x-auto px-1 pb-1" aria-label="Vistas de inventario">
       {TABS.map((t) => (
-        <Link key={t.href} href={t.href} className={cn("whitespace-nowrap border-b-2 px-3 py-2 text-sm", t.href === active ? "border-accent font-semibold" : "border-transparent text-muted hover:text-text")}>
+        <Link
+          key={t.href}
+          href={t.href}
+          aria-current={t.href === active ? "page" : undefined}
+          className={cn(
+            "whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors",
+            t.href === active ? "bg-accent text-accent-ink" : "bg-panel text-muted ring-1 ring-inset ring-border hover:text-text",
+          )}
+        >
           {t.label}
         </Link>
       ))}

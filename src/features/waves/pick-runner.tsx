@@ -56,7 +56,7 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
         ))}
       </div>
 
-      <div className={cn("rounded-xl border-2 px-4 py-5 text-center transition-colors", atLocation ? "border-success bg-success-bg" : "border-accent bg-accent-soft")}>
+      <div className={cn("rounded-3xl border px-4 py-5 text-center transition-colors", atLocation ? "border-success bg-success-bg" : "border-accent bg-accent-soft")}>
         <div className="flex items-center justify-center gap-1.5 text-sm font-bold text-muted">
           <MapPin className="size-4" aria-hidden /> {atLocation ? "Estás en" : "Ve a la ubicación"}
         </div>
@@ -75,7 +75,7 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
         />
       ) : (
         <>
-          <div className="flex items-center gap-3 rounded-xl border-2 border-border bg-panel p-3">
+          <div className="flex items-center gap-3 rounded-3xl border border-border bg-panel p-3">
             <ProductThumb src={task.imageUrl} size="lg" />
             <div className="min-w-0">
               <div className="font-mono text-lg font-bold">{task.sku}</div>
@@ -89,7 +89,7 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
             </div>
             <div className="mt-2 flex gap-1" aria-hidden>
               {Array.from({ length: Math.min(task.left, 40) }, (_, i) => (
-                <span key={i} className={cn("h-3 flex-1 rounded-sm", i < Math.round((count / task.left) * Math.min(task.left, 40)) ? "bg-success" : "bg-border")} />
+                <span key={i} className={cn("h-3 flex-1 rounded-lg", i < Math.round((count / task.left) * Math.min(task.left, 40)) ? "bg-success" : "bg-border")} />
               ))}
             </div>
           </div>

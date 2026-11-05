@@ -54,7 +54,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
       {order.status !== "CANCELLED" && (
         <ol className="mb-5 grid grid-cols-3 gap-1 sm:grid-cols-6">
           {ORDER_FLOW.map((s, i) => (
-            <li key={s} className={cn("rounded-sm border px-2 py-1.5", i <= stageIdx ? "border-accent bg-warn-bg" : "border-border bg-panel")}>
+            <li key={s} className={cn("rounded-lg border px-2 py-1.5", i <= stageIdx ? "border-accent bg-warn-bg" : "border-border bg-panel")}>
               <div className="label">{ORDER_STATUS[s].label}</div>
               <div className="font-mono text-xs">{stamps[s] ? fmtDateTime(stamps[s]) : i <= stageIdx ? "✓" : "—"}</div>
             </li>

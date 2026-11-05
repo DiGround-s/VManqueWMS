@@ -89,11 +89,11 @@ export function PackingStation({ phone }: { phone?: boolean }) {
       </Card>
 
       {done ? (
-        <div className="flex flex-col items-center gap-4 rounded-md border-2 border-success bg-success-bg p-6 text-center">
+        <div className="flex flex-col items-center gap-4 rounded-xl border border-success bg-success-bg p-6 text-center">
           <CheckCircle2 className="size-16 text-success" />
           <div className="text-3xl font-bold">EMPACADO</div>
           <div className="flex w-full max-w-md flex-col gap-2">
-            <a href={labelUrl(order.code)} target="_blank" rel="noreferrer" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-md border border-accent-strong bg-accent px-5 text-lg font-semibold uppercase tracking-wide text-accent-ink">
+            <a href={labelUrl(order.code)} target="_blank" rel="noreferrer" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-xl border border-accent-strong bg-accent px-5 text-lg font-semibold text-accent-ink">
               <Printer className="size-5" /> Imprimir etiqueta
             </a>
             <Button size="xl" onClick={() => setOrder(null)}>Siguiente pedido</Button>
@@ -103,7 +103,7 @@ export function PackingStation({ phone }: { phone?: boolean }) {
         <>
           <ScanInput onScan={onProduct} pending={pending} size={size} placeholder="Escanea cada producto" />
           {error && (
-            <div key={error.key} className="flash-bad rounded-md border-2 border-danger p-4 text-center text-xl font-bold text-danger" role="alert">
+            <div key={error.key} className="flash-bad rounded-xl border border-danger p-4 text-center text-xl font-bold text-danger" role="alert">
               ✕ {error.msg}
             </div>
           )}
@@ -111,7 +111,7 @@ export function PackingStation({ phone }: { phone?: boolean }) {
             {order.lines.map((l) => {
               const ok = l.packedQty >= l.qty;
               return (
-                <li key={l.id} className={cn("flex items-center gap-3 rounded-md border p-3", ok ? "border-success bg-success-bg" : "border-border bg-panel")}>
+                <li key={l.id} className={cn("flex items-center gap-3 rounded-xl border p-3", ok ? "border-success bg-success-bg" : "border-border bg-panel")}>
                   <ProductThumb src={l.product.imageUrl} size="md" />
                   <div className="min-w-0 flex-1">
                     <div className="font-mono text-sm font-semibold">{l.product.sku}</div>

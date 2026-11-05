@@ -29,17 +29,17 @@ export function ConsultView({ initialCode }: { initialCode?: string }) {
   return (
     <div className="space-y-5">
       <ScanInput size="xl" pending={pending} placeholder="Escanea ubicación, producto o pedido" onScan={lookup} />
-      {info?.type === "none" && <p className="rounded-xl border-2 border-danger bg-danger-bg p-4 text-lg font-bold text-danger">No se encontró «{info.code}»</p>}
+      {info?.type === "none" && <p className="rounded-3xl border border-danger bg-danger-bg p-4 text-lg font-bold text-danger">No se encontró «{info.code}»</p>}
       {info?.type === "location" && (
         <div className="space-y-3">
-          <div className="rounded-xl border-2 border-accent bg-accent-soft px-4 py-4">
+          <div className="rounded-3xl border border-accent bg-accent-soft px-4 py-4">
             <Badge tone={LOCATION_ROLE[info.role].tone}>{LOCATION_ROLE[info.role].label}</Badge>
             <div className="mt-1 font-mono text-[clamp(2.5rem,13vw,4rem)] font-bold leading-none tracking-tight">{info.code}</div>
           </div>
           {info.contents.length === 0 && <p className="text-lg text-muted">Ubicación vacía</p>}
           <ul className="space-y-2">
             {info.contents.map((c) => (
-              <li key={c.productId} className="flex items-center gap-3 rounded-xl border-2 border-border bg-panel p-2.5">
+              <li key={c.productId} className="flex items-center gap-3 rounded-3xl border border-border bg-panel p-2.5">
                 <ProductThumb src={c.imageUrl} size="md" />
                 <div className="min-w-0 flex-1">
                   <div className="font-mono font-bold">{c.sku}</div>
@@ -62,19 +62,19 @@ export function ConsultView({ initialCode }: { initialCode?: string }) {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-xl border-2 border-success/50 bg-success-bg p-3">
+            <div className="rounded-3xl border border-success/50 bg-success-bg p-3">
               <div className="label">Disponible</div>
               <div className="font-mono text-4xl font-bold text-success">{info.available}</div>
             </div>
-            <div className="rounded-xl border-2 border-border bg-panel p-3">
+            <div className="rounded-3xl border border-border bg-panel p-3">
               <div className="label">Comprometido</div>
               <div className="font-mono text-4xl font-bold">{info.committed}</div>
             </div>
           </div>
-          <h2 className="pt-1 text-sm font-extrabold text-muted">Dónde está</h2>
+          <h2 className="pt-1 text-sm font-semibold text-muted">Dónde está</h2>
           <ul className="space-y-2">
             {info.locations.map((l) => (
-              <li key={l.locationId} className="flex items-center justify-between gap-3 rounded-xl border-2 border-border bg-panel px-4 py-3">
+              <li key={l.locationId} className="flex items-center justify-between gap-3 rounded-3xl border border-border bg-panel px-4 py-3">
                 <span className="min-w-0">
                   <span className="block font-mono text-2xl font-bold leading-tight">{l.code}</span>
                   <Badge tone={LOCATION_ROLE[l.role].tone}>{LOCATION_ROLE[l.role].label}</Badge>
@@ -87,7 +87,7 @@ export function ConsultView({ initialCode }: { initialCode?: string }) {
         </div>
       )}
       {info?.type === "order" && (
-        <Link href={`/pedidos/${info.code}`} className="flex items-center gap-3 rounded-xl border-2 border-accent bg-panel p-4">
+        <Link href={`/pedidos/${info.code}`} className="flex items-center gap-3 rounded-3xl border border-accent bg-panel p-4">
           <span className="flex-1">
             <span className="block font-mono text-3xl font-bold">{info.code}</span>
             <span className="text-muted">Pedido · ver detalle</span>

@@ -25,7 +25,7 @@ export default async function PhonePickingList() {
             const left = w.tasks.reduce((n, t) => n + t.qtyRequired - t.qtyPicked, 0);
             return (
               <li key={w.id}>
-                <Link href={`/m/picking/${w.code}`} className={cn("flex min-h-20 items-center justify-between rounded-md border-2 bg-panel px-4", w.assignedUserId === user.id ? "border-accent" : "border-border-strong")}>
+                <Link href={`/m/picking/${w.code}`} className={cn("flex min-h-20 items-center justify-between rounded-xl border bg-panel px-4", w.assignedUserId === user.id ? "border-accent" : "border-border-strong")}>
                   <div>
                     <div className="font-mono text-2xl font-bold">{w.code}</div>
                     <div className="text-muted">{w._count.orders} pedidos · {w.tasks.length} paradas</div>

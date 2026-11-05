@@ -2,63 +2,73 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Sala de correos: envelope paper, postal blue rail, postmark red, mail-bag yellow, stamp green. */
+/* Modern delivery-app look: white cards on a cool light ground, black pill actions, one fresh green for "go". */
 :root {
-  --surface: #f3efe4;
-  --panel: #fffdf8;
-  --panel-2: #f7f2e6;
-  --border: #ddd3bd;
-  --border-strong: #b3a68a;
-  --text: #1b2333;
-  --muted: #5a6273;
-  --accent: #1f3b6d;
-  --accent-strong: #1f3b6d;
+  --surface: #f4f5f7;
+  --panel: #ffffff;
+  --panel-2: #f1f2f5;
+  --border: #e5e7ec;
+  --border-strong: #cdd2da;
+  --text: #0f1419;
+  --muted: #5e6875;
+  --accent: #111418;
+  --accent-strong: #111418;
   --accent-ink: #ffffff;
-  --accent-soft: #e2e9f5;
-  --rail: #1f3b6d;
-  --rail-2: #2a4a82;
-  --rail-ink: #f3efe4;
-  --rail-muted: #b5c3de;
-  --success: #2f7d4f;
-  --success-bg: #dcefe2;
-  --danger: #c7372f;
-  --danger-bg: #fbe3df;
-  --info: #1f3b6d;
-  --info-bg: #e2e9f5;
-  --warn: #8a5a00;
-  --warn-bg: #fbecc6;
-  --yellow: #e2b33c;
-  --focus: #e2b33c;
-  --selection: #fbecc6;
+  --accent-soft: #eef0f3;
+  --brand: #0a9f5c;
+  --brand-ink: #ffffff;
+  --brand-soft: #e3f6ec;
+  --rail: #ffffff;
+  --rail-2: #f1f2f5;
+  --rail-ink: #0f1419;
+  --rail-muted: #6b7583;
+  --success: #0a8a50;
+  --success-bg: #e3f6ec;
+  --danger: #d92d20;
+  --danger-bg: #fdecea;
+  --info: #1f5fd6;
+  --info-bg: #e8effc;
+  --warn: #9a5b00;
+  --warn-bg: #fff3d6;
+  --yellow: #f5b301;
+  --focus: #0a9f5c;
+  --selection: #c9eedb;
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.04), 0 2px 8px rgb(16 24 40 / 0.06);
+  --shadow-lift: 0 6px 24px rgb(16 24 40 / 0.12);
 }
 
 .dark {
-  --surface: #0e1525;
-  --panel: #151e33;
-  --panel-2: #1b2640;
-  --border: #283655;
-  --border-strong: #3d5078;
-  --text: #ede8dc;
-  --muted: #a3adc2;
-  --accent: #8fb0f5;
-  --accent-strong: #a9c2f8;
-  --accent-ink: #0e1525;
-  --accent-soft: #1d2d52;
-  --rail: #0a1020;
-  --rail-2: #17223b;
-  --rail-ink: #ede8dc;
-  --rail-muted: #8e9bb8;
-  --success: #74c995;
-  --success-bg: #143022;
-  --danger: #f07a70;
-  --danger-bg: #3a1a1c;
-  --info: #8fb0f5;
-  --info-bg: #1a2a4d;
-  --warn: #f0c95a;
-  --warn-bg: #352a0e;
-  --yellow: #e8bf4f;
-  --focus: #e8bf4f;
-  --selection: #3d5078;
+  --surface: #0d0f12;
+  --panel: #16191e;
+  --panel-2: #1d2127;
+  --border: #272c34;
+  --border-strong: #39404b;
+  --text: #f2f4f7;
+  --muted: #a0a8b4;
+  --accent: #f2f4f7;
+  --accent-strong: #f2f4f7;
+  --accent-ink: #0d0f12;
+  --accent-soft: #23272e;
+  --brand: #2fd182;
+  --brand-ink: #062414;
+  --brand-soft: #123425;
+  --rail: #121418;
+  --rail-2: #1d2127;
+  --rail-ink: #f2f4f7;
+  --rail-muted: #8f98a5;
+  --success: #3ddc8e;
+  --success-bg: #123425;
+  --danger: #ff6b5f;
+  --danger-bg: #3a1714;
+  --info: #7aa7ff;
+  --info-bg: #182540;
+  --warn: #ffc94d;
+  --warn-bg: #352909;
+  --yellow: #ffc94d;
+  --focus: #2fd182;
+  --selection: #1f4d36;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-lift: 0 8px 28px rgb(0 0 0 / 0.5);
 }
 
 @theme inline {
@@ -73,6 +83,9 @@
   --color-accent-strong: var(--accent-strong);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
   --color-rail: var(--rail);
   --color-rail-2: var(--rail-2);
   --color-rail-ink: var(--rail-ink);
@@ -86,11 +99,15 @@
   --color-warn: var(--warn);
   --color-warn-bg: var(--warn-bg);
   --color-yellow: var(--yellow);
-  --font-sans: var(--font-overpass), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-overpass-mono), ui-monospace, monospace;
-  --radius-sm: 4px;
-  --radius-md: 7px;
-  --radius-lg: 10px;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -108,7 +125,7 @@ body {
 
 * {
   scrollbar-color: var(--border-strong) transparent;
-  caret-color: var(--accent);
+  caret-color: var(--brand);
 }
 
 *:focus-visible {
@@ -121,36 +138,22 @@ a {
 }
 
 .label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--muted);
 }
 
 dialog::backdrop {
-  background: rgb(14 21 37 / 0.55);
+  background: rgb(13 15 18 / 0.5);
 }
 
-/* The postmark: a round cancellation stamp pressed onto a confirmed scan. */
-.postmark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2.5px solid currentColor;
-  border-radius: 999px;
-  font-family: var(--font-overpass-mono), ui-monospace, monospace;
-  font-weight: 700;
-  line-height: 1;
+/* Scan confirmation: a check bubble pops in and settles. */
+@keyframes pop-in {
+  0% { opacity: 0; transform: translateY(12px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-
-@keyframes stamp-in {
-  0% { opacity: 0; transform: scale(1.6) rotate(-14deg); filter: blur(2px); }
-  60% { opacity: 1; transform: scale(0.96) rotate(-9deg); filter: blur(0); }
-  100% { opacity: 1; transform: scale(1) rotate(-10deg); }
-}
-.stamp-in {
-  animation: stamp-in 0.42s var(--ease-out-expo) both;
+.pop-in {
+  animation: pop-in 0.32s var(--ease-out-expo) both;
 }
 
 @keyframes flash-bad {
@@ -162,8 +165,7 @@ dialog::backdrop {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stamp-in { animation: none; transform: rotate(-10deg); }
-  .flash-bad { animation: none; }
+  .pop-in, .flash-bad { animation: none; }
 }
 
 @media print {

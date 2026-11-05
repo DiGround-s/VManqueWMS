@@ -56,7 +56,7 @@ export function AddReceptionLine({ receptionId, defaultLocation }: { receptionId
   return (
     <div className="space-y-3">
       {product ? (
-        <div className="rounded-md border border-border bg-panel-2 px-3 py-2">
+        <div className="rounded-xl border border-border bg-panel-2 px-3 py-2">
           <div className="font-mono font-semibold">{product.sku}</div>
           <div className="text-sm">{product.name}</div>
         </div>

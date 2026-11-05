@@ -57,7 +57,7 @@ export function SortingStation({ waves, selected, basePath, phone }: { waves: { 
         <div
           key={display?.key}
           className={cn(
-            "flex flex-col items-center justify-center rounded-md border-2 px-4 text-center",
+            "flex flex-col items-center justify-center rounded-xl border px-4 text-center",
             phone ? "min-h-64 py-6" : "min-h-[22rem] py-10",
             !display && "border-dashed border-border text-muted",
             display?.tone === "ok" && "border-success bg-success-bg",

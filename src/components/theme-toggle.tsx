@@ -10,7 +10,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className={cn("flex size-9 items-center justify-center rounded-md border-2 border-border hover:bg-panel-2", className)}
+      className={cn("flex size-10 items-center justify-center rounded-full bg-panel ring-1 ring-inset ring-border hover:bg-panel-2", className)}
       aria-label="Cambiar tema claro/oscuro"
       title="Cambiar tema"
     >

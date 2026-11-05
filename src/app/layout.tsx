@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Overpass, Overpass_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
-const sans = Overpass({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"], variable: "--font-overpass" });
-const mono = Overpass_Mono({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-overpass-mono" });
+const sans = Geist({ subsets: ["latin"], variable: "--font-geist" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = { title: { default: "VManque WMS", template: "%s · VManque WMS" }, description: "Gestión de bodega" };
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#1f3b6d" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0a9f5c" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

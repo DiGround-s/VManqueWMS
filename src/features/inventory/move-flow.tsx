@@ -68,7 +68,7 @@ export function MoveFlow({ phone }: { phone?: boolean }) {
           <ul className="space-y-2">
             {from.contents.filter((c) => c.qty > 0).map((c) => (
               <li key={c.productId}>
-                <button type="button" onClick={() => (setItem(c), setQty(String(c.qty)))} className={cn("flex w-full items-center justify-between rounded-md border border-border bg-panel px-3 text-left hover:border-accent", phone ? "py-4" : "py-2")}>
+                <button type="button" onClick={() => (setItem(c), setQty(String(c.qty)))} className={cn("flex w-full items-center justify-between rounded-xl border border-border bg-panel px-3 text-left hover:border-accent", phone ? "py-4" : "py-2")}>
                   <span><span className="font-mono font-semibold">{c.sku}</span> <span className="text-muted">{c.name}</span></span>
                   <span className="font-mono text-xl">{c.qty}</span>
                 </button>
@@ -121,7 +121,7 @@ export function Steps({ step, labels }: { step: number; labels: string[] }) {
 
 export function Summary({ label, value, onClear }: { label: string; value: string; onClear: () => void }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-panel-2 px-3 py-2">
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-panel-2 px-3 py-2">
       <div className="min-w-0">
         <div className="label">{label}</div>
         <div className="truncate font-mono text-lg font-semibold">{value}</div>

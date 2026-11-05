@@ -11,7 +11,7 @@ export function Pagination({ page, pageSize, total, params, basePath }: { page: 
     return `${basePath}?${sp}`;
   };
   return (
-    <div className="flex items-center justify-between gap-3 px-3 py-2 text-sm text-muted">
+    <div className="flex items-center justify-between gap-3 px-4 py-3 text-sm text-muted">
       <span>
         {total} resultados · página {page} de {pages}
       </span>

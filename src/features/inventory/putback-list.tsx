@@ -22,7 +22,7 @@ export function PutbackList({ items, phone }: { items: PutbackItem[]; phone?: bo
   if (current) {
     return (
       <div className="space-y-4">
-        <div className="rounded-md border border-border bg-panel-2 p-4">
+        <div className="rounded-xl border border-border bg-panel-2 p-4">
           <div className="font-mono text-2xl font-bold">{current.qty} × {current.sku}</div>
           <div className={cn(phone && "text-lg")}>{current.name}</div>
           <div className="text-sm text-muted">Pedido {current.orderCode}{current.suggested && <> · sugerido <span className="font-mono">{current.suggested}</span></>}</div>
@@ -52,7 +52,7 @@ export function PutbackList({ items, phone }: { items: PutbackItem[]; phone?: bo
     <ul className="space-y-2">
       {items.map((p) => (
         <li key={p.id}>
-          <button type="button" onClick={() => setCurrent(p)} className={cn("flex w-full items-center gap-3 rounded-md border border-border bg-panel px-4 text-left hover:border-accent", phone ? "min-h-16 py-3" : "py-2.5")}>
+          <button type="button" onClick={() => setCurrent(p)} className={cn("flex w-full items-center gap-3 rounded-xl border border-border bg-panel px-4 text-left hover:border-accent", phone ? "min-h-16 py-3" : "py-2.5")}>
             <span className="font-mono text-2xl font-bold">{p.qty}</span>
             <span className="min-w-0 flex-1">
               <span className="block font-mono font-semibold">{p.sku}</span>
