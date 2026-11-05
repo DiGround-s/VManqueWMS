@@ -19,7 +19,7 @@ export function Stat({ label, value, tone, href, share, stamp }: { label: string
   const body = (
     <div className={cn("relative flex h-full flex-col gap-2 p-4", href && "transition-colors hover:bg-panel-2")}>
       {stamp && (
-        <span className="postmark absolute right-3 top-2.5 size-14 rotate-[-12deg] px-1 text-center text-[9px] uppercase leading-tight text-danger" aria-hidden>
+        <span className="postmark absolute right-3 top-2 size-16 rotate-[-12deg] px-1.5 text-center text-[11px] uppercase leading-tight text-danger" aria-hidden>
           {stamp}
         </span>
       )}
