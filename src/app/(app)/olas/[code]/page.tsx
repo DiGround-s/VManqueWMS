@@ -37,8 +37,8 @@ export default async function WaveDetail({ params }: { params: Promise<{ code: s
   return (
     <>
       <PageHeader
-        eyebrow={`Ola · creada por ${wave.createdBy.name}`}
         title={<span className="font-mono">{wave.code}</span>}
+        description={`Ola creada por ${wave.createdBy.name}`}
         actions={
           <>
             <StatusBadge map={WAVE_STATUS} value={wave.status} />

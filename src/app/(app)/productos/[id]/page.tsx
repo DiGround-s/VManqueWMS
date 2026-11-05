@@ -29,7 +29,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
   return (
     <>
       <PageHeader
-        eyebrow="Producto"
+       
         title={<span className="font-mono">{product.sku}</span>}
         description={product.name}
         actions={<Link href={`/print/productos?ids=${product.id}`} target="_blank" className={buttonClass("secondary")}><Printer className="size-4" /> Etiqueta</Link>}

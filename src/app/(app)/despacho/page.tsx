@@ -24,7 +24,7 @@ export default async function DispatchPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Salidas" title="Despacho" description="Escanea cada bulto al entregarlo al transporte." />
+      <PageHeader title="Despacho" description="Escanea cada bulto al entregarlo al transporte." />
       <div className="grid gap-5 xl:grid-cols-[1fr_1.2fr]">
         <Card className="p-4"><DispatchStation /></Card>
         <div className="space-y-5">

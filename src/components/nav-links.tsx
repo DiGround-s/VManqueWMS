@@ -13,10 +13,10 @@ export type NavItem = { href: string; label: string; icon: keyof typeof ICONS };
 export function NavLinks({ groups }: { groups: { title: string; items: NavItem[] }[] }) {
   const path = usePathname();
   return (
-    <nav className="flex gap-4 overflow-x-auto px-2 py-2 lg:flex-col lg:gap-5 lg:overflow-visible lg:py-4">
+    <nav className="flex gap-1 overflow-x-auto px-3 pb-3 pt-2 lg:flex-col lg:gap-5 lg:overflow-visible lg:py-5" aria-label="Secciones">
       {groups.map((g) => (
-        <div key={g.title} className="flex shrink-0 gap-1 lg:flex-col">
-          <div className="label hidden px-2 pb-1 lg:block">{g.title}</div>
+        <div key={g.title} className="flex shrink-0 gap-1 lg:flex-col lg:gap-0.5">
+          <div className="hidden px-3 pb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-rail-muted lg:block">{g.title}</div>
           {g.items.map((item) => {
             const Icon = ICONS[item.icon];
             const active = item.href === "/" ? path === "/" : path === item.href || path.startsWith(item.href + "/");
@@ -24,12 +24,13 @@ export function NavLinks({ groups }: { groups: { title: string; items: NavItem[]
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-2.5 whitespace-nowrap rounded-md border-l-2 px-2.5 py-1.5 text-sm",
-                  active ? "border-accent bg-panel-2 font-semibold" : "border-transparent text-muted hover:bg-panel-2 hover:text-text",
+                  "flex items-center gap-3 whitespace-nowrap rounded-md px-3 py-2 text-[15px] transition-colors",
+                  active ? "bg-surface font-extrabold text-accent dark:bg-rail-2 dark:text-rail-ink" : "font-semibold text-rail-ink/85 hover:bg-rail-2 hover:text-rail-ink",
                 )}
               >
-                <Icon className={cn("size-4", active && "text-accent-strong")} aria-hidden />
+                <Icon className={cn("size-[18px] shrink-0", active ? "text-accent dark:text-yellow" : "text-rail-muted")} aria-hidden />
                 {item.label}
               </Link>
             );

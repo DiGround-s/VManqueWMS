@@ -37,7 +37,7 @@ export default async function WavesPage({ searchParams }: { searchParams: Promis
   return (
     <>
       <PageHeader
-        eyebrow="Salidas"
+       
         title="Olas de picking"
         description="Agrupa pedidos para recogerlos en un solo recorrido y separarlos en la mesa."
         actions={hasRole(user, "SUPERVISOR") && <Link href="/olas/nueva" className={buttonClass("primary")}><Plus className="size-4" /> Nueva ola</Link>}

@@ -27,9 +27,8 @@ export default async function ReceptionDetail({ params }: { params: Promise<{ co
   return (
     <>
       <PageHeader
-        eyebrow={`Recepción · ${r.createdBy.name} · ${fmtDateTime(r.createdAt)}`}
         title={<span className="font-mono">{r.code}</span>}
-        description={[r.supplier, r.note].filter(Boolean).join(" · ") || undefined}
+        description={[`Creada por ${r.createdBy.name} el ${fmtDateTime(r.createdAt)}`, r.supplier, r.note].filter(Boolean).join(" · ")}
         actions={
           <>
             {draft ? <Badge tone="warn">Borrador</Badge> : <Badge tone="success">Confirmada {fmtDateTime(r.confirmedAt)}</Badge>}

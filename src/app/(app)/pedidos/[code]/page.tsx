@@ -36,9 +36,8 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
   return (
     <>
       <PageHeader
-        eyebrow={`Pedido · ${order.source === "MANUAL" ? "manual" : order.source === "IMPORT" ? "importado" : "API"}`}
         title={<span className="font-mono">{order.code}</span>}
-        description={order.externalRef ? `Referencia ${order.externalRef}` : undefined}
+        description={[`Pedido ${order.source === "MANUAL" ? "manual" : order.source === "IMPORT" ? "importado" : "por API"}`, order.externalRef && `referencia ${order.externalRef}`].filter(Boolean).join(" · ")}
         actions={
           <>
             <StatusBadge map={ORDER_STATUS} value={order.status} />

@@ -14,7 +14,7 @@ export default async function ReplenishmentPage() {
   const { suggestions, uncovered } = await replenishmentReport();
   return (
     <>
-      <PageHeader eyebrow="Bodega" title="Inventario" description="Ubicaciones de picking bajo su mínimo y desde qué reserva rellenarlas (hasta el máximo)." />
+      <PageHeader title="Inventario" description="Ubicaciones de picking bajo su mínimo y desde qué reserva rellenarlas (hasta el máximo)." />
       <InventoryTabs active="/inventario/reposicion" />
       <div className="space-y-5">
         <Card>

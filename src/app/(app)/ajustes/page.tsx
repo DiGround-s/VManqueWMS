@@ -9,7 +9,7 @@ export default async function SettingsPage() {
   await requirePageRole("ADMIN");
   return (
     <>
-      <PageHeader eyebrow="Administración" title="Ajustes" />
+      <PageHeader title="Ajustes" />
       <SettingsForm companyName={await getCompanyName()} />
     </>
   );

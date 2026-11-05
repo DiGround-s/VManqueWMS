@@ -8,7 +8,7 @@ export default async function NewProductPage() {
   await requirePageRole("SUPERVISOR");
   return (
     <>
-      <PageHeader eyebrow="Productos" title="Nuevo producto" />
+      <PageHeader title="Nuevo producto" />
       <div className="max-w-2xl"><ProductForm /></div>
     </>
   );

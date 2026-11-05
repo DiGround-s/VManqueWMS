@@ -12,7 +12,7 @@ export default async function PutbackPage() {
   const items = await putbackItems();
   return (
     <>
-      <PageHeader eyebrow="Bodega" title="Inventario" description="Unidades de pedidos cancelados después del picking. Devuélvelas a una ubicación." />
+      <PageHeader title="Inventario" description="Unidades de pedidos cancelados después del picking. Devuélvelas a una ubicación." />
       <InventoryTabs active="/inventario/devoluciones" />
       <Card className="max-w-2xl p-4"><PutbackList items={items} /></Card>
     </>

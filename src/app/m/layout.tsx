@@ -10,7 +10,7 @@ export default async function PhoneLayout({ children }: { children: React.ReactN
   const user = await requirePageRole();
   return (
     <div className="min-h-dvh pb-24">
-      <div className="hazard h-1.5" />
+      
       <header className="flex h-14 items-center gap-2 border-b border-border bg-panel px-4">
         <Link href="/m" className="font-mono text-base font-bold">VM<span className="text-accent">/</span>BODEGA</Link>
         <span className="ml-auto truncate text-sm text-muted">{user.name}</span>

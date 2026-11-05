@@ -30,8 +30,8 @@ export default async function LocationDetail({ params }: { params: Promise<{ id:
   return (
     <>
       <PageHeader
-        eyebrow={`Ubicación · ${loc.warehouse.name}`}
         title={<span className="font-mono">{loc.code}</span>}
+        description={`Ubicación en ${loc.warehouse.name}`}
         actions={
           <>
             <StatusBadge map={LOCATION_ROLE} value={loc.role} />

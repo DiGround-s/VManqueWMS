@@ -39,7 +39,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="Resumen" title="Inicio" description="Estado de la bodega en este momento." />
+      <PageHeader title="Inicio" description="Estado de la bodega en este momento." />
       {denied && <p className="rounded-md border border-danger/40 bg-danger-bg px-3 py-2 text-sm text-danger">No tienes permiso para esa sección.</p>}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         {ORDER_FLOW.slice(0, 5).map((s) => (
@@ -50,7 +50,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 
       {(lowSlots > 0 || putbacks > 0) && (
         <Card className="overflow-hidden border-accent">
-          <div className="hazard h-1" />
+          
           <div className="flex flex-wrap gap-x-6 gap-y-2 px-4 py-3 text-sm">
             <AlertTriangle className="size-5 text-accent-strong" aria-hidden />
             {lowSlots > 0 && (

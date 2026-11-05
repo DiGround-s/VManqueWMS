@@ -23,16 +23,16 @@ export function Dialog({ open, onClose, title, children, side, className }: { op
         onClose();
       }}
       className={cn(
-        "border border-border-strong bg-panel text-text p-0 shadow-2xl",
-        side ? "ml-auto mr-0 h-dvh max-h-dvh w-full max-w-lg rounded-none" : "m-auto w-[calc(100%-2rem)] max-w-lg rounded-md",
+        "border-2 border-border-strong bg-panel text-text p-0 shadow-[0_24px_60px_-12px_rgb(14_21_37/0.45)]",
+        side ? "ml-auto mr-0 h-dvh max-h-dvh w-full max-w-lg rounded-none border-y-0 border-r-0" : "m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl",
         className,
       )}
     >
       {open && (
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
-            <h2 className="font-semibold">{title}</h2>
-            <button type="button" onClick={onClose} className="rounded p-1 hover:bg-panel-2" aria-label="Cerrar">
+          <div className="flex items-center justify-between border-b-[1.5px] border-border px-4 py-3">
+            <h2 className="text-lg font-extrabold">{title}</h2>
+            <button type="button" onClick={onClose} className="rounded-md p-1.5 hover:bg-panel-2" aria-label="Cerrar">
               <X className="size-5" />
             </button>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Camera, Loader2, ScanLine } from "lucide-react";
+import { Camera, CornerDownLeft, Loader2, ScanLine } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Dialog } from "./dialog";
 
@@ -32,7 +32,7 @@ export function ScanInput({ onScan, placeholder = "Escanea o escribe el código"
     if (!c) return;
     setValue("");
     await onScan(c);
-    ref.current?.focus();
+    if (autoFocus) ref.current?.focus();
   }
 
   function onSubmit(e: FormEvent) {
@@ -42,11 +42,11 @@ export function ScanInput({ onScan, placeholder = "Escanea o escribe el código"
 
   const big = size === "xl";
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-1">
-      {label && <span className="label">{label}</span>}
+    <form onSubmit={onSubmit} className="flex flex-col gap-1.5">
+      {label && <span className="text-[13px] font-bold">{label}</span>}
       <div className="flex gap-2">
-        <div className="relative flex-1">
-          <ScanLine className={cn("pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted", big ? "size-6" : "size-4")} aria-hidden />
+        <div className="group relative flex-1">
+          <ScanLine className={cn("pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-accent", big ? "size-7" : "size-[18px]")} aria-hidden />
           <input
             ref={ref}
             value={value}
@@ -58,19 +58,28 @@ export function ScanInput({ onScan, placeholder = "Escanea o escribe el código"
             enterKeyHint="go"
             aria-label={label ?? placeholder}
             className={cn(
-              "w-full rounded-md border-2 border-border-strong bg-panel font-mono text-text placeholder:font-sans placeholder:text-muted focus:border-accent",
-              big ? "h-16 pl-12 pr-3 text-xl" : "h-11 pl-9 pr-3 text-base",
+              "w-full rounded-lg border-2 border-accent/50 bg-panel font-mono text-text placeholder:font-sans placeholder:text-muted/80 transition-colors hover:border-accent focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15",
+              big ? "h-16 pl-12 pr-12 text-xl" : "h-11 pl-10 pr-10 text-[15px]",
             )}
           />
-          {pending && <Loader2 className="absolute right-3 top-1/2 size-5 -translate-y-1/2 animate-spin text-accent-strong" aria-label="Procesando" />}
+          {pending ? (
+            <Loader2 className="absolute right-3 top-1/2 size-5 -translate-y-1/2 animate-spin text-accent" aria-label="Procesando" />
+          ) : (
+            value && <CornerDownLeft className="pointer-events-none absolute right-3 top-1/2 size-5 -translate-y-1/2 text-muted" aria-hidden />
+          )}
         </div>
         <button
           type="button"
           onClick={() => setCamera(true)}
-          className={cn("flex items-center justify-center rounded-md border-2 border-border-strong bg-panel-2 hover:border-accent", big ? "h-16 w-16" : "h-11 w-11")}
+          className={cn(
+            "flex shrink-0 items-center justify-center gap-2 rounded-lg border-2 border-accent bg-accent font-bold text-accent-ink transition hover:brightness-110",
+            big ? "h-16 w-16" : "h-11 px-3",
+          )}
           aria-label="Escanear con la cámara"
+          title="Escanear con la cámara"
         >
-          <Camera className={big ? "size-7" : "size-5"} />
+          <Camera className={big ? "size-7" : "size-5"} aria-hidden />
+          {!big && <span className="hidden text-sm sm:inline">Cámara</span>}
         </button>
       </div>
       <Dialog open={camera} onClose={() => setCamera(false)} title="Escanear con la cámara">
@@ -90,6 +99,7 @@ export function ScanInput({ onScan, placeholder = "Escanea o escribe el código"
 function CameraReader({ onResult }: { onResult: (code: string) => void }) {
   const video = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
   const done = useRef(false);
 
   useEffect(() => {
@@ -109,6 +119,7 @@ function CameraReader({ onResult }: { onResult: (code: string) => void }) {
         });
         stop = () => controls.stop();
         if (cancelled) stop();
+        else setReady(true);
       } catch {
         setError("No se pudo abrir la cámara. Revisa el permiso del navegador (requiere HTTPS o localhost).");
       }
@@ -119,9 +130,19 @@ function CameraReader({ onResult }: { onResult: (code: string) => void }) {
     };
   }, [onResult]);
 
-  return error ? (
-    <p className="text-danger">{error}</p>
-  ) : (
-    <video ref={video} className="aspect-[3/4] w-full rounded-md bg-black object-cover" muted playsInline />
+  if (error) return <p className="rounded-md border-2 border-danger/50 bg-danger-bg p-3 font-semibold text-danger">{error}</p>;
+  return (
+    <div className="space-y-3">
+      <div className="relative overflow-hidden rounded-lg bg-black">
+        <video ref={video} className="aspect-[3/4] w-full object-cover" muted playsInline />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>
+          <div className="relative h-2/5 w-4/5 rounded-xl border-[3px] border-yellow/90 shadow-[0_0_0_200vmax_rgb(0_0_0/0.45)]">
+            {ready && <div className="absolute inset-x-3 top-1/2 h-0.5 animate-pulse bg-danger" />}
+          </div>
+        </div>
+        {!ready && <Loader2 className="absolute left-1/2 top-1/2 size-8 -translate-x-1/2 -translate-y-1/2 animate-spin text-white" aria-label="Abriendo cámara" />}
+      </div>
+      <p className="text-center text-sm text-muted">Centra el código de barras o QR dentro del marco.</p>
+    </div>
   );
 }

@@ -8,7 +8,7 @@ export default async function ImportProductsPage() {
   await requirePageRole("SUPERVISOR");
   return (
     <>
-      <PageHeader eyebrow="Productos" title="Importar productos" description="Excel o CSV con columnas sku, name, barcode e image (opcional). Los SKU existentes se actualizan." />
+      <PageHeader title="Importar productos" description="Excel o CSV con columnas sku, name, barcode e image (opcional). Los SKU existentes se actualizan." />
       <ImportProducts />
     </>
   );

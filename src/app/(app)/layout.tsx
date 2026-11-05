@@ -4,6 +4,9 @@ import { requirePageRole, hasRole } from "@/server/auth/current";
 import { logout } from "@/features/auth/actions";
 import { NavLinks, type NavItem } from "@/components/nav-links";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { GlobalScan } from "@/components/global-scan";
+import { ScanStamp } from "@/components/scan-stamp";
+import { Wordmark } from "@/components/wordmark";
 import { ROLE } from "@/lib/labels";
 import { getCompanyName } from "@/features/settings/service";
 
@@ -43,35 +46,51 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[230px_1fr]">
-      <aside className="border-b border-border bg-panel lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto lg:border-b-0 lg:border-r">
-        <div className="hazard h-1.5" />
-        <Link href="/" className="block px-4 pt-3 lg:pt-4">
-          <div className="font-mono text-lg font-semibold leading-none">
-            VMANQUE<span className="text-accent">/</span>WMS
-          </div>
-          <div className="label mt-1 truncate">{company}</div>
+    <div className="min-h-dvh lg:grid lg:grid-cols-[248px_1fr]">
+      <aside className="bg-rail text-rail-ink lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto">
+        <Link href="/" className="block px-5 pb-1 pt-4 lg:pb-2 lg:pt-6">
+          <Wordmark />
+          <div className="mt-1 truncate text-xs font-semibold text-rail-muted">{company}</div>
         </Link>
         <NavLinks groups={groups} />
+        <Link
+          href="/m"
+          className="mx-3 mb-4 mt-auto hidden items-center gap-3 rounded-lg border-2 border-rail-muted/30 px-3 py-2.5 text-sm font-bold text-rail-ink transition-colors hover:border-yellow hover:text-yellow lg:flex"
+        >
+          <Smartphone className="size-5" aria-hidden />
+          <span>
+            Modo bodega
+            <span className="block text-xs font-medium text-rail-muted">Para el teléfono</span>
+          </span>
+        </Link>
       </aside>
       <div className="min-w-0">
-        <header className="flex h-12 items-center justify-end gap-2 border-b border-border bg-panel px-4">
-          <Link href="/m" className="mr-auto flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide hover:bg-panel-2">
-            <Smartphone className="size-4" /> Modo bodega
-          </Link>
-          <Link href="/cuenta" className="hidden text-right text-xs leading-tight sm:block hover:underline">
-            <div className="font-semibold">{user.name}</div>
-            <div className="text-muted">{ROLE[user.role]}</div>
-          </Link>
-          <ThemeToggle />
-          <form action={logout}>
-            <button className="flex size-9 items-center justify-center rounded-md border border-border hover:bg-panel-2" aria-label="Cerrar sesión" title="Cerrar sesión">
-              <LogOut className="size-4" />
-            </button>
-          </form>
+        <header className="sticky top-0 z-30 flex flex-wrap items-center gap-3 border-b-[1.5px] border-border bg-surface/90 px-4 py-2.5 backdrop-blur-md lg:px-8">
+          <GlobalScan />
+          <div className="ml-auto flex items-center gap-2">
+            <Link href="/m" className="flex h-9 items-center gap-1.5 rounded-md border-2 border-border px-2.5 text-sm font-bold hover:bg-panel-2 lg:hidden">
+              <Smartphone className="size-4" aria-hidden /> Bodega
+            </Link>
+            <Link href="/cuenta" className="hidden items-center gap-2.5 rounded-md px-2 py-1 hover:bg-panel-2 sm:flex">
+              <span className="flex size-8 items-center justify-center rounded-full bg-accent text-sm font-black text-accent-ink" aria-hidden>
+                {user.name.slice(0, 1).toUpperCase()}
+              </span>
+              <span className="text-left text-xs leading-tight">
+                <span className="block font-bold">{user.name}</span>
+                <span className="text-muted">{ROLE[user.role]}</span>
+              </span>
+            </Link>
+            <ThemeToggle />
+            <form action={logout}>
+              <button className="flex size-9 items-center justify-center rounded-md border-2 border-border hover:bg-panel-2" aria-label="Cerrar sesión" title="Cerrar sesión">
+                <LogOut className="size-4" />
+              </button>
+            </form>
+          </div>
         </header>
-        <main className="mx-auto max-w-[1400px] p-4 lg:p-6">{children}</main>
+        <main className="mx-auto max-w-[1400px] px-4 py-6 lg:px-8 lg:py-8">{children}</main>
       </div>
+      <ScanStamp />
     </div>
   );
 }

@@ -11,7 +11,7 @@ export default async function NewOrderPage() {
   const products = await db.product.findMany({ where: { active: true }, orderBy: { sku: "asc" }, take: 3000, select: { sku: true, name: true } });
   return (
     <>
-      <PageHeader eyebrow="Pedidos" title="Nuevo pedido" description="Pedido manual. Compromete stock apenas se guarda." />
+      <PageHeader title="Nuevo pedido" description="Pedido manual. Compromete stock apenas se guarda." />
       <OrderForm products={products} />
     </>
   );

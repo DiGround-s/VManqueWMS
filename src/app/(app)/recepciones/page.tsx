@@ -22,7 +22,7 @@ export default async function ReceptionsPage({ searchParams }: { searchParams: P
   ]);
   return (
     <>
-      <PageHeader eyebrow="Bodega" title="Recepciones" description="Ingreso de mercadería de proveedores. Al confirmar, el stock entra a las ubicaciones indicadas." actions={hasRole(user, "SUPERVISOR") && <NewReception />} />
+      <PageHeader title="Recepciones" description="Ingreso de mercadería de proveedores. Al confirmar, el stock entra a las ubicaciones indicadas." actions={hasRole(user, "SUPERVISOR") && <NewReception />} />
       <Card>
         {rows.length === 0 ? <EmptyState title="Sin recepciones" /> : (
           <Table>

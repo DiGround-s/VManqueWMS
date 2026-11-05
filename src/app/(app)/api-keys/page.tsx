@@ -15,7 +15,7 @@ export default async function ApiKeysPage() {
   const keys = await db.apiKey.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
   return (
     <>
-      <PageHeader eyebrow="Administración" title="API keys" description="Para que otros sistemas creen pedidos y consulten stock. Ver docs/API.md." actions={<NewApiKey />} />
+      <PageHeader title="API keys" description="Para que otros sistemas creen pedidos y consulten stock. Ver docs/API.md." actions={<NewApiKey />} />
       <Card>
         {keys.length === 0 ? <EmptyState title="No hay API keys" /> : (
           <Table>

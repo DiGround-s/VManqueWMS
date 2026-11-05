@@ -29,7 +29,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
   return (
     <>
       <PageHeader
-        eyebrow="Bodega"
+       
         title="Productos"
         description="Catálogo. El SKU va en la etiqueta QR de cada producto."
         actions={

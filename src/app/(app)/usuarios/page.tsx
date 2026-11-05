@@ -15,7 +15,7 @@ export default async function UsersPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Administración"
+       
         title="Usuarios"
         description="Operador: modo bodega y consulta · Supervisor: + pedidos, olas, ajustes, recepciones · Administrador: todo."
         actions={<NewUser />}

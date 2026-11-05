@@ -32,7 +32,7 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
 
   return (
     <>
-      <PageHeader eyebrow="Bodega" title="Inventario" description="Disponible = en estantería (picking + reserva) − comprometido por pedidos sin recoger." />
+      <PageHeader title="Inventario" description="Disponible = en estantería (picking + reserva) − comprometido por pedidos sin recoger." />
       <InventoryTabs active="/inventario" />
       <FilterForm>
         <Field label="Buscar" className="min-w-72 flex-1"><Input name="q" defaultValue={q} placeholder="SKU, nombre o código de barras" /></Field>

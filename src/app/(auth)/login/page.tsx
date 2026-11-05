@@ -6,7 +6,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const { next } = await searchParams;
   return (
     <main className="flex min-h-dvh flex-col">
-      <div className="hazard h-2" />
+      
       <div className="flex flex-1 items-center justify-center p-4">
         <div className="w-full max-w-sm">
           <div className="mb-6">

@@ -10,7 +10,7 @@ export default async function GeneratePage() {
   const warehouses = await db.warehouse.findMany({ orderBy: { code: "asc" }, select: { id: true, code: true, name: true } });
   return (
     <>
-      <PageHeader eyebrow="Ubicaciones" title="Generar ubicaciones" description="Crea códigos zona-pasillo-rack-nivel (A-01-02-03) con su orden de recorrido." />
+      <PageHeader title="Generar ubicaciones" description="Crea códigos zona-pasillo-rack-nivel (A-01-02-03) con su orden de recorrido." />
       <div className="grid gap-5 xl:grid-cols-[1.4fr_1fr]">
         <LocationGenerator warehouses={warehouses} />
         <SingleLocationForm warehouses={warehouses} />

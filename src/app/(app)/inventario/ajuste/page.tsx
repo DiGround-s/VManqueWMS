@@ -11,7 +11,7 @@ export default async function AdjustPage() {
   const user = await requirePageRole();
   return (
     <>
-      <PageHeader eyebrow="Bodega" title="Inventario" description="Corrige el stock de una ubicación o mueve unidades entre ubicaciones." />
+      <PageHeader title="Inventario" description="Corrige el stock de una ubicación o mueve unidades entre ubicaciones." />
       <InventoryTabs active="/inventario/ajuste" />
       <div className="grid gap-5 xl:grid-cols-2">
         <Card>

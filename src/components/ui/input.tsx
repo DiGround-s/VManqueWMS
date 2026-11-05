@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAt
 import { cn } from "@/lib/cn";
 
 const base =
-  "min-w-0 rounded-md border border-border-strong bg-panel px-3 text-sm text-text placeholder:text-muted disabled:opacity-60";
+  "min-w-0 rounded-md border-2 border-border bg-panel px-3 text-sm text-text placeholder:text-muted/80 transition-colors hover:border-border-strong focus:border-accent focus:outline-none disabled:opacity-60";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input({ className, ...rest }, ref) {
   return <input ref={ref} className={cn(base, "h-10", className)} {...rest} />;
@@ -18,8 +18,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
 
 export function Field({ label, hint, children, className }: { label: string; hint?: string; children: ReactNode; className?: string }) {
   return (
-    <label className={cn("flex flex-col gap-1", className)}>
-      <span className="label">{label}</span>
+    <label className={cn("flex flex-col gap-1.5", className)}>
+      <span className="text-[13px] font-bold">{label}</span>
       {children}
       {hint && <span className="text-xs text-muted">{hint}</span>}
     </label>

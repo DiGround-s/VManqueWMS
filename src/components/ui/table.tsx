@@ -10,15 +10,15 @@ export function Table({ className, ...rest }: HTMLAttributes<HTMLTableElement>) 
 }
 
 export function Th({ className, ...rest }: ThHTMLAttributes<HTMLTableCellElement>) {
-  return <th className={cn("label border-b border-border bg-panel-2 px-3 py-2 text-left whitespace-nowrap", className)} {...rest} />;
+  return <th className={cn("label border-b-[1.5px] border-border bg-panel-2 px-4 py-2.5 text-left whitespace-nowrap", className)} {...rest} />;
 }
 
 export function Td({ className, ...rest }: TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("border-b border-border px-3 py-1.5 align-middle", className)} {...rest} />;
+  return <td className={cn("border-b border-border/70 px-4 py-2.5 align-middle", className)} {...rest} />;
 }
 
 export function Tr({ className, ...rest }: HTMLAttributes<HTMLTableRowElement>) {
-  return <tr className={cn("hover:bg-panel-2/70", className)} {...rest} />;
+  return <tr className={cn("transition-colors hover:bg-panel-2", className)} {...rest} />;
 }
 
 /** Monospace cell content for codes, SKUs, locations and quantities. */

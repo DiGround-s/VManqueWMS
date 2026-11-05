@@ -8,7 +8,7 @@ export default async function PackingPage() {
   await requirePageRole();
   return (
     <>
-      <PageHeader eyebrow="Salidas" title="Preparación" description="Verifica cada producto del pedido escaneándolo. Al completar se imprime la etiqueta de envío." />
+      <PageHeader title="Preparación" description="Verifica cada producto del pedido escaneándolo. Al completar se imprime la etiqueta de envío." />
       <div className="max-w-3xl"><PackingStation /></div>
     </>
   );

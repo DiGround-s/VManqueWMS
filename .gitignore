@@ -10,3 +10,8 @@ coverage
 
 # python
 __pycache__/
+
+# impeccable runtime
+.impeccable/mocks/
+.impeccable/questions/
+.impeccable/review/

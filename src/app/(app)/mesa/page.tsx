@@ -10,7 +10,7 @@ export default async function SortingPage({ searchParams }: { searchParams: Prom
   const { waves, selected } = await sortingWaves((await searchParams).ola);
   return (
     <>
-      <PageHeader eyebrow="Salidas" title="Mesa de separación" description="Escanea cada unidad recogida y déjala en la casilla que indica la pantalla." />
+      <PageHeader title="Mesa de separación" description="Escanea cada unidad recogida y déjala en la casilla que indica la pantalla." />
       <SortingStation waves={waves} selected={selected} basePath="/mesa" />
     </>
   );

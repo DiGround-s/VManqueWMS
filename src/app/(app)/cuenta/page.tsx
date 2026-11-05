@@ -9,7 +9,7 @@ export default async function AccountPage() {
   const user = await requirePageRole();
   return (
     <>
-      <PageHeader eyebrow="Mi cuenta" title={user.name} description={`${user.email} · ${ROLE[user.role]}`} />
+      <PageHeader title={user.name} description={`${user.email} · ${ROLE[user.role]}`} />
       <AccountForm />
     </>
   );

@@ -45,7 +45,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
   return (
     <>
       <PageHeader
-        eyebrow="Salidas"
+       
         title="Pedidos"
         description="Pedidos de clientes, desde su ingreso hasta el despacho."
         actions={

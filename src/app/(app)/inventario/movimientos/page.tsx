@@ -42,7 +42,7 @@ export default async function MovementsPage({ searchParams }: { searchParams: Pr
   ]);
   return (
     <>
-      <PageHeader eyebrow="Bodega" title="Inventario" description="Registro de todos los movimientos de stock. No se edita ni se borra." />
+      <PageHeader title="Inventario" description="Registro de todos los movimientos de stock. No se edita ni se borra." />
       <InventoryTabs active="/inventario/movimientos" />
       <FilterForm>
         <Field label="Tipo">

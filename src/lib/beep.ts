@@ -4,8 +4,11 @@ import { toast } from "sonner";
 
 let ctx: AudioContext | null = null;
 
-/** Short scanner-style feedback: one high beep when OK, three low buzzes on error. */
-export function beep(ok: boolean) {
+export type ScanFeedback = { ok: boolean; message?: string };
+export const SCAN_EVENT = "vm:scan";
+
+/** Short scanner-style feedback: one high beep when OK, three low buzzes on error. Also presses the on-screen postmark. */
+export function beep(ok: boolean, message?: string) {
   try {
     ctx ??= new AudioContext();
     const tones = ok ? [[1200, 0]] : [[220, 0], [220, 0.18], [220, 0.36]];
@@ -23,10 +26,11 @@ export function beep(ok: boolean) {
   } catch {
     // Audio is a nicety; never break a scan over it.
   }
+  window.dispatchEvent(new CustomEvent<ScanFeedback>(SCAN_EVENT, { detail: { ok, message } }));
 }
 
 /** Wrong thing scanned: buzz and say what was expected. */
 export function scanError(message: string) {
-  beep(false);
+  beep(false, message);
   toast.error(message);
 }

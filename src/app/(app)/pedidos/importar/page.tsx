@@ -8,7 +8,7 @@ export default async function ImportOrdersPage() {
   await requirePageRole("SUPERVISOR");
   return (
     <>
-      <PageHeader eyebrow="Pedidos" title="Importar pedidos" description="Excel o CSV, una fila por línea, agrupadas por la columna ref." />
+      <PageHeader title="Importar pedidos" description="Excel o CSV, una fila por línea, agrupadas por la columna ref." />
       <ImportOrders />
     </>
   );

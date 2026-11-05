@@ -41,7 +41,7 @@ export default async function LocationsPage({ searchParams }: { searchParams: Pr
   return (
     <>
       <PageHeader
-        eyebrow="Bodega"
+       
         title="Ubicaciones"
         description={`Zonas: ${zones.map((z) => `${z.zone} (${z._count})`).join(" · ") || "ninguna"}`}
         actions={

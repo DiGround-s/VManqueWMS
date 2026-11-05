@@ -27,7 +27,7 @@ export default async function NewWavePage({ searchParams }: { searchParams: Prom
   ]);
   return (
     <>
-      <PageHeader eyebrow="Olas" title="Nueva ola" description="Elige pedidos pendientes. Las casillas de la mesa se asignan en el orden de la lista." />
+      <PageHeader title="Nueva ola" description="Elige pedidos pendientes. Las casillas de la mesa se asignan en el orden de la lista." />
       <FilterForm>
         <Field label="Buscar"><Input name="q" defaultValue={sp.q} placeholder="Código o cliente" /></Field>
         <Field label="Transporte"><Input name="transporte" defaultValue={sp.transporte} /></Field>
