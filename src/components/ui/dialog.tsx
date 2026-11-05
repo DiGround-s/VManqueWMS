@@ -23,7 +23,7 @@ export function Dialog({ open, onClose, title, children, side, className }: { op
         onClose();
       }}
       className={cn(
-        "border-2 border-border-strong bg-panel text-text p-0 shadow-[0_24px_60px_-12px_rgb(14_21_37/0.45)]",
+        "border-2 border-border-strong bg-panel text-text p-0",
         side ? "ml-auto mr-0 h-dvh max-h-dvh w-full max-w-lg rounded-none border-y-0 border-r-0" : "m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl",
         className,
       )}

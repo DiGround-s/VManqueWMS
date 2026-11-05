@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { LoginForm } from "@/features/auth/login-form";
 import { Wordmark } from "@/components/wordmark";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -20,7 +21,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           {STEPS.map((s, i) => (
             <li key={s} className="flex items-center gap-2 text-sm font-bold">
               <span className="rounded-md border-2 border-rail-muted/40 px-2.5 py-1">{s}</span>
-              {i < STEPS.length - 1 && <span className="text-yellow" aria-hidden>→</span>}
+              {i < STEPS.length - 1 && <ArrowRight className="size-4 text-yellow" aria-hidden />}
             </li>
           ))}
         </ol>
