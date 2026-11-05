@@ -63,7 +63,7 @@ export default async function WaveDetail({ params }: { params: Promise<{ code: s
             <thead><tr><Th>#</Th><Th>Ubicación</Th><Th>SKU</Th><Th>Producto</Th><Th className="text-right">Pedir</Th><Th className="text-right">Recogido</Th><Th>Estado</Th></tr></thead>
             <tbody>
               {wave.tasks.map((t) => (
-                <Tr key={t.id} className={cn(t.status === "SHORT" && "bg-danger-bg/60")}>
+                <Tr key={t.id} className={cn(t.status === "SHORT" && "bg-danger-bg/60", t.status === "DONE" && "text-muted [&_td:not(:last-child)]:line-through [&_td]:decoration-success/70 [&_td]:decoration-2")}>
                   <Td><Mono className="text-muted">{t.sequence}</Mono></Td>
                   <Td><Mono className="font-semibold">{t.location?.code ?? "SIN STOCK"}</Mono></Td>
                   <Td><Mono>{t.product.sku}</Mono></Td>

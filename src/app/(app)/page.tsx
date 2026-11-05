@@ -49,7 +49,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       <section aria-label="Pedidos por etapa">
         <Rack className="md:grid-cols-6">
           {flow.map(({ s, n }) => (
-            <Stat key={s} label={ORDER_STATUS[s].label} value={n} share={n / flowMax} tone={s === "PENDING" && n > 0 ? "danger" : undefined} href={`/pedidos?estado=${s}`} />
+            <Stat key={s} label={ORDER_STATUS[s].label} value={n} share={n / flowMax} tone={s === "PENDING" && n > 0 ? "danger" : undefined} stamp={s === "PENDING" && n > 0 ? `${n} sin ola` : undefined} href={`/pedidos?estado=${s}`} />
           ))}
           <Stat label="Despachados hoy" value={shippedToday} share={shippedToday / flowMax} href="/despacho" />
         </Rack>
@@ -108,7 +108,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                     </Td>
                     <Td><Badge tone={MOVEMENT_TYPE[m.type].tone}>{MOVEMENT_TYPE[m.type].label}</Badge></Td>
                     <Td><Mono className="font-semibold">{m.product.sku}</Mono></Td>
-                    <Td><Mono className="text-muted">{m.fromLocation?.code ?? "·"} → {m.toLocation?.code ?? "·"}</Mono></Td>
+                    <Td><Mono className="text-muted">{m.fromLocation?.code ?? "Ingreso"} → {m.toLocation?.code ?? "Salida"}</Mono></Td>
                     <Td className="text-right"><Mono className="text-base font-bold">{m.qty}</Mono></Td>
                   </Tr>
                 ))}

@@ -6,7 +6,7 @@ import { db } from "@/server/db";
 import { requirePageRole, hasRole } from "@/server/auth/current";
 import { stockSummary } from "@/server/inventory/summary";
 import { PageHeader } from "@/components/ui/page-header";
-import { Card, CardHeader, Stat } from "@/components/ui/card";
+import { CapacityMeter, Card, CardHeader, Stat } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { buttonClass } from "@/components/ui/button";
 import { Table, Td, Th, Tr, Mono } from "@/components/ui/table";
@@ -53,7 +53,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
                     <Td><Link href={`/ubicaciones/${l.location.id}`} className="font-mono font-semibold hover:underline">{l.location.code}</Link></Td>
                     <Td><StatusBadge map={LOCATION_ROLE} value={l.location.role} /></Td>
                     <Td className="text-right"><Mono className="text-lg">{l.qty}</Mono></Td>
-                    <Td className="text-right"><Mono className="text-muted">{l.minQty ?? "—"} / {l.maxQty ?? "—"}</Mono></Td>
+                    <Td className="text-right"><CapacityMeter qty={l.qty} min={l.minQty} max={l.maxQty} /></Td>
                   </Tr>
                 ))}
               </tbody>

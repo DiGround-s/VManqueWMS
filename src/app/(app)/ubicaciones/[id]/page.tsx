@@ -4,7 +4,7 @@ import { Printer } from "lucide-react";
 import { db } from "@/server/db";
 import { requirePageRole, hasRole } from "@/server/auth/current";
 import { PageHeader } from "@/components/ui/page-header";
-import { Card, CardHeader } from "@/components/ui/card";
+import { CapacityMeter, Card, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { buttonClass } from "@/components/ui/button";
 import { Table, Td, Th, Tr, Mono } from "@/components/ui/table";
@@ -53,9 +53,9 @@ export default async function LocationDetail({ params }: { params: Promise<{ id:
                     <Td className="text-right"><Mono className="text-lg font-semibold">{s.qty}</Mono></Td>
                     <Td>
                       {canEdit && loc.role === "PICK" ? (
-                        <SlotLimits locationId={loc.id} productId={s.product.id} minQty={s.minQty} maxQty={s.maxQty} />
+                        <div className="flex flex-wrap items-center gap-3"><CapacityMeter qty={s.qty} min={s.minQty} max={s.maxQty} /><SlotLimits locationId={loc.id} productId={s.product.id} minQty={s.minQty} maxQty={s.maxQty} /></div>
                       ) : (
-                        <Mono className="text-muted">{s.minQty ?? "—"} / {s.maxQty ?? "—"}</Mono>
+                        <CapacityMeter qty={s.qty} min={s.minQty} max={s.maxQty} />
                       )}
                     </Td>
                   </Tr>

@@ -111,7 +111,7 @@ export function Steps({ step, labels }: { step: number; labels: string[] }) {
     <ol className="flex gap-1.5">
       {labels.map((l, i) => (
         <li key={l} aria-current={i + 1 === step ? "step" : undefined} className={cn("flex flex-1 flex-col gap-1.5 text-xs font-bold", i + 1 === step ? "text-text" : "text-muted")}>
-          <span>{i + 1}. {l}</span>
+          <span className={cn(i + 1 < step && "line-through decoration-success decoration-2")}>{i + 1}. {l}</span>
           <span className={cn("h-1.5 rounded-full", i + 1 < step ? "bg-success" : i + 1 === step ? "bg-accent" : "bg-border")} aria-hidden />
         </li>
       ))}

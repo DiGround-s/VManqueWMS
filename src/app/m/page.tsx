@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowDownToLine, ArrowRightLeft, ChevronRight, ClipboardCheck, Grid3x3, PackageCheck, PackagePlus, Search, Truck, Undo2, Waves, type LucideIcon } from "lucide-react";
+import { ArrowDownToLine, ArrowRightLeft, ChevronRight, ClipboardCheck, Grid3x3, PackageCheck, PackagePlus, Truck, Undo2, Waves, type LucideIcon } from "lucide-react";
+import { PhoneHomeScan } from "@/components/phone-home-scan";
 import { db } from "@/server/db";
 import { requirePageRole } from "@/server/auth/current";
 import { cn } from "@/lib/cn";
@@ -36,51 +37,38 @@ export default async function PhoneHome() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-black tracking-tight">Hola, {first}</h1>
-        <p className="text-[15px] text-muted">¿Qué toca hacer ahora?</p>
+        <p className="text-[15px] text-muted">Escanea algo para ver qué es y dónde está, o elige una tarea.</p>
       </div>
-
-      <Link href="/m/consultar" className="flex items-center gap-3 rounded-xl border-2 border-accent bg-accent px-4 py-4 text-accent-ink shadow-[0_6px_16px_-8px_rgb(14_21_37/0.6)] active:brightness-95">
-        <Search className="size-7" aria-hidden />
-        <span className="flex-1">
-          <span className="block text-lg font-black">Consultar</span>
-          <span className="block text-sm opacity-85">Escanea una ubicación, producto o pedido</span>
-        </span>
-        <ChevronRight className="size-6" aria-hidden />
-      </Link>
-
-      <TileGroup title="Salidas" tiles={outbound} />
-      <TileGroup title="Entradas y stock" tiles={stock} />
+      <PhoneHomeScan />
+      <SlotList title="Salidas" tiles={outbound} />
+      <SlotList title="Entradas y stock" tiles={stock} />
     </div>
   );
 }
 
-function TileGroup({ title, tiles }: { title: string; tiles: Tile[] }) {
+/** Tasks as a column of mailroom slots: icon, task, what is waiting, and the count stamped on the right. */
+function SlotList({ title, tiles }: { title: string; tiles: Tile[] }) {
   return (
     <section>
       <h2 className="mb-2 text-sm font-extrabold text-muted">{title}</h2>
-      <div className="grid grid-cols-2 gap-3">
+      <ul className="divide-y-2 divide-border overflow-hidden rounded-xl border-2 border-border bg-panel">
         {tiles.map(({ href, label, icon: Icon, count, hint, hot }) => (
-          <Link
-            key={href}
-            href={href}
-            className={cn(
-              "relative flex min-h-32 flex-col justify-between rounded-xl border-2 bg-panel p-3.5 transition-colors active:bg-panel-2",
-              hot ? "border-danger" : "border-border",
-            )}
-          >
-            <span className={cn("flex size-11 items-center justify-center rounded-lg", hot ? "bg-danger-bg text-danger" : "bg-accent-soft text-accent-strong")}>
-              <Icon className="size-6" aria-hidden />
-            </span>
-            <span>
-              <span className="block text-lg font-black leading-tight">{label}</span>
-              {hint && <span className="block text-xs leading-snug text-muted">{hint}</span>}
-            </span>
-            {count != null && count > 0 && (
-              <span className={cn("postmark absolute right-3 top-3 size-11 rotate-[-10deg] text-lg", hot ? "text-danger" : "text-accent-strong")}>{count}</span>
-            )}
-          </Link>
+          <li key={href}>
+            <Link href={href} className="flex min-h-16 items-center gap-3 px-3.5 py-2.5 transition-colors active:bg-panel-2">
+              <Icon className={cn("size-6 shrink-0", hot ? "text-danger" : "text-accent-strong")} aria-hidden />
+              <span className="min-w-0 flex-1">
+                <span className="block text-lg font-black leading-tight">{label}</span>
+                {hint && <span className="block truncate text-[13px] text-muted">{hint}</span>}
+              </span>
+              {count != null && count > 0 ? (
+                <span className={cn("postmark size-11 shrink-0 rotate-[-10deg] text-lg", hot ? "text-danger" : "text-accent-strong")}>{count}</span>
+              ) : (
+                <ChevronRight className="size-5 shrink-0 text-muted" aria-hidden />
+              )}
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

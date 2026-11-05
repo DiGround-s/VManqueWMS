@@ -32,7 +32,7 @@ export function ScanStamp() {
       <div
         key={stamp.key}
         className={cn(
-          "postmark stamp-in size-24 flex-col gap-1 bg-panel/90 text-[11px] uppercase backdrop-blur-sm",
+          "postmark stamp-in size-24 flex-col gap-1 bg-panel text-[11px] uppercase",
           stamp.ok ? "text-success" : "text-danger",
         )}
       >
