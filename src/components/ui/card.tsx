@@ -33,7 +33,7 @@ export function Stat({ label, value, tone, href, share }: { label: string; value
 /** A row of pigeonholes sharing one frame. */
 export function Rack({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <div className={cn("grid overflow-hidden rounded-lg border-2 border-accent bg-panel [&>*]:border-accent/25 [&>*+*]:border-l-2 max-md:[&>*+*]:border-l-0 max-md:[&>*+*]:border-t-2", className)}>
+    <div className={cn("grid divide-accent/25 overflow-hidden rounded-lg border-2 border-accent bg-panel max-md:divide-y-2 md:divide-x-2", className)}>
       {children}
     </div>
   );

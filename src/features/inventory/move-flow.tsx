@@ -108,10 +108,11 @@ export function MoveFlow({ phone }: { phone?: boolean }) {
 
 export function Steps({ step, labels }: { step: number; labels: string[] }) {
   return (
-    <ol className="flex gap-1">
+    <ol className="flex gap-1.5">
       {labels.map((l, i) => (
-        <li key={l} className={cn("flex-1 rounded-sm border-b-4 pb-1 text-xs font-semibold uppercase tracking-wide", i + 1 < step ? "border-success text-muted" : i + 1 === step ? "border-accent" : "border-border text-muted")}>
-          {i + 1}. {l}
+        <li key={l} aria-current={i + 1 === step ? "step" : undefined} className={cn("flex flex-1 flex-col gap-1.5 text-xs font-bold", i + 1 === step ? "text-text" : "text-muted")}>
+          <span>{i + 1}. {l}</span>
+          <span className={cn("h-1.5 rounded-full", i + 1 < step ? "bg-success" : i + 1 === step ? "bg-accent" : "bg-border")} aria-hidden />
         </li>
       ))}
     </ol>
