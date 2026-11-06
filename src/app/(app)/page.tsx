@@ -11,13 +11,17 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { MOVEMENT_TYPE, ORDER_FLOW, ORDER_STATUS, WAVE_STATUS } from "@/lib/labels";
 import { fmtDateTime, fmtTime } from "@/lib/format";
 import { startOfTodayChile } from "@/lib/format";
+import { channelBreakdown, revenueSummary } from "@/features/sales/service";
+import { ChannelLogo } from "@/features/sales/channel-logo";
+import { CHANNELS, clp } from "@/lib/channels";
+import { ArrowRight } from "lucide-react";
 
 export const metadata = { title: "Inicio" };
 
 export default async function Dashboard({ searchParams }: { searchParams: Promise<{ denied?: string }> }) {
   await requirePageRole();
   const { denied } = await searchParams;
-  const [byStatus, waves, repl, putbacks, movements, shippedToday] = await Promise.all([
+  const [byStatus, waves, repl, putbacks, movements, shippedToday, sales, stores] = await Promise.all([
     db.order.groupBy({ by: ["status"], _count: true }),
     db.wave.findMany({
       where: { status: { in: ["OPEN", "PICKING", "SORTING"] } },
@@ -33,6 +37,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       select: { id: true, type: true, qty: true, createdAt: true, reference: true, product: { select: { sku: true } }, fromLocation: { select: { code: true } }, toLocation: { select: { code: true } } },
     }),
     db.order.count({ where: { shippedAt: { gte: startOfTodayChile() } } }),
+    revenueSummary(),
+    channelBreakdown(),
   ]);
   const count = new Map(byStatus.map((s) => [s.status, s._count]));
   const lowSlots = repl.suggestions.length + repl.uncovered.length;
@@ -54,6 +60,25 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           <Stat label="Despachados hoy" value={shippedToday} share={shippedToday / flowMax} href="/despacho" />
         </Rack>
       </section>
+
+      <Link href="/ventas" className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl bg-accent px-5 py-4 text-accent-ink shadow-card transition-opacity hover:opacity-95">
+        <div>
+          <div className="text-xs font-medium opacity-70">Ventas de hoy · todas las tiendas</div>
+          <div className="text-2xl font-semibold tracking-tight tabular-nums">{clp(sales.today)}</div>
+        </div>
+        <ul className="flex flex-1 flex-wrap gap-x-5 gap-y-2">
+          {stores.map((c) => (
+            <li key={c.channel} className="flex items-center gap-2 text-sm">
+              <ChannelLogo channel={c.channel} size="sm" />
+              <span>
+                <span className="block font-semibold leading-tight">{CHANNELS[c.channel].label}</span>
+                <span className="text-xs opacity-70">{c.today} hoy · {c.open} por preparar</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <span className="inline-flex items-center gap-1 text-sm font-semibold">Ver ventas <ArrowRight className="size-4" aria-hidden /></span>
+      </Link>
 
       {(lowSlots > 0 || putbacks > 0) && (
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-2xl bg-warn-bg px-4 py-3 text-sm text-warn">

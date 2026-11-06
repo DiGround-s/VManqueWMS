@@ -35,6 +35,11 @@
   --selection: #c9eedb;
   --shadow-card: 0 1px 2px rgb(16 24 40 / 0.04), 0 2px 8px rgb(16 24 40 / 0.06);
   --shadow-lift: 0 6px 24px rgb(16 24 40 / 0.12);
+  /* Sales channels (validated categorical slots, fixed order). */
+  --ch-paris: #2a78d6;
+  --ch-direct: #eb6834;
+  --ch-falabella: #1baf7a;
+  --ch-mercadolibre: #eda100;
 }
 
 .dark {
@@ -69,6 +74,10 @@
   --selection: #1f4d36;
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-lift: 0 8px 28px rgb(0 0 0 / 0.5);
+  --ch-paris: #3987e5;
+  --ch-direct: #d95926;
+  --ch-falabella: #199e70;
+  --ch-mercadolibre: #c98500;
 }
 
 @theme inline {

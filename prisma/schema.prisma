@@ -35,6 +35,14 @@ enum OrderSource {
   API
 }
 
+/// Store the order was sold in. The WMS centralizes them all.
+enum SalesChannel {
+  DIRECT
+  MERCADOLIBRE
+  FALABELLA
+  PARIS
+}
+
 enum OrderStatus {
   PENDING
   IN_WAVE
@@ -134,6 +142,8 @@ model Product {
   sku         String   @unique
   name        String
   barcode     String?  @unique
+  /// Sale price in CLP (integer pesos)
+  price       Int      @default(0)
   imageUrl    String?
   description String?
   active      Boolean  @default(true)
@@ -199,6 +209,11 @@ model Order {
   code         String      @unique
   externalRef  String?     @unique
   source       OrderSource @default(MANUAL)
+  channel      SalesChannel @default(DIRECT)
+  /// CLP: products + shipping. commission is the marketplace fee (estimated).
+  total        Int         @default(0)
+  shippingFee  Int         @default(0)
+  commission   Int         @default(0)
   customerName String
   address      String
   commune      String
@@ -224,6 +239,7 @@ model Order {
   @@index([status, carrier])
   @@index([shippedAt])
   @@index([createdAt])
+  @@index([channel, createdAt])
 }
 
 model OrderLine {
@@ -231,6 +247,8 @@ model OrderLine {
   orderId   String
   productId String
   qty       Int
+  /// CLP per unit at the time of the sale
+  unitPrice Int    @default(0)
   pickedQty Int    @default(0)
   sortedQty Int    @default(0)
   packedQty Int    @default(0)

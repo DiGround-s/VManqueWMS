@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  ArrowDownToLine, Boxes, ClipboardList, Grid3x3, KeyRound, LayoutDashboard, Map as MapIcon, MapPin, Package, PackageCheck, Settings, Truck, Users, Waves,
+  ArrowDownToLine, Boxes, ClipboardList, Grid3x3, KeyRound, LayoutDashboard, Map as MapIcon, MapPin, Package, PackageCheck, Settings, Store, Truck, Users, Waves,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-const ICONS = { LayoutDashboard, ClipboardList, Waves, Grid3x3, PackageCheck, Truck, Boxes, Map: MapIcon, MapPin, Package, ArrowDownToLine, Users, KeyRound, Settings };
+const ICONS = { LayoutDashboard, ClipboardList, Waves, Grid3x3, PackageCheck, Truck, Boxes, Map: MapIcon, MapPin, Package, ArrowDownToLine, Users, KeyRound, Settings, Store };
 export type NavItem = { href: string; label: string; icon: keyof typeof ICONS };
 
 export function NavLinks({ groups }: { groups: { title: string; items: NavItem[] }[] }) {

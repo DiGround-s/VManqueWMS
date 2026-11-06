@@ -14,18 +14,23 @@ import { Pagination, parsePage } from "@/components/ui/pagination";
 import { FilterForm } from "@/components/filter-form";
 import { ORDER_STATUS } from "@/lib/labels";
 import { fmtDateTime } from "@/lib/format";
+import { CHANNELS, CHANNEL_ORDER, clp, isChannel } from "@/lib/channels";
+import { ChannelTag } from "@/features/sales/channel-logo";
 
 export const metadata = { title: "Pedidos" };
 const PAGE_SIZE = 50;
 
-export default async function OrdersPage({ searchParams }: { searchParams: Promise<{ estado?: string; q?: string; page?: string }> }) {
+export default async function OrdersPage({ searchParams }: { searchParams: Promise<{ estado?: string; q?: string; page?: string; canal?: string }> }) {
   const user = await requirePageRole();
   const sp = await searchParams;
   const page = parsePage(sp.page);
   const status = sp.estado && sp.estado in ORDER_STATUS ? (sp.estado as OrderStatus) : undefined;
   const q = sp.q?.trim();
+  const canal = sp.canal?.toUpperCase();
+  const channel = isChannel(canal) ? canal : undefined;
   const where: Prisma.OrderWhereInput = {
     ...(status ? { status } : {}),
+    ...(channel ? { channel } : {}),
     ...(q
       ? { OR: [{ code: { contains: q, mode: "insensitive" } }, { externalRef: { contains: q, mode: "insensitive" } }, { customerName: { contains: q, mode: "insensitive" } }] }
       : {}),
@@ -36,7 +41,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
       orderBy: [{ createdAt: "desc" }],
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
-      select: { id: true, code: true, externalRef: true, customerName: true, commune: true, carrier: true, status: true, priority: true, createdAt: true, _count: { select: { lines: true } } },
+      select: { id: true, code: true, externalRef: true, customerName: true, commune: true, carrier: true, status: true, priority: true, createdAt: true, channel: true, total: true, _count: { select: { lines: true } } },
     }),
     db.order.count({ where }),
   ]);
@@ -61,6 +66,12 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
         <Field label="Buscar" className="min-w-60 flex-1">
           <Input name="q" defaultValue={q} placeholder="Código, referencia o cliente" />
         </Field>
+        <Field label="Tienda">
+          <Select name="canal" defaultValue={channel?.toLowerCase() ?? ""}>
+            <option value="">Todas</option>
+            {CHANNEL_ORDER.map((c) => <option key={c} value={c.toLowerCase()}>{CHANNELS[c].label}</option>)}
+          </Select>
+        </Field>
         <Field label="Estado">
           <Select name="estado" defaultValue={status ?? ""}>
             <option value="">Todos</option>
@@ -74,7 +85,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
         ) : (
           <Table>
             <thead>
-              <tr><Th>Pedido</Th><Th>Referencia</Th><Th>Cliente</Th><Th>Comuna</Th><Th>Transporte</Th><Th className="text-right">Líneas</Th><Th>Estado</Th><Th>Ingreso</Th></tr>
+              <tr><Th>Pedido</Th><Th>Tienda</Th><Th>Referencia</Th><Th>Cliente</Th><Th>Comuna</Th><Th>Transporte</Th><Th className="text-right">Líneas</Th><Th className="text-right">Total</Th><Th>Estado</Th><Th>Ingreso</Th></tr>
             </thead>
             <tbody>
               {orders.map((o) => (
@@ -83,11 +94,13 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
                     <Link href={`/pedidos/${o.code}`} className="font-mono font-semibold hover:underline">{o.code}</Link>
                     {o.priority > 0 && <span className="ml-1.5 font-mono text-xs text-accent-strong" title="Prioridad">P{o.priority}</span>}
                   </Td>
+                  <Td><ChannelTag channel={o.channel} /></Td>
                   <Td><Mono className="text-muted">{o.externalRef ?? "—"}</Mono></Td>
                   <Td>{o.customerName}</Td>
                   <Td className="text-muted">{o.commune}</Td>
                   <Td className="text-muted">{o.carrier ?? "—"}</Td>
                   <Td className="text-right"><Mono>{o._count.lines}</Mono></Td>
+                  <Td className="whitespace-nowrap text-right tabular-nums">{clp(o.total)}</Td>
                   <Td><StatusBadge map={ORDER_STATUS} value={o.status} /></Td>
                   <Td className="whitespace-nowrap text-muted">{fmtDateTime(o.createdAt)}</Td>
                 </Tr>
@@ -95,7 +108,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
             </tbody>
           </Table>
         )}
-        <Pagination page={page} pageSize={PAGE_SIZE} total={total} params={{ estado: status, q }} basePath="/pedidos" />
+        <Pagination page={page} pageSize={PAGE_SIZE} total={total} params={{ estado: status, q, canal: channel?.toLowerCase() }} basePath="/pedidos" />
       </Card>
     </>
   );

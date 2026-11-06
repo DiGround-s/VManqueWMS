@@ -4,6 +4,7 @@ import { db, Prisma, type Tx } from "@/server/db";
 import { nextCode } from "@/server/codes";
 import { UserError } from "@/server/errors";
 import type { OrderInput } from "./schema";
+import { CHANNELS } from "@/lib/channels";
 
 export async function logEvent(tx: Tx, orderId: string, from: OrderStatus | null, to: OrderStatus | null, message: string, userId?: string | null) {
   await tx.orderEvent.create({ data: { orderId, fromStatus: from, toStatus: to, message, userId: userId ?? null } });
@@ -12,7 +13,7 @@ export async function logEvent(tx: Tx, orderId: string, from: OrderStatus | null
 /** Maps SKUs to active products in one query; throws listing every unknown SKU. */
 export async function productsBySku(tx: Tx | typeof db, skus: string[]) {
   const unique = [...new Set(skus)];
-  const products = await tx.product.findMany({ where: { sku: { in: unique } }, select: { id: true, sku: true, active: true } });
+  const products = await tx.product.findMany({ where: { sku: { in: unique } }, select: { id: true, sku: true, active: true, price: true } });
   const map = new Map(products.map((p) => [p.sku, p]));
   const missing = unique.filter((s) => !map.get(s)?.active);
   if (missing.length) throw new UserError(`SKU inexistente o inactivo: ${missing.slice(0, 10).join(", ")}`);
@@ -25,22 +26,26 @@ export async function insertOrder(
   input: OrderInput,
   source: OrderSource,
   userId?: string | null,
-  known?: Map<string, { id: string }>,
+  known?: Map<string, { id: string; price: number }>,
 ) {
   const products = known ?? (await productsBySku(tx, input.lines.map((l) => l.sku)));
-  const merged = new Map<string, number>();
+  const merged = new Map<string, { qty: number; unitPrice: number }>();
   for (const l of input.lines) {
-    const id = products.get(l.sku)!.id;
-    merged.set(id, (merged.get(id) ?? 0) + l.qty);
+    const p = products.get(l.sku)!;
+    const m = merged.get(p.id);
+    merged.set(p.id, { qty: (m?.qty ?? 0) + l.qty, unitPrice: p.price });
   }
+  const subtotal = [...merged.values()].reduce((n, l) => n + l.qty * l.unitPrice, 0);
+  const total = subtotal + input.shippingFee;
+  const commission = Math.round(subtotal * CHANNELS[input.channel].rate);
   const code = await nextCode(tx, "order");
   const { lines: _lines, ...head } = input;
   void _lines;
   const order = await tx.order.create({
-    data: { ...head, code, source, lines: { create: [...merged].map(([productId, qty]) => ({ productId, qty })) } },
+    data: { ...head, code, source, total, commission, lines: { create: [...merged].map(([productId, l]) => ({ productId, ...l })) } },
     select: { id: true, code: true },
   });
-  await logEvent(tx, order.id, null, "PENDING", `Pedido creado (${sourceLabel(source)})`, userId);
+  await logEvent(tx, order.id, null, "PENDING", `Pedido creado (${sourceLabel(source)}${input.channel !== "DIRECT" ? ` · ${CHANNELS[input.channel].label}` : ""})`, userId);
   return order;
 }
 

@@ -12,6 +12,8 @@ import { OrderActions } from "@/features/orders/order-actions";
 import { ORDER_FLOW, ORDER_STATUS } from "@/lib/labels";
 import { fmtDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import { CHANNELS, clp } from "@/lib/channels";
+import { ChannelLogo } from "@/features/sales/channel-logo";
 
 export const metadata = { title: "Pedido" };
 
@@ -36,8 +38,8 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
   return (
     <>
       <PageHeader
-        title={<span className="font-mono">{order.code}</span>}
-        description={[`Pedido ${order.source === "MANUAL" ? "manual" : order.source === "IMPORT" ? "importado" : "por API"}`, order.externalRef && `referencia ${order.externalRef}`].filter(Boolean).join(" · ")}
+        title={<span className="flex items-center gap-3"><ChannelLogo channel={order.channel} /><span className="font-mono">{order.code}</span></span>}
+        description={[`Pedido de ${CHANNELS[order.channel].label}`, order.source === "MANUAL" ? "ingresado a mano" : order.source === "IMPORT" ? "importado" : "recibido por API", order.externalRef && `referencia ${order.externalRef}`].filter(Boolean).join(" · ")}
         actions={
           <>
             <StatusBadge map={ORDER_STATUS} value={order.status} />
@@ -54,7 +56,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
       {order.status !== "CANCELLED" && (
         <ol className="mb-5 grid grid-cols-3 gap-1 sm:grid-cols-6">
           {ORDER_FLOW.map((s, i) => (
-            <li key={s} className={cn("rounded-lg border px-2 py-1.5", i <= stageIdx ? "border-accent bg-warn-bg" : "border-border bg-panel")}>
+            <li key={s} className={cn("rounded-xl px-3 py-2", i <= stageIdx ? "bg-brand-soft text-success" : "bg-panel ring-1 ring-inset ring-border")}>
               <div className="label">{ORDER_STATUS[s].label}</div>
               <div className="font-mono text-xs">{stamps[s] ? fmtDateTime(stamps[s]) : i <= stageIdx ? "✓" : "—"}</div>
             </li>
@@ -67,7 +69,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
           <Card>
             <CardHeader title="Líneas" />
             <Table>
-              <thead><tr><Th>SKU</Th><Th>Producto</Th><Th className="text-right">Pedido</Th><Th className="text-right">Recogido</Th><Th className="text-right">Separado</Th><Th className="text-right">Empacado</Th></tr></thead>
+              <thead><tr><Th>SKU</Th><Th>Producto</Th><Th className="text-right">Pedido</Th><Th className="text-right">Recogido</Th><Th className="text-right">Separado</Th><Th className="text-right">Empacado</Th><Th className="text-right">Precio</Th></tr></thead>
               <tbody>
                 {order.lines.map((l) => (
                   <Tr key={l.id}>
@@ -77,6 +79,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
                     {[l.pickedQty, l.sortedQty, l.packedQty].map((v, i) => (
                       <Td key={i} className={cn("text-right", v >= l.qty ? "text-success" : v > 0 ? "text-accent-strong" : "text-muted")}><Mono>{v}</Mono></Td>
                     ))}
+                    <Td className="whitespace-nowrap text-right tabular-nums">{clp(l.unitPrice * l.qty)}</Td>
                   </Tr>
                 ))}
               </tbody>
@@ -94,6 +97,16 @@ export default async function OrderDetail({ params }: { params: Promise<{ code: 
           )}
         </div>
         <div className="space-y-5">
+          <Card>
+            <CardHeader title="Venta" />
+            <dl className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-1.5 px-5 pb-4 text-sm tabular-nums">
+              <dt className="text-muted">Productos</dt><dd className="text-right">{clp(order.total - order.shippingFee)}</dd>
+              <dt className="text-muted">Envío</dt><dd className="text-right">{clp(order.shippingFee)}</dd>
+              <dt className="font-semibold">Total cobrado</dt><dd className="text-right font-semibold">{clp(order.total)}</dd>
+              <dt className="text-muted">Comisión {CHANNELS[order.channel].label} ({Math.round(CHANNELS[order.channel].rate * 100)}%)</dt><dd className="text-right text-muted">−{clp(order.commission)}</dd>
+              <dt className="border-t border-border pt-1.5 font-semibold">Ingreso neto</dt><dd className="border-t border-border pt-1.5 text-right font-semibold text-success">{clp(order.total - order.commission)}</dd>
+            </dl>
+          </Card>
           <Card>
             <CardHeader title="Despacho" />
             <dl className="grid grid-cols-[110px_1fr] gap-x-3 gap-y-1.5 p-4 text-sm">

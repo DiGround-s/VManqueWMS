@@ -14,7 +14,7 @@ import { getCompanyName } from "@/features/settings/service";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const [user, company] = await Promise.all([requirePageRole("OPERATOR"), getCompanyName()]);
   const groups: { title: string; items: NavItem[] }[] = [
-    { title: "General", items: [{ href: "/", label: "Inicio", icon: "LayoutDashboard" }] },
+    { title: "General", items: [{ href: "/", label: "Inicio", icon: "LayoutDashboard" }, { href: "/ventas", label: "Ventas y canales", icon: "Store" }] },
     {
       title: "Salidas",
       items: [
