@@ -33,7 +33,8 @@ export function SortingStation({ waves, selected, basePath, phone }: { waves: { 
       onOk: (r: SortScanResult) => {
         if (r.kind === "slot") {
           show({ tone: "ok", big: `CASILLA ${r.slot}`, line1: `${r.orderCode} · ${r.sku}`, line2: r.orderComplete ? "PEDIDO COMPLETO ✓ — pásalo a empaque" : `${r.product} · faltan ${r.remainingInOrder} u.` });
-          if (r.waveDone) setTimeout(() => router.refresh(), 800);
+          // Keep the last slot on screen long enough to read before the station moves on.
+          if (r.waveDone) setTimeout(() => router.refresh(), 3500);
         } else if (r.kind === "complete") show({ tone: "warn", big: "YA SEPARADO", line1: r.sku, line2: "Todas las unidades de este producto ya están en su casilla" });
         else if (r.kind === "not_picked") show({ tone: "warn", big: "SIN RECOGER", line1: r.sku, line2: "La ola no registra esta unidad como recogida" });
         else show({ tone: "bad", big: "NO ES DE ESTA OLA", line1: r.sku, line2: r.product });
