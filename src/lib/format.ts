@@ -1,4 +1,4 @@
-const dt = new Intl.DateTimeFormat("es-CL", { dateStyle: "short", timeStyle: "short", timeZone: "America/Santiago" });
+const dt = new Intl.DateTimeFormat("es-CL", { dateStyle: "short", timeStyle: "short", hourCycle: "h23", timeZone: "America/Santiago" });
 const d = new Intl.DateTimeFormat("es-CL", { dateStyle: "medium", timeZone: "America/Santiago" });
 const t = new Intl.DateTimeFormat("es-CL", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "America/Santiago" });
 const n = new Intl.NumberFormat("es-CL");
