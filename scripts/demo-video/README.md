@@ -31,3 +31,12 @@ ffmpeg -f concat -safe 0 -i list.txt -vf "fps=30,format=yuv420p" -c:v libx264 -c
 ```
 
 La grabación usa el pedido `PED-006344` (Mercado Libre, olla de greda en `A-02-06-03`). Si cambias el seed, ajusta las constantes al inicio de `record.mjs`.
+
+## Versión narrada
+
+`narrate.py` lee las frases con la voz neural `es-CL-CatalinaNeural` (paquete `edge-tts`, usa el servicio de voz de Microsoft) y las ubica en el segundo de cada escena. Si una frase no cabe, la acelera hasta +22 %. El video no se vuelve a codificar: el resultado es `video/VManque-WMS-demo-narrado.mp4`, con la imagen intacta y audio AAC estéreo a 48 kHz.
+
+```bash
+pip install edge-tts
+python narrate.py
+```
