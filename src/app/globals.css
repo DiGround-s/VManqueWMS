@@ -111,6 +111,11 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Keep focused or scrolled-to controls clear of the sticky header. */
+html {
+  scroll-padding-top: 7rem;
+}
+
 html,
 body {
   background: var(--surface);
