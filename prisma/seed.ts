@@ -2,6 +2,7 @@
 import { PrismaClient, type LocationRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { locationCode, locationSortKey } from "../src/server/domain/locations";
+import { DESCRIPTIONS } from "./product-descriptions";
 
 const db = new PrismaClient();
 
@@ -17,20 +18,20 @@ function ean13(base12: string) {
 }
 
 const PRODUCTS = [
-  "Termo acero inoxidable 1 L", "Mate de calabaza tallado", "Bombilla de alpaca", "Yerba mate 1 kg", "MerkÃ©n ahumado 100 g",
-  "Sal de mar de CÃ¡huil 500 g", "Miel de ulmo 500 g", "Mermelada de murta 250 g", "Huesillos secos 500 g", "Mote de trigo 1 kg",
-  "Harina tostada 500 g", "TÃ© de boldo 20 bolsitas", "Aceite de rosa mosqueta 30 ml", "JabÃ³n de rosa mosqueta", "Alfajores de manjar caja 12",
+  "Termo acero inoxidable 1 L", "Mate de calabaza tallado", "Bombilla de alpaca", "Yerba mate 1 kg", "Merkén ahumado 100 g",
+  "Sal de mar de Cáhuil 500 g", "Miel de ulmo 500 g", "Mermelada de murta 250 g", "Huesillos secos 500 g", "Mote de trigo 1 kg",
+  "Harina tostada 500 g", "Té de boldo 20 bolsitas", "Aceite de rosa mosqueta 30 ml", "Jabón de rosa mosqueta", "Alfajores de manjar caja 12",
   "Chocolate con maqui 100 g", "Calcetines de lana chilota", "Gorro de lana tejido", "Manta de lana 1,5 plazas", "Poncho de lana cruda",
-  "Olla de greda de Pomaire", "Paila de greda individual", "Canasto de mimbre mediano", "Tabla de picar de raulÃ­", "Mortero de piedra",
-  "Cuchillo de campo artesanal", "Individuales de totora (set 4)", "Vela de cera de abeja", "Aceite de oliva extra virgen 500 ml", "CafÃ© de grano tostado 250 g",
+  "Olla de greda de Pomaire", "Paila de greda individual", "Canasto de mimbre mediano", "Tabla de picar de raulí", "Mortero de piedra",
+  "Cuchillo de campo artesanal", "Individuales de totora (set 4)", "Vela de cera de abeja", "Aceite de oliva extra virgen 500 ml", "Café de grano tostado 250 g",
 ];
 
 const CUSTOMERS = [
-  "Camila Rojas", "BenjamÃ­n Soto", "Valentina MuÃ±oz", "MatÃ­as GonzÃ¡lez", "Antonia DÃ­az", "JoaquÃ­n PÃ©rez", "Isidora Contreras", "TomÃ¡s Silva",
-  "Florencia Morales", "Vicente Araya", "Martina Fuentes", "AgustÃ­n Castillo", "Catalina Espinoza", "Maximiliano Tapia", "Josefa Reyes",
+  "Camila Rojas", "Benjamín Soto", "Valentina Muñoz", "Matías González", "Antonia Díaz", "Joaquín Pérez", "Isidora Contreras", "Tomás Silva",
+  "Florencia Morales", "Vicente Araya", "Martina Fuentes", "Agustín Castillo", "Catalina Espinoza", "Maximiliano Tapia", "Josefa Reyes",
 ];
-const COMMUNES = ["Providencia", "Ã‘uÃ±oa", "Las Condes", "MaipÃº", "Puente Alto", "La Florida", "Santiago", "ViÃ±a del Mar", "ValparaÃ­so", "ConcepciÃ³n", "Temuco", "Rancagua"];
-const STREETS = ["Av. IrarrÃ¡zaval", "Av. Providencia", "Los Leones", "Av. Grecia", "Pedro de Valdivia", "Av. Libertad", "Calle O'Higgins", "Av. Alemania"];
+const COMMUNES = ["Providencia", "Ñuñoa", "Las Condes", "Maipú", "Puente Alto", "La Florida", "Santiago", "Viña del Mar", "Valparaíso", "Concepción", "Temuco", "Rancagua"];
+const STREETS = ["Av. Irarrázaval", "Av. Providencia", "Los Leones", "Av. Grecia", "Pedro de Valdivia", "Av. Libertad", "Calle O'Higgins", "Av. Alemania"];
 const CARRIERS = ["Starken", "Chilexpress", "Blue Express", "Retiro en tienda"];
 
 async function main() {
@@ -40,7 +41,7 @@ async function main() {
     return;
   }
   if (users > 0) {
-    console.log("SEED_RESET=1: borrando datosâ€¦");
+    console.log("SEED_RESET=1: borrando datos…");
     await db.$transaction([
       db.stockMovement.deleteMany(), db.putbackTask.deleteMany(), db.pickTask.deleteMany(), db.waveOrder.deleteMany(), db.wave.deleteMany(),
       db.orderEvent.deleteMany(), db.orderLine.deleteMany(), db.order.deleteMany(), db.receptionLine.deleteMany(), db.reception.deleteMany(),
@@ -56,7 +57,7 @@ async function main() {
   const admin = await db.user.create({ data: { email: "admin@vmanque.cl", name: "Administrador", role: "ADMIN", passwordHash: adminHash } });
   await db.user.createMany({
     data: [
-      { email: "supervisor@vmanque.cl", name: "SofÃ­a Supervisora", role: "SUPERVISOR", passwordHash: supHash },
+      { email: "supervisor@vmanque.cl", name: "Sofía Supervisora", role: "SUPERVISOR", passwordHash: supHash },
       { email: "operador@vmanque.cl", name: "Pedro Operador", role: "OPERATOR", passwordHash: opHash },
     ],
   });
@@ -64,7 +65,7 @@ async function main() {
 
   const wh = await db.warehouse.create({ data: { code: "BC", name: "Bodega Central" } });
 
-  // Zone A: picking (2 aisles Ã— 6 racks Ã— 3 levels). Zone B: reserve (1 aisle Ã— 6 racks Ã— 4 levels). One dock.
+  // Zone A: picking (2 aisles × 6 racks × 3 levels). Zone B: reserve (1 aisle × 6 racks × 4 levels). One dock.
   const locs: { code: string; zone: string; aisle: number | null; rack: number | null; level: number | null; role: LocationRole; sortKey: number }[] = [];
   for (let a = 1; a <= 2; a++) for (let r = 1; r <= 6; r++) for (let l = 1; l <= 3; l++)
     locs.push({ code: locationCode("A", a, r, l), zone: "A", aisle: a, rack: r, level: l, role: "PICK", sortKey: locationSortKey("A", a, r, l) });
@@ -80,7 +81,7 @@ async function main() {
   await db.product.createMany({
     data: PRODUCTS.map((name, i) => {
       const n = String(i + 1).padStart(4, "0");
-      return { sku: `VM-${n}`, name, barcode: ean13(`780${String(1000000 + i * 37).padStart(9, "0")}`), imageUrl: `/products/photos/vm-${n}.jpg` };
+      return { sku: `VM-${n}`, name, barcode: ean13(`780${String(1000000 + i * 37).padStart(9, "0")}`), imageUrl: `/products/photos/vm-${n}.jpg`, description: DESCRIPTIONS[i] };
     }),
   });
   const products = await db.product.findMany({ orderBy: { sku: "asc" } });
@@ -120,13 +121,13 @@ async function main() {
         carrier: pick(CARRIERS),
         priority: n < 2 ? 5 : 0,
         lines: { create: [...chosen].map((i) => ({ productId: products[i].id, qty: n === 0 && i === 7 ? 30 : int(1, 3) })) },
-        events: { create: { toStatus: "PENDING", message: "Pedido creado (importaciÃ³n)", userId: admin.id } },
+        events: { create: { toStatus: "PENDING", message: "Pedido creado (importación)", userId: admin.id } },
       },
     });
   }
 
   console.log("\nSemilla lista: 3 usuarios, 1 bodega, %d ubicaciones, %d productos, 15 pedidos pendientes.", locations.length, products.length);
-  console.log("  admin@vmanque.cl / admin1234   (Administrador â€” cambia la contraseÃ±a)");
+  console.log("  admin@vmanque.cl / admin1234   (Administrador — cambia la contraseña)");
   console.log("  supervisor@vmanque.cl / super1234   (Supervisor)");
   console.log("  operador@vmanque.cl / opera1234   (Operador)\n");
 }
