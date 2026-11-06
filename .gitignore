@@ -18,3 +18,4 @@ __pycache__/
 
 # Demo video (regenerable with scripts/demo-video)
 video/*.mp4
+video/muestras-voz/

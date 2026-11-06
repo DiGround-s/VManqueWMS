@@ -40,3 +40,14 @@ La grabación usa el pedido `PED-006344` (Mercado Libre, olla de greda en `A-02-
 pip install edge-tts
 python narrate.py
 ```
+
+## Voz más natural (v2) y diseño B
+
+- `narrate2.py narracion-a.json` vuelve a narrar el video original con la voz `en-US-BrianMultilingualNeural`, una voz conversacional de Microsoft que habla español con naturalidad. Lee a velocidad normal y, si una frase no cabe en su escena, alarga esa escena congelando el último cuadro. Resultado: `video/VManque-WMS-demo-narrado-v2.mp4`.
+- Diseño B: estilo cinematográfico oscuro, con la app en modo oscuro dentro de una ventana de navegador que muestra la URL, el teléfono a la derecha, tarjetas de capítulo y subtítulos tipo «lower third». La narración va primero y la grabación espera a que termine cada frase, así que no hay cuadros congelados.
+
+```bash
+python voice-b.py      # genera voice-b/*.mp3 y lines-b.json
+node record-b.mjs      # graba frames-b/ + cuts-b.json + speech-b.json
+node build-b.mjs       # video/VManque-WMS-demo-B-narrado.mp4
+```

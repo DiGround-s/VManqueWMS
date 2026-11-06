@@ -1,0 +1,33 @@
+{
+  "video": "C:/Users/power/OneDrive/Escritorio/VManqueWMS/video/VManque-WMS-demo.mp4",
+  "out": "C:/Users/power/OneDrive/Escritorio/VManqueWMS/video/VManque-WMS-demo-narrado-v2.mp4",
+  "title": "VManque WMS - Demo narrada",
+  "voice": "en-US-BrianMultilingualNeural",
+  "total": 144.8,
+  "lines": [
+    [0.4, "Les presento VManque WMS: gestión de bodegas multicanal, conectada y con IoT."],
+    [5.6, "VManque reúne, en un solo lugar, los pedidos de Mercado Libre, Falabella, Paris y la tienda propia."],
+    [12.5, "En este panel se ven en vivo los ingresos del día, del mes y del año, separados por tienda."],
+    [19.1, "Cada tienda le envía sus pedidos al servidor mediante un webhook seguro. Y aquí, justo ahora, llega uno nuevo."],
+    [26.3, "Veamos cómo viaja la información. La red se divide en VLAN: servidores, Wi-Fi de bodega e IoT."],
+    [31.7, "Primero, el pedido llega desde Internet por HTTPS, y el firewall sólo lo deja pasar hacia el servidor, que lo guarda en la base de datos."],
+    [39.2, "Después, cuando el operador escanea con su teléfono, la lectura viaja por Wi-Fi hasta el servidor, que la valida antes de descontar el stock."],
+    [46.6, "Y para guiarlo, el servidor publica un mensaje MQTT; el ESP32 lo recibe y enciende la tira LED de la estantería."],
+    [52.7, "Todo esto viaja cifrado, con sesiones firmadas, permisos por rol y redes aisladas entre sí."],
+    [58.1, "Ahora, en la oficina, se agrupan pedidos en una ola. Tomemos uno de Mercado Libre: una olla de greda."],
+    [65.1, "El sistema reserva el stock y ordena el recorrido por pasillo y nivel."],
+    [68.9, "El operador toma la ola desde su teléfono."],
+    [73.2, "En ese momento, el ESP32 recibe la orden y enciende el LED de la ubicación, para que sepa exactamente a dónde ir."],
+    [78.8, "Con la cámara, escanea el código QR de la ubicación,"],
+    [83.0, "y luego el código de barras del producto. El sistema confirma que es el correcto."],
+    [87.9, "Al confirmar, el LED se apaga y el stock se descuenta al instante."],
+    [91.2, "En la mesa de separación, cada producto escaneado le indica al operador en qué casilla va su pedido."],
+    [99.5, "Al empacar, se verifica el pedido producto por producto, y se imprime la etiqueta de envío."],
+    [107.9, "Y al despachar, basta escanear la etiqueta del bulto para entregarlo al transporte."],
+    [113.9, "Así, cada pedido queda trazado de principio a fin, con su comisión y su ingreso neto."],
+    [122.6, "En el mapa 3D, al buscar un producto, se encienden los LED de todas sus ubicaciones."],
+    [129.3, "Y el monitor serie muestra lo mismo que un ESP32 real: Wi-Fi, mensajes MQTT y LED encendidos."],
+    [135.3, "En resumen, el proyecto aplica las competencias del perfil de egreso de Ingeniería en Conectividad y Redes."],
+    [141.8, "Muchas gracias."]
+  ]
+}
