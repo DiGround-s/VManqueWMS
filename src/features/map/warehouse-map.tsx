@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
-import { Lightbulb, Loader2, Search, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ProductThumb } from "@/components/product-thumb";
 import { cn } from "@/lib/cn";
 import { layoutWarehouse } from "./layout";
 import type { SlotState, SlotView } from "./scene";
 import { LocationPanel } from "./location-panel";
+import { Esp32Sim } from "./esp32-sim";
+import { pixelsFor } from "./led-mapping";
 
 const WarehouseScene = dynamic(() => import("./scene").then((m) => m.WarehouseScene), {
   ssr: false,
@@ -99,6 +101,7 @@ export function WarehouseMap({ locations, products, canAdjust, focusSku, focusLo
     return m;
   }, [locations, filter, productId, productById, ledOn, selectedId]);
 
+  const ledRows = useMemo(() => [...new Set(locations.map((l) => pixelsFor(l.code)?.strip).filter((s): s is string => !!s))].sort(), [locations]);
   const litCodes = useMemo(() => [...slots.values()].filter((s) => s.led).map((s) => s.code), [slots]);
 
   const stats = useMemo(() => {
@@ -200,69 +203,11 @@ export function WarehouseMap({ locations, products, canAdjust, focusSku, focusLo
           </div>
         </Card>
 
-        <LedController enabled={ledOn} onToggle={() => setLedOn((v) => !v)} lit={litCodes} product={focusProduct?.name} />
+        <Esp32Sim rows={ledRows} enabled={ledOn} onToggle={() => setLedOn((v) => !v)} lit={litCodes} product={focusProduct?.name} />
       </div>
 
       <LocationPanel location={selected} productById={productById} locations={locations} canAdjust={canAdjust} onClose={() => setSelectedId(null)} onPickProduct={(id) => setProductId(id)} />
     </div>
-  );
-}
-
-type LedMsg = { t: string; topic: string; payload: string; on: boolean };
-
-/**
- * Simulated pick-to-light controller. Shows the MQTT messages a real ESP32/Arduino on the
- * warehouse Wi-Fi would receive: one topic per location, ON for lit shelves and OFF when they go dark.
- */
-function LedController({ enabled, onToggle, lit, product }: { enabled: boolean; onToggle: () => void; lit: string[]; product?: string }) {
-  const [log, setLog] = useState<LedMsg[]>([]);
-  const prev = useRef<string[]>([]);
-  const key = lit.join(",");
-
-  useEffect(() => {
-    const now = lit;
-    const before = prev.current;
-    const t = new Date().toLocaleTimeString("es-CL", { hourCycle: "h23" });
-    const msgs: LedMsg[] = [
-      ...before.filter((c) => !now.includes(c)).map((c) => ({ t, topic: `vmanque/bc/led/${c}`, payload: `{"on":0}`, on: false })),
-      ...now.filter((c) => !before.includes(c)).map((c) => ({ t, topic: `vmanque/bc/led/${c}`, payload: `{"on":1,"color":"green","blink":1}`, on: true })),
-    ];
-    prev.current = now;
-    if (msgs.length) setLog((l) => [...msgs.reverse(), ...l].slice(0, 8));
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- `key` captures the list contents
-  }, [key]);
-
-  return (
-    <Card className="p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className={cn("flex size-10 items-center justify-center rounded-2xl", enabled && lit.length ? "bg-brand text-brand-ink shadow-[0_0_18px_#22ff88]" : "bg-panel-2 text-muted")}>
-            <Lightbulb className="size-5" aria-hidden />
-          </span>
-          <div>
-            <div className="font-semibold">Pick-to-light <span className="ml-1 rounded-full bg-warn-bg px-2 py-0.5 text-[11px] font-semibold text-warn">simulado</span></div>
-            <div className="text-sm text-muted">
-              {!enabled ? "Apagado" : lit.length ? `Encendido en ${lit.length === 1 ? lit[0] : `${lit.length} ubicaciones`}${product ? ` · ${product}` : ""}` : "Busca un producto o toca una casilla para encender su LED"}
-            </div>
-          </div>
-        </div>
-        <button type="button" onClick={onToggle} aria-pressed={enabled} className={cn("h-9 rounded-full px-4 text-xs font-semibold", enabled ? "bg-accent text-accent-ink" : "bg-panel-2 ring-1 ring-inset ring-border")}>
-          {enabled ? "Apagar LEDs" : "Encender LEDs"}
-        </button>
-      </div>
-      <div className="mt-3 rounded-2xl bg-[#0d1117] p-3 font-mono text-[11px] leading-relaxed text-[#c9d1d9]">
-        <div className="mb-1 text-[#8b949e]">MQTT → broker 192.168.1.10:1883 · controlador ESP32 (Wi-Fi)</div>
-        {log.length === 0 ? (
-          <div className="text-[#8b949e]">Esperando comandos…</div>
-        ) : (
-          log.map((m, i) => (
-            <div key={`${m.t}${m.topic}${i}`} className="truncate">
-              <span className="text-[#8b949e]">{m.t}</span> <span className={m.on ? "text-[#3fb950]" : "text-[#f85149]"}>PUB</span> {m.topic} <span className="text-[#d2a8ff]">{m.payload}</span>
-            </div>
-          ))
-        )}
-      </div>
-    </Card>
   );
 }
 

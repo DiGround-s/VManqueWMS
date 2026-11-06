@@ -185,3 +185,8 @@ dialog::backdrop {
 @media print {
   .no-print { display: none !important; }
 }
+
+/* Simulated WS2812B pixels (pick-to-light). */
+.led-px { box-shadow: 0 0 6px 1px #22ff88; animation: led-blink 0.9s ease-in-out infinite; }
+@keyframes led-blink { 50% { opacity: 0.35; box-shadow: none; } }
+@media (prefers-reduced-motion: reduce) { .led-px { animation: none; } }
