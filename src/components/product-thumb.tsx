@@ -11,7 +11,7 @@ export function ProductThumb({ src, size = "sm", className }: { src: string | nu
         <Package className={size === "lg" ? "size-9" : "size-5"} />
       </div>
     );
-  // eslint-disable-next-line @next/next/no-img-element -- product URLs can be arbitrary external images
   // Catalog-style: the whole product on white, like a store listing.
+  // eslint-disable-next-line @next/next/no-img-element -- product URLs can be arbitrary external images
   return <img src={src} alt="" loading="lazy" className={cn("shrink-0 bg-white object-contain outline outline-1 -outline-offset-1 outline-black/5", SIZES[size], className)} />;
 }
