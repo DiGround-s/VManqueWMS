@@ -7,6 +7,7 @@ import { db } from "@/server/db";
 import { createOrder } from "@/features/orders/service";
 import { CHANNEL_VALUES } from "@/features/orders/schema";
 import { CHANNELS } from "@/lib/channels";
+import { liveSnapshot } from "./live-service";
 
 const NAMES = ["Camila Rojas", "Diego Vargas", "Sofía Navarro", "Lucas Torres", "Emilia Carrasco", "Felipe Sepúlveda", "Javiera Morales", "Ignacio Fuentes"];
 const PLACES: [string, string][] = [["Av. Providencia 1234", "Providencia"], ["Av. Grecia 2550", "Ñuñoa"], ["Los Leones 980", "Providencia"], ["Av. Libertad 455", "Viña del Mar"], ["Calle O'Higgins 1020", "Concepción"], ["Av. Alemania 0870", "Temuco"]];
@@ -42,3 +43,6 @@ export const simulateIncomingOrderAction = action("SUPERVISOR", z.object({ chann
   revalidatePath("/", "layout");
   return { code: order.code, ref, store: CHANNELS[ch].label };
 });
+
+/** Polled by the live board. */
+export const liveSnapshotAction = action("OPERATOR", z.object({}), async () => liveSnapshot());

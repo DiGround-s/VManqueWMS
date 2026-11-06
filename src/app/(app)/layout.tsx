@@ -10,11 +10,20 @@ import { Wordmark } from "@/components/wordmark";
 import { ROLE } from "@/lib/labels";
 import { buttonClass } from "@/components/ui/button";
 import { getCompanyName } from "@/features/settings/service";
+import { unansweredCount } from "@/features/inbox/service";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const [user, company] = await Promise.all([requirePageRole("OPERATOR"), getCompanyName()]);
+  const [user, company, unanswered] = await Promise.all([requirePageRole("OPERATOR"), getCompanyName(), unansweredCount()]);
   const groups: { title: string; items: NavItem[] }[] = [
-    { title: "General", items: [{ href: "/", label: "Inicio", icon: "LayoutDashboard" }, { href: "/ventas", label: "Ventas y canales", icon: "Store" }] },
+    {
+      title: "General",
+      items: [
+        { href: "/", label: "Inicio", icon: "LayoutDashboard" },
+        { href: "/en-vivo", label: "Pedidos en vivo", icon: "Activity" },
+        { href: "/ventas", label: "Ventas y canales", icon: "Store" },
+        { href: "/atencion", label: "Atención", icon: "MessagesSquare", badge: unanswered },
+      ],
+    },
     {
       title: "Salidas",
       items: [

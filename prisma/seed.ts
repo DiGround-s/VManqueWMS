@@ -3,6 +3,7 @@ import { Prisma, PrismaClient, type LocationRole, type SalesChannel } from "@pri
 import bcrypt from "bcryptjs";
 import { locationCode, locationSortKey } from "../src/server/domain/locations";
 import { DESCRIPTIONS } from "./product-descriptions";
+import { seedChats } from "./seed-chats";
 
 const db = new PrismaClient();
 
@@ -69,7 +70,7 @@ async function main() {
     console.log("SEED_RESET=1: borrando datos…");
     await db.$transaction([
       db.stockMovement.deleteMany(), db.putbackTask.deleteMany(), db.pickTask.deleteMany(), db.waveOrder.deleteMany(), db.wave.deleteMany(),
-      db.orderEvent.deleteMany(), db.orderLine.deleteMany(), db.order.deleteMany(), db.receptionLine.deleteMany(), db.reception.deleteMany(),
+      db.message.deleteMany(), db.conversation.deleteMany(), db.orderEvent.deleteMany(), db.orderLine.deleteMany(), db.order.deleteMany(), db.receptionLine.deleteMany(), db.reception.deleteMany(),
       db.stockLevel.deleteMany(), db.location.deleteMany(), db.warehouse.deleteMany(), db.product.deleteMany(), db.apiKey.deleteMany(),
       db.setting.deleteMany(), db.user.deleteMany(),
       db.$executeRaw`ALTER SEQUENCE "order_code_seq" RESTART`,

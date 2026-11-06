@@ -1,4 +1,4 @@
-import type { LocationRole, MovementType, OrderStatus, PickTaskStatus, Role, WaveStatus } from "@prisma/client";
+import type { CaseKind, CaseStatus, ReturnStatus, LocationRole, MovementType, OrderStatus, PickTaskStatus, Role, WaveStatus } from "@prisma/client";
 
 export type Tone = "neutral" | "accent" | "success" | "danger" | "info" | "warn";
 
@@ -45,3 +45,29 @@ export const MOVEMENT_TYPE: Record<MovementType, { label: string; tone: Tone }> 
 export const ROLE: Record<Role, string> = { ADMIN: "Administrador", SUPERVISOR: "Supervisor", OPERATOR: "Operador" };
 
 export const ORDER_FLOW: OrderStatus[] = ["PENDING", "IN_WAVE", "PICKED", "SORTED", "PACKED", "SHIPPED"];
+
+export const CASE_KIND: Record<CaseKind, { label: string; tone: Tone }> = {
+  QUESTION: { label: "Pregunta", tone: "neutral" },
+  SHIPPING: { label: "Despacho", tone: "info" },
+  RETURN: { label: "Devolución", tone: "warn" },
+  EXCHANGE: { label: "Cambio", tone: "warn" },
+  CLAIM: { label: "Reclamo", tone: "danger" },
+  CANCEL: { label: "Cancelación", tone: "danger" },
+};
+
+export const CASE_STATUS: Record<CaseStatus, { label: string; tone: Tone }> = {
+  OPEN: { label: "Por responder", tone: "danger" },
+  WAITING: { label: "Esperando comprador", tone: "info" },
+  RESOLVED: { label: "Resuelto", tone: "success" },
+};
+
+export const RETURN_STATUS: Record<ReturnStatus, { label: string; tone: Tone }> = {
+  REQUESTED: { label: "Solicitada", tone: "warn" },
+  APPROVED: { label: "Aprobada", tone: "info" },
+  IN_TRANSIT: { label: "En camino a bodega", tone: "info" },
+  RECEIVED: { label: "Recibida en bodega", tone: "accent" },
+  REFUNDED: { label: "Reembolsada", tone: "success" },
+  REJECTED: { label: "Rechazada", tone: "danger" },
+};
+
+export const RETURN_FLOW: ReturnStatus[] = ["REQUESTED", "APPROVED", "IN_TRANSIT", "RECEIVED", "REFUNDED"];

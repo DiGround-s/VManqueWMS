@@ -178,8 +178,18 @@ dialog::backdrop {
   animation: flash-bad 0.25s ease-in-out 3;
 }
 
+/* A row that just arrived on a live feed: slides in and fades its highlight. */
+@keyframes row-new {
+  0% { opacity: 0; transform: translateY(-6px); background: var(--brand-soft); }
+  30% { opacity: 1; transform: none; background: var(--brand-soft); }
+  100% { background: transparent; }
+}
+.row-new {
+  animation: row-new 2.4s var(--ease-out-expo) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pop-in, .flash-bad { animation: none; }
+  .pop-in, .flash-bad, .row-new { animation: none; }
 }
 
 @media print {

@@ -43,6 +43,38 @@ enum SalesChannel {
   PARIS
 }
 
+/// What a buyer conversation is about.
+enum CaseKind {
+  QUESTION
+  SHIPPING
+  RETURN
+  EXCHANGE
+  CLAIM
+  CANCEL
+}
+
+enum CaseStatus {
+  OPEN
+  WAITING
+  RESOLVED
+}
+
+/// Progress of a return or exchange, mirrored from the marketplace.
+enum ReturnStatus {
+  REQUESTED
+  APPROVED
+  IN_TRANSIT
+  RECEIVED
+  REFUNDED
+  REJECTED
+}
+
+enum MessageAuthor {
+  BUYER
+  AGENT
+  SYSTEM
+}
+
 enum OrderStatus {
   PENDING
   IN_WAVE
@@ -234,6 +266,7 @@ model Order {
   events     OrderEvent[]
   waveOrders WaveOrder[]
   putbacks   PutbackTask[]
+  conversations Conversation[]
 
   @@index([status, priority, createdAt])
   @@index([status, carrier])
@@ -400,4 +433,43 @@ model ApiKey {
   createdAt  DateTime  @default(now())
   lastUsedAt DateTime?
   revokedAt  DateTime?
+}
+
+/// One buyer thread from any store (marketplace messages, post-sale cases, returns).
+model Conversation {
+  id            String        @id @default(cuid())
+  channel       SalesChannel
+  externalRef   String?       @unique
+  kind          CaseKind      @default(QUESTION)
+  status        CaseStatus    @default(OPEN)
+  returnStatus  ReturnStatus?
+  subject       String
+  customerName  String
+  orderId       String?
+  unread        Int           @default(0)
+  /// Reply deadline the marketplace measures us against.
+  dueAt         DateTime?
+  lastMessageAt DateTime      @default(now())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  order    Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  messages Message[]
+
+  @@index([status, lastMessageAt])
+  @@index([channel, lastMessageAt])
+  @@index([orderId])
+}
+
+model Message {
+  id             String        @id @default(cuid())
+  conversationId String
+  author         MessageAuthor
+  authorName     String?
+  body           String
+  createdAt      DateTime      @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
 }
