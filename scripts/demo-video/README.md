@@ -51,3 +51,12 @@ python voice-b.py      # genera voice-b/*.mp3 y lines-b.json
 node record-b.mjs      # graba frames-b/ + cuts-b.json + speech-b.json
 node build-b.mjs       # video/VManque-WMS-demo-B-narrado.mp4
 ```
+
+## Versión con música
+
+`music.py` compone una pista original por síntesis (Am–F–C–G a 96 BPM: pad, arpegio, bajo y batería suave), sin samples ni licencias de terceros. Para la versión B sin voz:
+
+```bash
+python music.py 191 music.wav
+ffmpeg -i VManque-WMS-demo-B-narrado-eleven.mp4 -i music.wav -map 0:v -map 1:a -c:v copy -af "loudnorm=I=-18:TP=-2:LRA=7" -c:a aac -shortest VManque-WMS-demo-B-musica.mp4
+```
