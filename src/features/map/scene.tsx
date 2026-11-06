@@ -9,7 +9,7 @@ import { SLOT, type Placed, type Rack, type RowLabel } from "./layout";
 type OrbitControlsImpl = React.ComponentRef<typeof OrbitControls>;
 
 export type SlotState = "empty" | "ok" | "low" | "reserve" | "dock";
-export type SlotView = { id: string; code: string; state: SlotState; image: string | null; qty: number; dim: boolean; highlight: boolean; picking: boolean };
+export type SlotView = { id: string; code: string; state: SlotState; image: string | null; qty: number; dim: boolean; highlight: boolean; picking: boolean; led: boolean };
 
 type Props = {
   placed: Placed[];
@@ -160,6 +160,8 @@ function Slot({ p, s, texture, selected, hovered, onHover, onSelect, dark }: { p
 
   const boxH = filled ? SLOT.h * 0.86 : SLOT.h * 0.12;
   return (
+    <>
+    <LedStrip p={p} on={s.led} />
     <group ref={group} position={[p.x, p.y, p.z]}>
       <RoundedBox
         args={[SLOT.w * 0.9, boxH, SLOT.d * 0.82]}
@@ -197,6 +199,55 @@ function Slot({ p, s, texture, selected, hovered, onHover, onSelect, dark }: { p
         </mesh>
       )}
     </group>
+    </>
+  );
+}
+
+const LED_ON = new THREE.Color("#22ff88");
+const LED_OFF = new THREE.Color("#2a2f36");
+
+let glow: THREE.Texture | null = null;
+/** Vertical gradient (bright at the bottom) used for the LED light spill. */
+function glowTexture() {
+  if (glow) return glow;
+  const c = document.createElement("canvas");
+  c.width = 4;
+  c.height = 64;
+  const g = c.getContext("2d")!;
+  const grad = g.createLinearGradient(0, 64, 0, 0);
+  grad.addColorStop(0, "rgba(255,255,255,1)");
+  grad.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 4, 64);
+  glow = new THREE.CanvasTexture(c);
+  return glow;
+}
+
+/** Pick-to-light: an LED strip on the shelf's front edge under each slot (simulated hardware). */
+function LedStrip({ p, on }: { p: Placed; on: boolean }) {
+  const mat = useRef<THREE.MeshBasicMaterial>(null);
+  const halo = useRef<THREE.MeshBasicMaterial>(null);
+  useFrame((state) => {
+    const k = on ? 0.65 + Math.sin(state.clock.elapsedTime * 6) * 0.35 : 0;
+    if (mat.current) mat.current.color.copy(LED_OFF).lerp(LED_ON, on ? 0.55 + k * 0.45 : 0);
+    if (halo.current) halo.current.opacity = k * 0.55;
+  });
+  const y = p.y - SLOT.h / 2 - 0.04;
+  const z = p.z + SLOT.d / 2 + 0.045;
+  return (
+    <group position={[p.x, y, z]}>
+      <mesh>
+        <boxGeometry args={[SLOT.w * 0.92, 0.035, 0.02]} />
+        <meshBasicMaterial ref={mat} color={LED_OFF} toneMapped={false} />
+      </mesh>
+      {on && (
+        // Light spill: a soft additive glow above the strip (no real light, so no shader recompiles).
+        <mesh position={[0, 0.22, 0.02]}>
+          <planeGeometry args={[SLOT.w * 1.15, 0.5]} />
+          <meshBasicMaterial ref={halo} map={glowTexture()} color="#22ff88" transparent opacity={0} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+        </mesh>
+      )}
+    </group>
   );
 }
 
@@ -210,7 +261,8 @@ function Rig({ placed, selectedId, size }: { placed: Placed[]; selectedId: strin
     const p = placed.find((x) => x.id === selectedId);
     if (!p) return;
     const target = new THREE.Vector3(p.x, p.y, p.z);
-    goal.current = { target, pos: target.clone().add(new THREE.Vector3(2.4, 3.2, 5.2)) };
+    // Stand in the aisle in front of the slot (rows are 3.2 apart, so stay under ~2.5 in z).
+    goal.current = { target, pos: target.clone().add(new THREE.Vector3(1.1, 2.7, 2.45)) };
   }, [selectedId, placed]);
 
   useFrame((_, delta) => {
