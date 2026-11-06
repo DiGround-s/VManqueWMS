@@ -1,7 +1,7 @@
 import { ProductThumb } from "@/components/product-thumb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Printer } from "lucide-react";
+import { Map as MapIcon, Printer } from "lucide-react";
 import { db } from "@/server/db";
 import { requirePageRole, hasRole } from "@/server/auth/current";
 import { stockSummary } from "@/server/inventory/summary";
@@ -31,8 +31,18 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
     <>
       <PageHeader
         title={<span className="flex items-center gap-4"><ProductThumb src={product.imageUrl} size="md" /><span className="font-mono">{product.sku}</span></span>}
-        description={product.name}
-        actions={<Link href={`/print/productos?ids=${product.id}`} target="_blank" className={buttonClass("secondary")}><Printer className="size-4" /> Etiqueta</Link>}
+        description={
+          <>
+            <span className="block font-medium text-text">{product.name}</span>
+            {product.description && <span className="mt-1 block">{product.description}</span>}
+          </>
+        }
+        actions={
+          <>
+            <Link href={`/mapa?sku=${encodeURIComponent(product.sku)}`} className={buttonClass("primary")}><MapIcon className="size-4" /> Ver en el mapa</Link>
+            <Link href={`/print/productos?ids=${product.id}`} target="_blank" className={buttonClass("secondary")}><Printer className="size-4" /> Etiqueta</Link>
+          </>
+        }
       />
       <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Disponible" value={s.available} tone={s.available < 0 ? "danger" : "accent"} />

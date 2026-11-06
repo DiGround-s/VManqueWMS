@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDownToLine, ArrowRightLeft, ChevronRight, ClipboardCheck, Grid3x3, PackageCheck, PackagePlus, Truck, Undo2, Waves, type LucideIcon } from "lucide-react";
+import { ArrowDownToLine, ArrowRightLeft, ChevronRight, ClipboardCheck, Grid3x3, Map as MapIcon, PackageCheck, PackagePlus, Truck, Undo2, Waves, type LucideIcon } from "lucide-react";
 import { PhoneHomeScan } from "@/components/phone-home-scan";
 import { ProductThumb } from "@/components/product-thumb";
 import { db } from "@/server/db";
@@ -35,6 +35,7 @@ export default async function PhoneHome() {
     { href: "/m/mover", label: "Mover", icon: ArrowRightLeft, hint: "Traspaso", tint: "bg-accent-soft text-text" },
     { href: "/m/contar", label: "Contar", icon: ClipboardCheck, hint: "Conteo", tint: "bg-warn-bg text-warn" },
     { href: "/m/reponer", label: "Reponer", icon: Undo2, count: putbacks, hint: "Cancelados", hot: putbacks > 0, tint: "bg-danger-bg text-danger" },
+    { href: "/mapa", label: "Mapa 3D", icon: MapIcon, hint: "Bodega", tint: "bg-info-bg text-info" },
   ];
   const first = user.name.split(" ")[0];
   const myWaves = mine > 0;

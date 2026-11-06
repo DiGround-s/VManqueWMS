@@ -29,6 +29,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       title: "Bodega",
       items: [
         { href: "/inventario", label: "Inventario", icon: "Boxes" },
+        { href: "/mapa", label: "Mapa 3D", icon: "Map" },
         { href: "/ubicaciones", label: "Ubicaciones", icon: "MapPin" },
         { href: "/productos", label: "Productos", icon: "Package" },
         { href: "/recepciones", label: "Recepciones", icon: "ArrowDownToLine" },

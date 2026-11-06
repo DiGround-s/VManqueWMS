@@ -30,7 +30,7 @@ export function ImportProducts() {
           <CardHeader
             title={`${rows.length} filas · ${valid.length} válidas`}
             action={
-              <Button variant="primary" disabled={!valid.length} pending={saving} onClick={() => runSave(() => confirmProductImport({ products: valid.map((r) => ({ ...r.data!, barcode: r.data!.barcode ?? undefined, imageUrl: r.data!.imageUrl ?? "" })) }), { success: (d) => `${d.count} productos guardados`, onOk: () => router.push("/productos") })}>
+              <Button variant="primary" disabled={!valid.length} pending={saving} onClick={() => runSave(() => confirmProductImport({ products: valid.map((r) => ({ ...r.data!, barcode: r.data!.barcode ?? undefined, imageUrl: r.data!.imageUrl ?? "", description: r.data!.description ?? undefined })) }), { success: (d) => `${d.count} productos guardados`, onOk: () => router.push("/productos") })}>
                 Guardar {valid.length}
               </Button>
             }
