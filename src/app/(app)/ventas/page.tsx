@@ -103,7 +103,7 @@ export default async function SalesPage({ searchParams }: { searchParams: Promis
           <Link key={c.channel} href={`/ventas?canal=${c.channel.toLowerCase()}#entrantes`} className="block rounded-2xl">
             <Card className={cn("h-full p-4 transition-shadow hover:shadow-lift", channel === c.channel && "ring-2 ring-text")}>
               <div className="flex items-center gap-3">
-                <ChannelLogo channel={c.channel} />
+                <ChannelLogo channel={c.channel} size="lg" />
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold">{CHANNELS[c.channel].label}</div>
                   <div className="flex items-center gap-1.5 text-xs text-muted">
