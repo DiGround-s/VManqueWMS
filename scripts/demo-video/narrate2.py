@@ -8,6 +8,7 @@ config: {"video": "...mp4", "out": "...mp4", "voice": "en-US-BrianMultilingualNe
 import asyncio, json, subprocess, sys, tempfile
 from pathlib import Path
 import edge_tts
+sys.path.insert(0, str(Path(__file__).parent))
 
 FF = r"C:\Users\power\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin"
 GAP = 0.35  # silence kept before the next line starts
@@ -25,7 +26,13 @@ async def main(cfg):
     for i, (start, text) in enumerate(lines):
         end = lines[i + 1][0] if i + 1 < len(lines) else total
         path = tmp / f"l{i:02d}.mp3"
-        await edge_tts.Communicate(text, cfg["voice"], rate=cfg.get("rate", "+0%"), pitch=cfg.get("pitch", "+0Hz")).save(str(path))
+        if cfg.get("engine") == "elevenlabs":
+            import eleven
+            prev = lines[i - 1][1] if i else None
+            nxt = lines[i + 1][1] if i + 1 < len(lines) else None
+            eleven.synth(text, path, cfg["voice"], prev, nxt)
+        else:
+            await edge_tts.Communicate(text, cfg["voice"], rate=cfg.get("rate", "+0%"), pitch=cfg.get("pitch", "+0Hz")).save(str(path))
         d = duration(path)
         hold = max(0.0, d + GAP - (end - start))
         holds.append(hold)

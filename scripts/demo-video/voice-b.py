@@ -4,7 +4,11 @@ from pathlib import Path
 import edge_tts
 
 FF = r"C:\Users\power\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin"
-VOICE = "en-US-BrianMultilingualNeural"
+import os, sys
+sys.path.insert(0, str(Path(__file__).parent))
+# ENGINE=elevenlabs VOICE=<voice_id> python voice-b.py   (default: free Microsoft voice)
+ENGINE = os.environ.get("ENGINE", "edge")
+VOICE = os.environ.get("VOICE", "en-US-BrianMultilingualNeural")
 HERE = Path(__file__).parent
 OUT = HERE / "voice-b"
 
@@ -43,9 +47,14 @@ def duration(p):
 async def main():
     OUT.mkdir(exist_ok=True)
     meta = {}
-    for k, text in LINES.items():
+    keys = list(LINES)
+    for n, (k, text) in enumerate(LINES.items()):
         f = OUT / f"{k}.mp3"
-        await edge_tts.Communicate(text, VOICE).save(str(f))
+        if ENGINE == "elevenlabs":
+            import eleven
+            eleven.synth(text, f, VOICE, LINES[keys[n - 1]] if n else None, LINES[keys[n + 1]] if n + 1 < len(keys) else None)
+        else:
+            await edge_tts.Communicate(text, VOICE).save(str(f))
         meta[k] = {"file": str(f), "dur": duration(f), "text": text.replace("cuatrocientos cuarenta y tres", "443")}
         print(f"{k:6s} {meta[k]['dur']:5.1f}s")
     (HERE / "lines-b.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
