@@ -27,9 +27,7 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0 \
     PORT=3000
 
-RUN corepack enable \
-    && corepack prepare pnpm@10.15.0 --activate \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl ca-certificates curl wget \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,4 +42,4 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=6 \
 
 # Applying migrations in the new container avoids running a new migration
 # against the old application during Coolify's rolling deployment.
-CMD ["sh", "-c", "pnpm db:deploy && exec pnpm start"]
+CMD ["sh", "-c", "./node_modules/.bin/prisma migrate deploy && exec ./node_modules/.bin/next start"]
