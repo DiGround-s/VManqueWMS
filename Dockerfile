@@ -30,7 +30,7 @@ ENV NODE_ENV=production \
 RUN corepack enable \
     && corepack prepare pnpm@10.15.0 --activate \
     && apt-get update \
-    && apt-get install -y --no-install-recommends openssl ca-certificates curl \
+    && apt-get install -y --no-install-recommends openssl ca-certificates curl wget \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build --chown=node:node /app ./
