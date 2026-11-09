@@ -43,6 +43,17 @@ La semilla no hace nada si la base ya tiene usuarios. Para borrar todo y sembrar
 | `pnpm db:deploy` | `prisma migrate deploy` |
 | `pnpm db:seed` | Datos de ejemplo |
 
+## Despliegue en Coolify
+
+El repositorio incluye un `Dockerfile` de producción para Node 22. La aplicación expone el puerto `3000`, aplica las migraciones con `prisma migrate deploy` al iniciar y publica `GET /api/health`, que también verifica la conexión con PostgreSQL.
+
+Configura estas variables en Coolify:
+
+- `DATABASE_URL`: URL interna de PostgreSQL en la red de Coolify.
+- `SESSION_SECRET`: secreto aleatorio de al menos 32 caracteres.
+
+El primer despliegue no ejecuta la semilla automáticamente. Si se necesitan datos iniciales, ejecuta `pnpm db:seed` una sola vez desde la terminal del contenedor y cambia inmediatamente las contraseñas de ejemplo.
+
 ## Roles
 
 - **Operador**: todo el modo bodega (picking, separar, empacar, despachar, recibir, ubicar, mover, contar, reponer, consultar) y consulta en la oficina.

@@ -14,6 +14,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Everything except login, the API-key API, Next internals and static files (product images included).
-  matcher: ["/((?!login|api/v1|_next/static|_next/image|products/|stores/|favicon\\.ico|icon\\.svg|robots\\.txt).*)"],
+  // Everything except login, health/API endpoints, Next internals and static files (product images included).
+  matcher: ["/((?!login|api/health|api/v1|_next/static|_next/image|products/|stores/|favicon\\.ico|icon\\.svg|robots\\.txt).*)"],
 };
