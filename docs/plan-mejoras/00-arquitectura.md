@@ -49,10 +49,10 @@ El informe 2.5 proponía Flask + SQLite + Telegram. La arquitectura final cambi�
 
 | Ambiente | Dónde | Qué se demuestra |
 |---|---|---|
-| **Producción** | Dominio público (lo publica un tercero a partir de este repositorio) | El sistema funcionando para usuarios reales: catálogo, inventario, pedidos, API, mapa 3D |
+| **Producción** | Dominio público, desplegado con Coolify a partir de este repositorio: contenedor Docker (`Dockerfile`, Node 22) + PostgreSQL, HTTPS en el dominio y chequeo de salud en `GET /api/health` | El sistema funcionando para usuarios reales: catálogo, inventario, pedidos, API, mapa 3D |
 | **Laboratorio** | Máquinas virtuales en VirtualBox | Lo que un hosting no deja ver: red segmentada con pfSense, reglas de firewall, broker MQTT y el dispositivo IoT recibiendo la orden |
 
-Ambos se instalan igual: `git clone` del repositorio, variables de entorno, `pnpm build` y `pnpm start`.
+Ambos parten del mismo repositorio y de las mismas variables de entorno (`DATABASE_URL`, `SESSION_SECRET`). Producción construye la imagen Docker; el laboratorio puede usar ese mismo `Dockerfile` o `pnpm build` + `pnpm start`. En los dos casos la app corre en modo producción, no en modo desarrollo (punto 1.7).
 
 ## 5. Diagrama de la arquitectura (laboratorio)
 
