@@ -1,8 +1,0 @@
-fecha,sku,producto,ubicacion,dispositivo,tira,pixeles_esperados,color_esperado,ack_pixeles,ack_color,ms,resultado
-"2026-11-18T23:41:39.564Z","VM-0021","Olla de greda de Pomaire","A-02-06-03","esp32-bc-01 (Wokwi)","A-02","132-137","green","","","8005","FALLA"
-"2026-11-18T23:41:47.568Z","VM-0021","Olla de greda de Pomaire","B-01-06-01","esp32-bc-01 (Wokwi)","B-01","120-125","green","","","8001","FALLA"
-"2026-11-18T23:42:15.656Z","VM-0001","Termo acero inoxidable 1 L","A-01-01-01","esp32-bc-01 (Wokwi)","A-01","0-5","blue","","","8004","FALLA"
-"2026-11-18T23:42:23.662Z","VM-0001","Termo acero inoxidable 1 L","A-02-02-01","esp32-bc-01 (Wokwi)","A-02","24-29","blue","","","8004","FALLA"
-"2026-11-18T23:42:31.679Z","VM-0001","Termo acero inoxidable 1 L","B-01-01-01","esp32-bc-01 (Wokwi)","B-01","0-5","blue","","","8014","FALLA"
-"2026-11-18T23:43:03.350Z","VM-0018","Gorro de lana tejido","A-01-06-03","esp32-bc-01 (Wokwi)","A-01","132-137","yellow","","","8005","FALLA"
-"2026-11-18T23:43:11.359Z","VM-0018","Gorro de lana tejido","B-01-05-02","esp32-bc-01 (Wokwi)","B-01","102-107","yellow","","","8007","FALLA"
