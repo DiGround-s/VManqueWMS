@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "author": "Grupo 5 - VManque WMS",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-text", "id": "t1", "top": -120, "left": 200, "attrs": { "text": "Pasillo A-01 (GPIO 5)" } },
+    { "type": "wokwi-led-strip", "id": "a01", "top": -100, "left": 200, "attrs": { "pixels": "144", "pixelSize": "2020", "pixelShape": "square" } },
+    { "type": "wokwi-text", "id": "t2", "top": -40, "left": 200, "attrs": { "text": "Pasillo A-02 (GPIO 18)" } },
+    { "type": "wokwi-led-strip", "id": "a02", "top": -20, "left": 200, "attrs": { "pixels": "144", "pixelSize": "2020", "pixelShape": "square" } },
+    { "type": "wokwi-text", "id": "t3", "top": 40, "left": 200, "attrs": { "text": "Pasillo B-01 (GPIO 19)" } },
+    { "type": "wokwi-led-strip", "id": "b01", "top": 60, "left": 200, "attrs": { "pixels": "144", "pixelSize": "2020", "pixelShape": "square" } },
+    { "type": "wokwi-led", "id": "st", "top": 160, "left": 200, "attrs": { "color": "blue", "label": "Estado (GPIO 2)" } },
+    { "type": "wokwi-resistor", "id": "r1", "top": 200, "left": 160, "attrs": { "value": "330" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:5", "a01:DIN", "green", [] ],
+    [ "esp:18", "a02:DIN", "green", [] ],
+    [ "esp:19", "b01:DIN", "green", [] ],
+    [ "esp:5V", "a01:VDD", "red", [] ],
+    [ "esp:5V", "a02:VDD", "red", [] ],
+    [ "esp:5V", "b01:VDD", "red", [] ],
+    [ "esp:GND.1", "a01:VSS", "black", [] ],
+    [ "esp:GND.1", "a02:VSS", "black", [] ],
+    [ "esp:GND.1", "b01:VSS", "black", [] ],
+    [ "esp:2", "r1:1", "blue", [] ],
+    [ "r1:2", "st:A", "blue", [] ],
+    [ "st:C", "esp:GND.2", "black", [] ]
+  ],
+  "dependencies": {}
+}

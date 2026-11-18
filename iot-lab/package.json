@@ -1,0 +1,21 @@
+{
+  "name": "vmanque-iot-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Laboratorio pick-to-light: localizador (BD -> MQTT), monitor MQTT y pruebas de API, integridad y seguridad. No modifica la web.",
+  "scripts": {
+    "buscar": "node localizador.mjs buscar",
+    "picking": "node localizador.mjs picking",
+    "apagar": "node localizador.mjs apagar",
+    "monitor": "node monitor.mjs",
+    "wokwi": "node wokwi/sincronizar.mjs",
+    "prueba:api": "node pruebas/api.mjs",
+    "prueba:integridad": "node pruebas/integridad.mjs",
+    "prueba:seguridad": "node pruebas/seguridad.mjs"
+  },
+  "dependencies": {
+    "mqtt": "^5.10.0",
+    "pg": "^8.13.0"
+  }
+}

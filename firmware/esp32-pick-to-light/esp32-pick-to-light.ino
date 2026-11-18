@@ -6,6 +6,8 @@
  *
  *   Tema:    vmanque/bc/led/A-02-06-03
  *   Mensaje: {"on":1,"color":"green","blink":1}   ó   {"on":0}
+ *   Confirmación: después de pintar la tira publica en vmanque/bc/ack/A-02-06-03
+ *                 {"on":1,"strip":"A-02","first":132,"last":137,"color":"green"}
  *
  * El mapeo ubicación → píxeles es el mismo de src/features/map/led-mapping.ts.
  *
@@ -21,14 +23,35 @@
 #include <ArduinoJson.h>
 
 // ---- Red (cambia estos valores) ----
+// Laboratorio sin hardware: si la primera línea del sketch es `#define WOKWI_LAB`, el mismo firmware
+// corre en el simulador Wokwi (ESP32 + tiras WS2812B emuladas) con su Wi-Fi «Wokwi-GUEST» y un broker
+// MQTT público. Ver iot-lab/README.md. Sin esa línea, usa la red real de la bodega (VLAN 30 IoT).
+#ifdef WOKWI_LAB
+const char* WIFI_SSID = "Wokwi-GUEST";
+const char* WIFI_PASS = "";
+const int32_t WIFI_CHANNEL = 6;  // canal fijo de Wokwi-GUEST: evita el escaneo
+const char* MQTT_HOST = "broker.hivemq.com";
+const uint16_t MQTT_PORT = 1883;
+const char* MQTT_USER = "";
+const char* MQTT_PASS = "";
+const char* CLIENT_ID = "esp32-bc-01-lab";
+#ifndef LAB_PREFIX
+#define LAB_PREFIX "vmanque-g5-lab"
+#endif
+const char* TOPIC = LAB_PREFIX "/bc/led/#";
+const char* ACK_BASE = LAB_PREFIX "/bc/ack/";
+#else
 const char* WIFI_SSID = "VManque-IoT";
 const char* WIFI_PASS = "cambia-esta-clave";
+const int32_t WIFI_CHANNEL = 0;  // 0 = buscar el canal automáticamente
 const char* MQTT_HOST = "192.168.10.10";
 const uint16_t MQTT_PORT = 1883;
 const char* MQTT_USER = "esp32-bc-01";
 const char* MQTT_PASS = "cambia-esta-clave";
 const char* CLIENT_ID = "esp32-bc-01";
 const char* TOPIC = "vmanque/bc/led/#";
+const char* ACK_BASE = "vmanque/bc/ack/";
+#endif
 
 // ---- Tiras: una por pasillo, cada una en su GPIO ----
 const uint8_t LEDS_PER_SLOT = 6;
@@ -87,11 +110,20 @@ void forget(int8_t strip, uint16_t first) {
     if (lit[i].strip == strip && lit[i].first == first) { lit[i] = lit[--litCount]; return; }
 }
 
+// Avisa al servidor qué píxeles quedaron pintados: es la evidencia de que la orden llegó al dispositivo.
+void ack(const String& code, int8_t strip, uint16_t first, bool on, const char* color) {
+  char buf[128];
+  snprintf(buf, sizeof(buf), "{\"on\":%d,\"strip\":\"%s\",\"first\":%u,\"last\":%u,\"color\":\"%s\"}",
+           on, strips[strip].row, first, first + LEDS_PER_SLOT - 1, on ? color : "off");
+  mqtt.publish((String(ACK_BASE) + code).c_str(), buf);
+}
+
 void onMessage(char* topic, byte* payload, unsigned int len) {
   digitalWrite(STATUS_LED, HIGH);
   String code = String(topic).substring(String(topic).lastIndexOf('/') + 1);
   JsonDocument doc;
-  if (deserializeJson(doc, payload, len)) { Serial.println("[MQTT] JSON inválido"); return; }
+  // const: ArduinoJson copia el texto, porque publicar el ack reutiliza el búfer de PubSubClient.
+  if (deserializeJson(doc, (const byte*)payload, len)) { Serial.println("[MQTT] JSON inválido"); return; }
   int8_t strip; uint16_t first;
   if (!parseLocation(code, strip, first)) { Serial.printf("[LED]  Ubicación sin tira: %s\n", code.c_str()); return; }
 
@@ -99,20 +131,23 @@ void onMessage(char* topic, byte* payload, unsigned int len) {
   Serial.printf("[MQTT] <- %s %s\n", topic, on ? "on" : "off");
   forget(strip, first);
   if (on) {
-    uint32_t color = colorFor(strips[strip].px, doc["color"] | "green");
+    const char* colorName = doc["color"] | "green";
+    uint32_t color = colorFor(strips[strip].px, colorName);
     paint(strip, first, color);
     if (litCount < 32) lit[litCount++] = { strip, first, color, (bool)(doc["blink"] | 0) };
     Serial.printf("[LED]  Tira %s · píxeles %u-%u -> encendido\n", strips[strip].row, first, first + LEDS_PER_SLOT - 1);
+    ack(code, strip, first, true, colorName);
   } else {
     paint(strip, first, 0);
     Serial.printf("[LED]  Tira %s · píxeles %u-%u -> apagado\n", strips[strip].row, first, first + LEDS_PER_SLOT - 1);
+    ack(code, strip, first, false, "off");
   }
 }
 
 void connectWifi() {
   Serial.printf("[WiFi] Conectando a SSID \"%s\"...\n", WIFI_SSID);
   WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  WiFi.begin(WIFI_SSID, WIFI_PASS, WIFI_CHANNEL);
   while (WiFi.status() != WL_CONNECTED) { delay(400); Serial.print("."); }
   Serial.printf("\n[WiFi] Conectado · IP %s · GW %s · RSSI %d dBm\n", WiFi.localIP().toString().c_str(), WiFi.gatewayIP().toString().c_str(), WiFi.RSSI());
 }
@@ -120,7 +155,12 @@ void connectWifi() {
 void connectMqtt() {
   while (!mqtt.connected()) {
     Serial.printf("[MQTT] Conectando a %s:%u como %s...\n", MQTT_HOST, MQTT_PORT, CLIENT_ID);
-    if (mqtt.connect(CLIENT_ID, MQTT_USER, MQTT_PASS)) {
+    String id = String(CLIENT_ID);
+#ifdef WOKWI_LAB
+    id += "-" + String((uint32_t)ESP.getEfuseMac(), HEX);  // único en el broker público
+#endif
+    bool ok = strlen(MQTT_USER) ? mqtt.connect(id.c_str(), MQTT_USER, MQTT_PASS) : mqtt.connect(id.c_str());
+    if (ok) {
       mqtt.subscribe(TOPIC, 1);
       Serial.printf("[MQTT] Conectado · suscrito a %s (QoS 1)\n", TOPIC);
     } else {

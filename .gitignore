@@ -20,3 +20,6 @@ __pycache__/
 video/*.mp4
 video/muestras-voz/
 scripts/demo-video/.elevenlabs-key
+
+# Respaldos locales de la base de datos
+respaldos/
