@@ -93,7 +93,7 @@ export const SYSTEM_OPEN: Record<CaseKind, string> = {
 };
 
 /** Hours each store gives us to answer before it hurts the seller reputation (demo values). */
-export const SLA_HOURS = { MERCADOLIBRE: 24, FALABELLA: 48, PARIS: 48, DIRECT: 24 } as const;
+export const SLA_HOURS = { MERCADOLIBRE: 24, FALABELLA: 48, PARIS: 48, DIRECT: 24, WALMART: 48, HITES: 48 } as const;
 
 export function fill(text: string, product: string, orderRef: string) {
   return text.replaceAll("{p}", product).replaceAll("{o}", orderRef);

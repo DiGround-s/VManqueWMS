@@ -40,6 +40,8 @@
   --ch-direct: #eb6834;
   --ch-falabella: #1baf7a;
   --ch-mercadolibre: #eda100;
+  --ch-walmart: #8e5bd6;
+  --ch-hites: #d6455d;
 }
 
 .dark {
@@ -78,6 +80,8 @@
   --ch-direct: #d95926;
   --ch-falabella: #199e70;
   --ch-mercadolibre: #c98500;
+  --ch-walmart: #9f70e3;
+  --ch-hites: #e25a71;
 }
 
 @theme inline {

@@ -10,10 +10,12 @@ export const CHANNELS: Record<SalesChannel, { label: string; short: string; colo
   DIRECT: { label: "Tienda propia", short: "Propia", color: "#eb6834", dark: "#d95926", rate: 0.03, refPrefix: "WEB", initials: "VM" },
   FALABELLA: { label: "Falabella", short: "Falabella", color: "#1baf7a", dark: "#199e70", rate: 0.14, refPrefix: "FAL", initials: "F" },
   MERCADOLIBRE: { label: "Mercado Libre", short: "M. Libre", color: "#eda100", dark: "#c98500", rate: 0.15, refPrefix: "MLC", initials: "ML" },
+  WALMART: { label: "Walmart (Líder)", short: "Walmart", color: "#8e5bd6", dark: "#9f70e3", rate: 0.13, refPrefix: "WMT", initials: "W" },
+  HITES: { label: "Hites", short: "Hites", color: "#d6455d", dark: "#e25a71", rate: 0.12, refPrefix: "HIT", initials: "H" },
 };
 
 /** Fixed display order (= color slot order). */
-export const CHANNEL_ORDER: SalesChannel[] = ["PARIS", "DIRECT", "FALABELLA", "MERCADOLIBRE"];
+export const CHANNEL_ORDER: SalesChannel[] = ["PARIS", "DIRECT", "FALABELLA", "MERCADOLIBRE", "WALMART", "HITES"];
 
 /** Theme-aware color (light/dark tokens in globals.css). */
 export const channelVar = (c: SalesChannel) => `var(--ch-${c.toLowerCase()})`;

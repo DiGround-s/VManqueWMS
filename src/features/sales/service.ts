@@ -13,7 +13,7 @@ const NOW = Prisma.sql`(now() AT TIME ZONE 'America/Santiago')`;
 export type ChannelValues = Record<SalesChannel, number>;
 export type Bucket = { key: string; label: string; long: string; values: ChannelValues; orders: number };
 
-const zero = (): ChannelValues => ({ PARIS: 0, DIRECT: 0, FALABELLA: 0, MERCADOLIBRE: 0 });
+const zero = (): ChannelValues => ({ PARIS: 0, DIRECT: 0, FALABELLA: 0, MERCADOLIBRE: 0, WALMART: 0, HITES: 0 });
 const n = (v: bigint | number | null) => Number(v ?? 0);
 
 type SummaryKey = "today" | "today_n" | "yesterday" | "month" | "month_n" | "month_fee" | "prev_month" | "last_month_full" | "year" | "year_n" | "year_fee" | "prev_year" | "day_of_month" | "days_in_month";

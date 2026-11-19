@@ -41,6 +41,8 @@ enum SalesChannel {
   MERCADOLIBRE
   FALABELLA
   PARIS
+  WALMART
+  HITES
 }
 
 /// What a buyer conversation is about.
@@ -485,6 +487,8 @@ model MarketplaceAccount {
   accessToken  String
   refreshToken String
   expiresAt    DateTime
+  /// Secret placed in the webhook URL we register with the store (stores that do not sign their webhooks).
+  webhookToken String?
   connectedAt  DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 }

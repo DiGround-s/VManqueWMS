@@ -18,7 +18,7 @@ import { LiveRefresh, SimulateOrder } from "@/features/sales/live";
 export const metadata = { title: "Ventas y canales" };
 export const dynamic = "force-dynamic";
 
-const SLUG = { MERCADOLIBRE: "mercadolibre", FALABELLA: "falabella", PARIS: "paris", DIRECT: "tienda" } as const;
+const SLUG = { MERCADOLIBRE: "mercadolibre", FALABELLA: "falabella", PARIS: "paris", WALMART: "walmart", HITES: "hites", DIRECT: "tienda" } as const;
 
 function ago(d: Date | null) {
   if (!d) return "sin pedidos";

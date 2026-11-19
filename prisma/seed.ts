@@ -36,9 +36,9 @@ const PRICES = [
 
 // Store mix for the sales history (weights) and the commission each one charges (demo estimate, see src/lib/channels.ts).
 const CHANNEL_MIX: [SalesChannel, number][] = [["MERCADOLIBRE", 0.4], ["FALABELLA", 0.24], ["PARIS", 0.2], ["DIRECT", 0.16]];
-const RATE: Record<SalesChannel, number> = { MERCADOLIBRE: 0.15, FALABELLA: 0.14, PARIS: 0.12, DIRECT: 0.03 };
-const PREFIX: Record<SalesChannel, string> = { MERCADOLIBRE: "MLC", FALABELLA: "FAL", PARIS: "PAR", DIRECT: "WEB" };
-const STORE: Record<SalesChannel, string> = { MERCADOLIBRE: "Mercado Libre", FALABELLA: "Falabella", PARIS: "Paris", DIRECT: "la tienda propia" };
+const RATE: Record<SalesChannel, number> = { MERCADOLIBRE: 0.15, FALABELLA: 0.14, PARIS: 0.12, DIRECT: 0.03, WALMART: 0.13, HITES: 0.12 };
+const PREFIX: Record<SalesChannel, string> = { MERCADOLIBRE: "MLC", FALABELLA: "FAL", PARIS: "PAR", DIRECT: "WEB", WALMART: "WMT", HITES: "HIT" };
+const STORE: Record<SalesChannel, string> = { MERCADOLIBRE: "Mercado Libre", FALABELLA: "Falabella", PARIS: "Paris", DIRECT: "la tienda propia", WALMART: "Walmart", HITES: "Hites" };
 const FIRST = ["Camila", "Benjamín", "Valentina", "Matías", "Antonia", "Joaquín", "Isidora", "Tomás", "Florencia", "Vicente", "Martina", "Agustín", "Catalina", "Maximiliano", "Josefa", "Diego", "Sofía", "Lucas", "Emilia", "Cristóbal", "Fernanda", "Ignacio", "Javiera", "Felipe"];
 const LAST = ["Rojas", "Soto", "Muñoz", "González", "Díaz", "Pérez", "Contreras", "Silva", "Morales", "Araya", "Fuentes", "Castillo", "Espinoza", "Tapia", "Reyes", "Vargas", "Sepúlveda", "Navarro", "Carrasco", "Torres"];
 // Month factor (Jan..Dec): CyberDay in June, Black Friday / CyberMonday in November, Christmas in December.

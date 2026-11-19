@@ -5,7 +5,7 @@ import { UserError } from "@/server/errors";
 import { orderInput } from "@/features/orders/schema";
 import { createOrder } from "@/features/orders/service";
 
-const SLUGS = { mercadolibre: "MERCADOLIBRE", falabella: "FALABELLA", paris: "PARIS", tienda: "DIRECT" } as const;
+const SLUGS = { mercadolibre: "MERCADOLIBRE", falabella: "FALABELLA", paris: "PARIS", walmart: "WALMART", hites: "HITES", tienda: "DIRECT" } as const;
 
 /**
  * One endpoint per store: `POST /api/v1/webhooks/{mercadolibre|falabella|paris|tienda}`.

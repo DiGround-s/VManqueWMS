@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tiendas simuladas · laboratorio</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Segoe UI",sans-serif;background:#f1f3f6;color:#222;font-size:14px}
+header{background:#1f2937;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}header b{font-size:18px}
+.tag{background:#fde68a;color:#78350f;border-radius:4px;font-size:12px;padding:2px 8px}
+nav{display:flex;gap:8px;padding:14px 24px 0;flex-wrap:wrap}nav button{border:0;border-radius:20px;padding:8px 16px;font-weight:600;cursor:pointer;background:#e5e7eb}
+nav button.on{color:#fff}main{padding:16px 24px;display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+section{background:#fff;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.08);padding:16px}h2{font-size:16px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.p{border:1px solid #eee;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:4px}
+.p img{height:90px;object-fit:contain;background:#fafafa;border-radius:6px}.p .t{font-weight:600;min-height:34px;font-size:13px}.muted{color:#6b7280;font-size:12px}
+.p button{border:0;border-radius:6px;padding:6px;color:#fff;font-weight:600;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:6px;border-bottom:1px solid #eee;text-align:left}
+.pill{border-radius:10px;padding:1px 8px;font-weight:600;font-size:11px}.pend{background:#fef3c7;color:#92400e}.ok{background:#dcfce7;color:#166534}.no{background:#fee2e2;color:#991b1b}
+.info{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;font-size:12px;line-height:1.5;margin-bottom:10px}
+</style>
+</head>
+<body>
+<header><b>Tiendas simuladas</b><span class="tag">laboratorio · no son los sitios reales</span><span class="muted" style="color:#cbd5e1">Falabella · Walmart (Líder) · Paris · Hites</span></header>
+<nav id="tabs"></nav>
+<main>
+<div><section><h2 id="titulo"></h2><div class="info" id="info"></div><div class="grid" id="cat"></div></section></div>
+<div>
+<section><h2>Ventas en esta tienda</h2><table><thead><tr><th>Hora</th><th>Pedido</th><th>Producto</th><th>Estado en la tienda</th></tr></thead><tbody id="ventas"></tbody></table></section>
+<section style="margin-top:18px" id="secAvisos"><h2>Webhooks enviados (Falabella)</h2><table><thead><tr><th>Hora</th><th>Evento</th><th>Pedido</th><th>Intentos</th><th>Respuesta</th></tr></thead><tbody id="avisos"></tbody></table></section>
+</div>
+</main>
+<script>
+const T = {
+  FALABELLA: { nombre: "Falabella", color: "#1baf7a", info: "API <b>Seller Center</b> (documentada): consultas firmadas con HMAC-SHA256 (UserID + API key). La tienda <b>avisa por webhook</b> (onOrderCreated) y el WMS lee el pedido con GetOrder y GetOrderItems." },
+  WALMART: { nombre: "Walmart (Líder)", color: "#8e5bd6", info: "API <b>Walmart Marketplace Chile</b> (documentada): OAuth 2.0 <i>client credentials</i> y token en WM_SEC.ACCESS_TOKEN. <b>Sin webhooks</b>: el WMS consulta GET /v3/orders cada minuto y confirma con <i>acknowledge</i>." },
+  PARIS: { nombre: "Paris", color: "#2a78d6", info: "<b>Supuesto</b>: Paris no publica su API. Se modela como REST con API key (Bearer) y <b>consulta periódica</b> de /v1/orders, que es lo habitual en los marketplaces de retail." },
+  HITES: { nombre: "Hites", color: "#d6455d", info: "<b>Supuesto</b>: Hites no publica su API. Igual que Paris: REST con API key y <b>consulta periódica</b>." },
+};
+let tienda = new URLSearchParams(location.search).get("tienda") || "FALABELLA", E;
+const $ = (s) => document.querySelector(s);
+const clp = (n) => "$ " + n.toLocaleString("es-CL");
+const hora = (iso) => new Date(iso).toLocaleTimeString("es-CL");
+const NOMBRES = ["Camila Fuentes", "Diego Morales", "Antonia Rivas", "Tomás Herrera", "Isidora Pinto"];
+const COMUNAS = ["Las Condes", "Maipú", "Ñuñoa", "La Florida", "Puente Alto"];
+async function comprar(sku) {
+  const i = Math.floor(Math.random() * 5);
+  await fetch("/sim/comprar", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ tienda, sku, qty: 1, nombre: NOMBRES[i], comuna: COMUNAS[i] }) });
+  cargar();
+}
+function tabs() {
+  $("#tabs").innerHTML = Object.entries(T).map(([k, t]) => `<button class="${k === tienda ? "on" : ""}" style="${k === tienda ? `background:${t.color}` : ""}" onclick="tienda='${k}';history.replaceState(null,'','?tienda=${k}');tabs();cargar()">${t.nombre}</button>`).join("");
+  $("#titulo").textContent = "Catálogo de VManque en " + T[tienda].nombre;
+  $("#info").innerHTML = T[tienda].info;
+  $("#secAvisos").style.display = tienda === "FALABELLA" ? "" : "none";
+}
+async function cargar() {
+  E = await (await fetch("/sim/estado")).json();
+  const c = T[tienda].color;
+  $("#cat").innerHTML = E.catalogo.filter((p) => !p.sku.startsWith("SKU-NO")).map((p) => `<div class="p">${p.thumbnail ? `<img src="${p.thumbnail}" alt="">` : ""}<div class="t">${p.title}</div><div>${clp(p.price)}</div><div class="muted">SKU ${p.sku}</div><button style="background:${c}" onclick="comprar('${p.sku}')">Simular compra</button></div>`).join("");
+  $("#ventas").innerHTML = E.orders.filter((o) => o.tienda === tienda).map((o) => `<tr><td>${hora(o.creado)}</td><td>${o.id}</td><td>${o.qty} × ${o.title}</td><td><span class="pill ${o.estado === "pendiente" ? "pend" : "ok"}">${o.estado === "pendiente" ? "nueva" : "confirmada por el vendedor"}</span></td></tr>`).join("") || '<tr><td colspan="4" class="muted">Sin ventas.</td></tr>';
+  $("#avisos").innerHTML = E.notifs.map((n) => `<tr><td>${hora(n.hora)}</td><td>${n.evento}</td><td>${n.payload.OrderId}</td><td>${n.intentos}</td><td><span class="pill ${n.http === 200 ? "ok" : "no"}">${n.http ?? "-"} · ${n.ms ?? "-"} ms</span></td></tr>`).join("") || `<tr><td colspan="5" class="muted">${E.webhooks.length ? "Sin avisos todavía." : "El vendedor aún no registra su webhook (se registra al conectar la tienda en el WMS)."}</td></tr>`;
+}
+tabs();
+cargar();
+setInterval(cargar, 2500);
+</script>
+</body>
+</html>

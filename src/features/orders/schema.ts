@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CHANNEL_VALUES = ["DIRECT", "MERCADOLIBRE", "FALABELLA", "PARIS"] as const;
+export const CHANNEL_VALUES = ["DIRECT", "MERCADOLIBRE", "FALABELLA", "PARIS", "WALMART", "HITES"] as const;
 
 export const orderLineInput = z.object({
   sku: z.string().trim().min(1, "Falta el SKU").max(80),
