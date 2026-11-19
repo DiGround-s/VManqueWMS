@@ -171,6 +171,7 @@ void setup() {
   connectWifi();
   mqtt.setServer(MQTT_HOST, MQTT_PORT);
   mqtt.setCallback(onMessage);
+  mqtt.setKeepAlive(60);  // s: tolera Wi-Fi lento (y el simulador) sin que el broker corte la sesión
   connectMqtt();
 }
 

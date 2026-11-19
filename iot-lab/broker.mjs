@@ -45,5 +45,23 @@ aedes.on("publish", (packet, client) => {
 });
 aedes.on("clientDisconnect", (client) => console.log(`[${hora()}] DESCONECTA ${client.user ?? client.id}`));
 
+// Prueba IOT-07: escribir "cortar" en la terminal del broker (o crear el archivo evidencia/cortar) cierra desde el
+// servidor la conexión del ESP32, como si se cayera la red. El ESP32 debe volver a conectarse y suscribirse solo.
+function cortar() {
+  const esp = Object.values(aedes.clients).find((c) => c.user === "esp32-bc-01");
+  if (!esp) return console.log(`[${hora()}] CORTE: el ESP32 no está conectado`);
+  console.log(`[${hora()}] CORTE: el servidor cierra la conexión de ${esp.id}`);
+  esp.close();
+}
+process.stdin.on("data", (d) => d.toString().trim() === "cortar" && cortar());
+const marca = new URL("./evidencia/cortar", import.meta.url);
+setInterval(async () => {
+  const fs = await import("fs");
+  if (fs.existsSync(marca)) {
+    fs.unlinkSync(marca);
+    cortar();
+  }
+}, 500);
+
 const host = process.env.MQTT_BIND ?? "127.0.0.1";
 net.createServer(aedes.handle).listen(1883, host, () => console.log(`[${hora()}] Broker MQTT escuchando en ${host}:1883 (usuarios: ${Object.keys(USERS).join(", ")})`));
