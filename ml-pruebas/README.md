@@ -1,6 +1,6 @@
-# Mercado Libre simulado (laboratorio)
+# Mercado Libre: entorno de pruebas de integración
 
-Réplica local de la API de Mercado Libre para probar el conector de la web sin una cuenta real.
+Réplica local de la API de Mercado Libre (mock server) para probar el conector de la web sin una cuenta real.
 Imita la forma real de:
 - **OAuth 2.0:** `/authorization` y `/oauth/token`.
 - **Notificaciones:** un JSON con `_id`, `resource`, `topic`, `user_id`, `application_id` y `attempts`.
@@ -24,7 +24,7 @@ Imita la forma real de:
    ML_CLIENT_SECRET="lab-ml-secreto-0b7d6c2e9a"
    ML_REDIRECT_URI="http://localhost:3000/api/integraciones/mercadolibre/callback"
    ```
-2. Ejecuta `node ml-sim/publicar.mjs` y después `node ml-sim/servidor.mjs`.
+2. Ejecuta `node ml-pruebas/publicar.mjs` y después `node ml-pruebas/servidor.mjs`.
 3. **Conecta la cuenta:** en la web, Ajustes › Integraciones › «Conectar con Mercado Libre» › «Autorizar».
 4. **Juega de comprador:** en `http://127.0.0.1:4100/comprador` compra, pregunta, escribe, reclama o cancela.
    Todo aparece en Pedidos y en Atención, y lo que se responde allí vuelve al comprador.

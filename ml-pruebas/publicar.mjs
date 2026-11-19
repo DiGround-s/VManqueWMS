@@ -1,6 +1,6 @@
-// Crea las publicaciones del vendedor en el Mercado Libre simulado a partir del catálogo del WMS.
+// Crea las publicaciones del vendedor en el entorno de pruebas de Mercado Libre a partir del catálogo del WMS.
 // En Mercado Libre real, cada publicación lleva el SKU del vendedor (seller_sku): así el conector sabe qué producto es.
-//   node ml-sim/publicar.mjs
+//   node ml-pruebas/publicar.mjs
 import { createRequire } from "module";
 import fs from "fs";
 import path from "path";

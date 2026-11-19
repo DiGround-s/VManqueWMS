@@ -1,6 +1,6 @@
-# Falabella, Walmart, Paris y Hites simulados (laboratorio)
+# Falabella, Walmart, Paris y Hites: entorno de pruebas de integración
 
-`node tiendas-sim/servidor.mjs` levanta en `http://127.0.0.1:4200` las cuatro tiendas. El panel `/` sirve para «simular compras».
+`node tiendas-pruebas/servidor.mjs` levanta en `http://127.0.0.1:4200` las cuatro tiendas. El panel `/` sirve para «generar compras de prueba».
 
 | Tienda | Estilo de API | Cómo llegan los pedidos | Documentación |
 |---|---|---|---|
@@ -22,4 +22,4 @@
 - `FALABELLA_API_URL`, `WALMART_API_URL`, `PARIS_API_URL` y `HITES_API_URL`, que en el laboratorio apuntan a `http://127.0.0.1:4200/<tienda>`.
 - `APP_PUBLIC_URL`, la URL pública del webhook.
 
-Pruebas: `node tiendas-sim/pruebas.mjs` (TND-01 a TND-11); el resultado queda en `evidencia/tiendas.json`.
+Pruebas: `node tiendas-pruebas/pruebas.mjs` (TND-01 a TND-11); el resultado queda en `evidencia/tiendas.json`.

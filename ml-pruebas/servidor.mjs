@@ -1,5 +1,5 @@
-// Mercado Libre simulado para el laboratorio: misma forma de API, OAuth y notificaciones que api.mercadolibre.com.
-//   node ml-sim/servidor.mjs        → http://127.0.0.1:4100  (API, autorización y página del comprador en /comprador)
+// Entorno de pruebas de Mercado Libre para el laboratorio: misma forma de API, OAuth y notificaciones que api.mercadolibre.com.
+//   node ml-pruebas/servidor.mjs        → http://127.0.0.1:4100  (API, autorización y página del comprador en /comprador)
 // La web de VManque se conecta igual que a la API real: sólo cambia la dirección base (ML_API_URL / ML_AUTH_URL).
 import http from "http";
 import fs from "fs";
@@ -169,7 +169,7 @@ const srv = http.createServer(async (req, res) => {
   const p = u.pathname;
   const m = req.method;
   try {
-    // --- página del comprador y acciones del simulador (no son parte de la API real) ---
+    // --- página del comprador y acciones del entorno de pruebas (no son parte de la API real) ---
     if (m === "GET" && (p === "/" || p === "/comprador")) return html(res, fs.readFileSync(path.join(aqui, "comprador.html"), "utf8"));
     if (m === "GET" && p === "/sim/estado") {
       return json(res, 200, {
@@ -326,12 +326,12 @@ const srv = http.createServer(async (req, res) => {
 
 function paginaAutorizar(q) {
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-  return `<!doctype html><html lang=es><head><meta charset=utf-8><title>Autorizar aplicación · Mercado Libre (simulado)</title>
+  return `<!doctype html><html lang=es><head><meta charset=utf-8><title>Autorizar aplicación · Mercado Libre (entorno de pruebas)</title>
 <style>body{margin:0;font-family:system-ui,Segoe UI,sans-serif;background:#ededed;color:#333}.top{background:#ffe600;height:56px;display:flex;align-items:center;padding:0 24px;font-weight:700}
 .box{max-width:520px;margin:48px auto;background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.15);padding:32px}h1{font-size:22px;margin:0 0 8px}.muted{color:#777;font-size:14px}
 ul{line-height:1.9;padding-left:20px}button{width:100%;background:#3483fa;color:#fff;border:0;border-radius:6px;padding:14px;font-size:16px;font-weight:600;cursor:pointer;margin-top:16px}
 .sec{background:#fff;color:#3483fa;border:1px solid #3483fa}.tag{display:inline-block;background:#fff3cd;border:1px solid #f0d68a;border-radius:4px;font-size:12px;padding:2px 8px;margin-left:8px}</style></head>
-<body><div class=top>Mercado Libre <span class=tag>simulador de laboratorio</span></div><div class=box>
+<body><div class=top>Mercado Libre <span class=tag>entorno de pruebas</span></div><div class=box>
 <p class=muted>Sesión iniciada como <b>${SELLER.nickname}</b></p>
 <h1>VManque WMS quiere acceder a tu cuenta</h1><p class=muted>Aplicación ${esc(q.client_id)}</p>
 <p>Al autorizar, la aplicación podrá:</p><ul><li>Ver tus ventas y sus envíos</li><li>Leer y responder preguntas de tus publicaciones</li><li>Leer y responder mensajes post-venta y reclamos</li><li>Hacerlo sin que estés conectado (acceso offline)</li></ul>
@@ -340,4 +340,4 @@ ul{line-height:1.9;padding-left:20px}button{width:100%;background:#3483fa;color:
 <button id=autorizar>Autorizar</button></form></div></body></html>`;
 }
 
-srv.listen(PORT, "127.0.0.1", () => log(`Mercado Libre simulado en http://127.0.0.1:${PORT} · comprador: /comprador · avisos → ${APP.callbackUrl}`));
+srv.listen(PORT, "127.0.0.1", () => log(`entorno de pruebas de Mercado Libre en http://127.0.0.1:${PORT} · comprador: /comprador · avisos → ${APP.callbackUrl}`));

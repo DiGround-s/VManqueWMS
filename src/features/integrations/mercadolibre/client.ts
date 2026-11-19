@@ -5,7 +5,7 @@ import { UserError } from "@/server/errors";
 
 /**
  * Mercado Libre API client: OAuth 2.0 (authorization code + refresh token) and authenticated calls.
- * The same code talks to the real API or to the lab simulator; only the URLs in the environment change:
+ * The same code talks to the real API or to the lab test server; only the URLs in the environment change:
  *   ML_API_URL   https://api.mercadolibre.com            (lab: http://127.0.0.1:4100)
  *   ML_AUTH_URL  https://auth.mercadolibre.cl/authorization (lab: http://127.0.0.1:4100/authorization)
  *   ML_CLIENT_ID, ML_CLIENT_SECRET, ML_REDIRECT_URI  → from the app registered in developers.mercadolibre.cl

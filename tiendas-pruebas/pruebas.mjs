@@ -1,6 +1,6 @@
-// Pruebas de los conectores de Falabella, Walmart, Paris y Hites (TND-01 a TND-11) contra las tiendas simuladas.
-//   node tiendas-sim/servidor.mjs  (otra terminal)  y la web en http://localhost:3000, luego:
-//   node tiendas-sim/pruebas.mjs
+// Pruebas de los conectores de Falabella, Walmart, Paris y Hites (TND-01 a TND-11) contra las entorno de pruebas de las tiendas.
+//   node tiendas-pruebas/servidor.mjs  (otra terminal)  y la web en http://localhost:3000, luego:
+//   node tiendas-pruebas/pruebas.mjs
 import { createRequire } from "module";
 import crypto from "crypto";
 import fs from "fs";

@@ -1,4 +1,4 @@
-// Configuración del Mercado Libre simulado. Equivale a lo que se registra en developers.mercadolibre.cl
+// Configuración del entorno de pruebas de Mercado Libre. Equivale a lo que se registra en developers.mercadolibre.cl
 // («Mis aplicaciones»): id y secreto de la app, la URL de redirección de OAuth y la URL de notificaciones.
 export const PORT = Number(process.env.ML_SIM_PORT ?? 4100);
 export const BASE = `http://127.0.0.1:${PORT}`;

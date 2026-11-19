@@ -11,7 +11,7 @@ import type { OrderInput } from "@/features/orders/schema";
  *  - Falabella Seller Center: query string signed with HMAC-SHA256 (UserID + API key) + webhooks.   (documented)
  *  - Walmart Marketplace Chile: OAuth 2.0 client credentials, WM_SEC.ACCESS_TOKEN header, polling.   (documented)
  *  - Paris, Hites: no public API docs → ASSUMED REST + API key (Bearer) + polling, to be confirmed at onboarding.
- * Base URLs come from the environment, so the same code points at the real API or at the lab simulator.
+ * Base URLs come from the environment, so the same code points at the real API or at the lab test server.
  */
 export type StoreChannel = "FALABELLA" | "WALMART" | "PARIS" | "HITES";
 export const STORE_CHANNELS: StoreChannel[] = ["FALABELLA", "WALMART", "PARIS", "HITES"];

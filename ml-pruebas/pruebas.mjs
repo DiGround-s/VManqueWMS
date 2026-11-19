@@ -1,6 +1,6 @@
-// Pruebas del conector de Mercado Libre (ML-01 a ML-12) contra el Mercado Libre simulado.
-//   node ml-sim/servidor.mjs   (en otra terminal)   y la web en http://localhost:3000, luego:
-//   node ml-sim/pruebas.mjs
+// Pruebas del conector de Mercado Libre (ML-01 a ML-12) contra el entorno de pruebas de Mercado Libre.
+//   node ml-pruebas/servidor.mjs   (en otra terminal)   y la web en http://localhost:3000, luego:
+//   node ml-pruebas/pruebas.mjs
 // Usa un navegador real (Edge) para el OAuth y para responder desde Atención; guarda capturas en informe/img.
 import { createRequire } from "module";
 import fs from "fs";
@@ -64,7 +64,7 @@ async function responder(page, convId, texto, captura) {
 }
 
 try {
-  // Punto de partida: sin cuenta conectada (las ventas anteriores del simulador se mantienen; sus ids no se repiten).
+  // Punto de partida: sin cuenta conectada (las ventas anteriores del entorno de pruebas se mantienen; sus ids no se repiten).
   await db.marketplaceAccount.deleteMany({ where: { channel: "MERCADOLIBRE" } });
 
   // ML-01 OAuth

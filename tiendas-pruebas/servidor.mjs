@@ -1,5 +1,5 @@
-// Falabella, Walmart (Líder), Paris y Hites simulados para el laboratorio.
-//   node tiendas-sim/servidor.mjs   → http://127.0.0.1:4200  (panel del comprador en /)
+// Entorno de pruebas de Falabella, Walmart (Líder), Paris y Hites para el laboratorio.
+//   node tiendas-pruebas/servidor.mjs   → http://127.0.0.1:4200  (panel del comprador en /)
 //
 // Cada tienda imita la forma de su API:
 //  · Falabella Seller Center (documentada): GET /falabella/?Action=...&UserID=...&Timestamp=...&Signature=<HMAC-SHA256>,
@@ -32,7 +32,7 @@ const vacio = () => ({ seq: 0, orders: [], webhooks: [], notifs: [], tokens: {} 
 let S = fs.existsSync(ESTADO) ? JSON.parse(fs.readFileSync(ESTADO, "utf8")) : vacio();
 const guardar = () => fs.writeFileSync(ESTADO, JSON.stringify(S, null, 1));
 const catalogo = () => {
-  const f = path.join(aqui, "..", "ml-sim", "publicaciones.json");
+  const f = path.join(aqui, "..", "ml-pruebas", "publicaciones.json");
   return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).map((p) => ({ sku: p.seller_sku, title: p.title, price: p.price, thumbnail: p.thumbnail })) : [];
 };
 const ahora = () => new Date().toISOString();
@@ -234,4 +234,4 @@ http
       return json(res, 500, { error: e.message });
     }
   })
-  .listen(PORT, "127.0.0.1", () => log(`Tiendas simuladas (Falabella, Walmart, Paris, Hites) en http://127.0.0.1:${PORT}`));
+  .listen(PORT, "127.0.0.1", () => log(`Entorno de pruebas de las tiendas de Falabella, Walmart, Paris y Hites en http://127.0.0.1:${PORT}`));
