@@ -27,6 +27,7 @@ iot-lab/evidencia/
 iot-lab/wokwi/build/
 iot-lab/wokwi/sketch/
 
-# Informe: documentos Word (se generan con informe/generar_informe.py)
-informe/base/
-informe/*.docx
+# Informe, PDF, capturas y diagramas: privados, sólo en el PC local
+informe/
+*.pdf
+*.docx
