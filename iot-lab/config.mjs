@@ -19,15 +19,14 @@ function fromDotEnv(name) {
 export const DATABASE_URL = process.env.DATABASE_URL ?? fromDotEnv("DATABASE_URL");
 export const APP_URL = process.env.APP_URL ?? "http://localhost:3000";
 
-// Broker MQTT. En el laboratorio, el ESP32 simulado en Wokwi sólo llega a Internet, por eso se usa
-// un broker público. En la bodega real es Mosquitto en 192.168.10.10 con usuario y clave.
-export const MQTT_URL = process.env.MQTT_URL ?? "mqtt://broker.hivemq.com:1883";
-export const MQTT_USER = process.env.MQTT_USER;
-export const MQTT_PASS = process.env.MQTT_PASS;
+// Broker MQTT. En el laboratorio corre en este PC (node broker.mjs) y el ESP32 emulado por Wokwi para
+// VS Code llega a él como host.wokwi.internal. En la bodega es Mosquitto en 192.168.10.10.
+export const MQTT_URL = process.env.MQTT_URL ?? "mqtt://127.0.0.1:1883";
+export const MQTT_USER = process.env.MQTT_USER ?? "servidor";
+export const MQTT_PASS = process.env.MQTT_PASS ?? "lab-servidor-clave";
 
-// Prefijo de los temas. Debe ser igual al LAB_PREFIX del sketch de Wokwi (node wokwi/sincronizar.mjs).
-// En la bodega real el prefijo es "vmanque".
-export const PREFIX = process.env.LAB_PREFIX ?? "vmanque-g5-lab";
+// Prefijo de los temas: vmanque/bc/led/<ubicación> (órdenes) y vmanque/bc/ack/<ubicación> (confirmaciones).
+export const PREFIX = process.env.MQTT_PREFIX ?? "vmanque";
 export const LED_TOPIC = `${PREFIX}/bc/led`;
 
 // Mismo mapeo que firmware/esp32-pick-to-light y src/features/map/led-mapping.ts.

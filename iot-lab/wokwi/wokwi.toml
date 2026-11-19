@@ -1,0 +1,5 @@
+# Wokwi para VS Code: abre la carpeta iot-lab/wokwi en VS Code, compila (compilar.ps1) y presiona F1 → "Wokwi: Start Simulator".
+[wokwi]
+version = 1
+firmware = 'build/sketch.ino.bin'
+elf = 'build/sketch.ino.elf'

@@ -15,7 +15,11 @@
     "prueba:seguridad": "node pruebas/seguridad.mjs"
   },
   "dependencies": {
+    "aedes": "^0.51.3",
     "mqtt": "^5.10.0",
     "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.1"
   }
 }

@@ -24,3 +24,5 @@ scripts/demo-video/.elevenlabs-key
 # Respaldos locales de la base de datos
 respaldos/
 iot-lab/evidencia/
+iot-lab/wokwi/build/
+iot-lab/wokwi/sketch/

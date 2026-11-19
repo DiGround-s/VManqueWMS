@@ -23,23 +23,21 @@
 #include <ArduinoJson.h>
 
 // ---- Red (cambia estos valores) ----
-// Laboratorio sin hardware: si la primera línea del sketch es `#define WOKWI_LAB`, el mismo firmware
-// corre en el simulador Wokwi (ESP32 + tiras WS2812B emuladas) con su Wi-Fi «Wokwi-GUEST» y un broker
-// MQTT público. Ver iot-lab/README.md. Sin esa línea, usa la red real de la bodega (VLAN 30 IoT).
+// Laboratorio sin hardware: si el sketch empieza con `#define WOKWI_LAB`, el mismo firmware corre en
+// Wokwi para VS Code (ESP32 y tiras WS2812B emulados). Su Wi-Fi «Wokwi-GUEST» sale por el gateway local
+// de la extensión, y host.wokwi.internal es el PC donde corre el broker. Ver iot-lab/README.md.
+// Sin esa línea, usa la red real de la bodega (VLAN 30 IoT).
 #ifdef WOKWI_LAB
 const char* WIFI_SSID = "Wokwi-GUEST";
 const char* WIFI_PASS = "";
 const int32_t WIFI_CHANNEL = 6;  // canal fijo de Wokwi-GUEST: evita el escaneo
-const char* MQTT_HOST = "broker.hivemq.com";
+const char* MQTT_HOST = "host.wokwi.internal";
 const uint16_t MQTT_PORT = 1883;
-const char* MQTT_USER = "";
-const char* MQTT_PASS = "";
-const char* CLIENT_ID = "esp32-bc-01-lab";
-#ifndef LAB_PREFIX
-#define LAB_PREFIX "vmanque-g5-lab"
-#endif
-const char* TOPIC = LAB_PREFIX "/bc/led/#";
-const char* ACK_BASE = LAB_PREFIX "/bc/ack/";
+const char* MQTT_USER = "esp32-bc-01";
+const char* MQTT_PASS = "lab-esp32-clave";
+const char* CLIENT_ID = "esp32-bc-01";
+const char* TOPIC = "vmanque/bc/led/#";
+const char* ACK_BASE = "vmanque/bc/ack/";
 #else
 const char* WIFI_SSID = "VManque-IoT";
 const char* WIFI_PASS = "cambia-esta-clave";
@@ -155,12 +153,7 @@ void connectWifi() {
 void connectMqtt() {
   while (!mqtt.connected()) {
     Serial.printf("[MQTT] Conectando a %s:%u como %s...\n", MQTT_HOST, MQTT_PORT, CLIENT_ID);
-    String id = String(CLIENT_ID);
-#ifdef WOKWI_LAB
-    id += "-" + String((uint32_t)ESP.getEfuseMac(), HEX);  // único en el broker público
-#endif
-    bool ok = strlen(MQTT_USER) ? mqtt.connect(id.c_str(), MQTT_USER, MQTT_PASS) : mqtt.connect(id.c_str());
-    if (ok) {
+    if (mqtt.connect(CLIENT_ID, MQTT_USER, MQTT_PASS)) {
       mqtt.subscribe(TOPIC, 1);
       Serial.printf("[MQTT] Conectado · suscrito a %s (QoS 1)\n", TOPIC);
     } else {

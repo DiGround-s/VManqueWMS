@@ -88,7 +88,7 @@ async function encender(c, code, color = "green", blink = 1) {
   const ack = await espera;
   const ms = Date.now() - t0;
   if (ack) console.log(`[${hora()}] [ESP32] <- ack ${code}: tira ${ack.strip}, píxeles ${ack.first}-${ack.last}, color ${ack.color} (${ms} ms)`);
-  else console.log(`[${hora()}] [ESP32] sin confirmación de ${code} en 8 s (¿está corriendo la simulación en Wokwi?)`);
+  else console.log(`[${hora()}] [ESP32] sin confirmación de ${code} en 8 s (¿está corriendo la simulación de Wokwi en VS Code?)`);
   return { ack, ms };
 }
 
@@ -156,7 +156,7 @@ async function buscar() {
     if (!px) continue;
     const { ack, ms } = await encender(c, f.ubicacion, color);
     const ok = ack && ack.strip === px.strip && ack.first === px.first && ack.last === px.last && ack.color === color;
-    registrar([new Date().toISOString(), f.sku, f.name, f.ubicacion, "esp32-bc-01 (Wokwi)", px.strip, `${px.first}-${px.last}`, color, ack ? `${ack.first}-${ack.last}` : "", ack?.color, ms, ok ? "OK" : "FALLA"]);
+    registrar([new Date().toISOString(), f.sku, f.name, f.ubicacion, "esp32-bc-01 (Wokwi VS Code)", px.strip, `${px.first}-${px.last}`, color, ack ? `${ack.first}-${ack.last}` : "", ack?.color, ms, ok ? "OK" : "FALLA"]);
     console.log(`           resultado: ${ok ? "OK, el ESP32 encendió la casilla esperada" : "FALLA, no coincide o no llegó"}`);
     encendidas.push(f.ubicacion);
   }
@@ -222,7 +222,7 @@ async function picking() {
         console.log(`[${hora()}] ${r.ola}: próxima parada ${code} · ${r.sku} ${r.name} · faltan ${r.faltan} u.`);
         const { ack, ms } = await encender(c, code, r.color);
         const px = pixelsFor(code);
-        registrar([new Date().toISOString(), r.sku, r.name, code, "esp32-bc-01 (Wokwi)", px?.strip, px ? `${px.first}-${px.last}` : "", r.color, ack ? `${ack.first}-${ack.last}` : "", ack?.color, ms, ack ? "OK" : "SIN ACK"]);
+        registrar([new Date().toISOString(), r.sku, r.name, code, "esp32-bc-01 (Wokwi VS Code)", px?.strip, px ? `${px.first}-${px.last}` : "", r.color, ack ? `${ack.first}-${ack.last}` : "", ack?.color, ms, ack ? "OK" : "SIN ACK"]);
       }
       encendidas = ahora;
     } catch (e) {
