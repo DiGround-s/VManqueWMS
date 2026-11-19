@@ -149,7 +149,7 @@ export function SimulateMessage() {
     <div className="relative">
       <div className="flex">
         <Button variant="primary" pending={pending} onClick={() => go()} className="rounded-r-none pr-3">
-          <MessageSquarePlus className="size-4" /> Simular mensaje entrante
+          <MessageSquarePlus className="size-4" /> Mensaje de prueba
         </Button>
         <Button variant="primary" onClick={() => setOpen((v) => !v)} aria-label="Elegir tienda" aria-expanded={open} className="rounded-l-none border-l border-white/20 px-2.5">
           <ChevronDown className="size-4" />

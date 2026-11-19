@@ -103,7 +103,7 @@ export function Esp32Sim({ rows, lit, enabled, onToggle, product }: { rows: stri
           </span>
           <div>
             <div className="font-semibold">
-              Pick-to-light · ESP32 <span className="ml-1 rounded-full bg-warn-bg px-2 py-0.5 text-[11px] font-semibold text-warn">simulado</span>
+              Pick-to-light · ESP32 <span className="ml-1 rounded-full bg-warn-bg px-2 py-0.5 text-[11px] font-semibold text-warn">vista web</span>
             </div>
             <div className="text-sm text-muted">
               {!enabled ? "LEDs apagados" : lit.length ? `Encendido en ${lit.length === 1 ? lit[0] : `${lit.length} ubicaciones`}${product ? ` · ${product}` : ""}` : "Busca un producto o toca una casilla"}

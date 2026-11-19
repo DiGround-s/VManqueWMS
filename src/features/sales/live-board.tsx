@@ -221,7 +221,7 @@ export function LiveBoard({ initial, canSimulate }: { initial: LiveSnapshot; can
         {canSimulate && (
           <Button variant={traffic ? "secondary" : "primary"} size="sm" className="ml-auto" onClick={() => setTraffic((v) => !v)} aria-pressed={traffic}>
             {traffic ? <Pause className="size-4" /> : <Play className="size-4" />}
-            {traffic ? "Detener tráfico simulado" : "Simular tráfico de tiendas"}
+            {traffic ? "Detener tráfico de prueba" : "Tráfico de prueba"}
           </Button>
         )}
       </div>

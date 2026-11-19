@@ -210,7 +210,7 @@ export default async function SalesPage({ searchParams }: { searchParams: Promis
                 ))}
               </tbody>
             </Table>
-            <p className="px-5 pb-4 pt-2 text-xs text-muted">Comisiones de referencia para la demo, no son las tarifas oficiales de cada marketplace.</p>
+            <p className="px-5 pb-4 pt-2 text-xs text-muted">Comisiones de referencia, no son las tarifas oficiales de cada marketplace.</p>
           </Card>
 
           <Card>
