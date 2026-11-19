@@ -7,6 +7,7 @@ import { db } from "@/server/db";
 import { UserError } from "@/server/errors";
 import { CHANNEL_VALUES } from "@/features/orders/schema";
 import { SCRIPTS, SLA_HOURS, SYSTEM_OPEN, fill } from "./scripts";
+import { isMlThread, pushReply } from "@/features/integrations/mercadolibre/sync";
 
 const RETURN_STEP = {
   APPROVED: "Devolución aprobada · etiqueta de envío enviada al comprador",
@@ -18,14 +19,31 @@ const RETURN_STEP = {
 
 const done = () => revalidatePath("/", "layout");
 
-/** Answer the buyer. The marketplace API would get the same text (the demo keeps it local). */
+/**
+ * Answer the buyer. Threads that came from the Mercado Libre connector are sent to Mercado Libre first
+ * (answer, post-sale message or claim message); if that fails nothing is saved and the agent sees why.
+ * Demo threads stay local.
+ */
 export const replyAction = action("OPERATOR", z.object({ id: z.string().min(1), body: z.string().trim().min(1, "Escribe una respuesta").max(2000) }), async ({ id, body }, user) => {
-  const c = await db.conversation.findUnique({ where: { id }, select: { status: true } });
+  const c = await db.conversation.findUnique({ where: { id }, select: { status: true, channel: true, externalRef: true } });
   if (!c) throw new UserError("La conversación ya no existe.");
+  let externalId: string | null = null;
+  if (c.channel === "MERCADOLIBRE" && isMlThread(c.externalRef)) {
+    try {
+      externalId = await pushReply(c.externalRef!, body);
+    } catch (e) {
+      throw new UserError(`No se pudo enviar a Mercado Libre: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
   const now = new Date();
   await db.conversation.update({
     where: { id },
-    data: { status: c.status === "RESOLVED" ? "RESOLVED" : "WAITING", unread: 0, lastMessageAt: now, messages: { create: { author: "AGENT", authorName: user.name, body, createdAt: now } } },
+    data: {
+      status: c.status === "RESOLVED" ? "RESOLVED" : "WAITING",
+      unread: 0,
+      lastMessageAt: now,
+      messages: { create: { author: "AGENT", authorName: user.name, body, createdAt: now, externalId } },
+    },
   });
   done();
   return { ok: true };

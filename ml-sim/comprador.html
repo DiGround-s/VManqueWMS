@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Comprador · Mercado Libre simulado</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Segoe UI",sans-serif;background:#ededed;color:#333;font-size:14px}
+.top{background:#ffe600;padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}.top b{font-size:18px}
+.tag{background:#fff3cd;border:1px solid #e0c56a;border-radius:4px;font-size:12px;padding:2px 8px}
+.top select{margin-left:auto;padding:6px 8px;border-radius:6px;border:1px solid #ccc}
+main{max-width:1280px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1.35fr 1fr;gap:20px}
+section{background:#fff;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.12);padding:18px}h2{font-size:17px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.pub{border:1px solid #eee;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px}.pub img{width:100%;height:110px;object-fit:contain;background:#fafafa;border-radius:6px}
+.pub .t{font-weight:600;min-height:36px}.price{font-size:20px}.muted{color:#888;font-size:12px}
+button{background:#3483fa;color:#fff;border:0;border-radius:6px;padding:7px 10px;font-weight:600;cursor:pointer}button.sec{background:#e3edfb;color:#3483fa}button.warn{background:#fdecea;color:#c62828}
+.row{display:flex;gap:6px;flex-wrap:wrap}.card{border:1px solid #eee;border-radius:8px;padding:12px;margin-bottom:10px}
+.chat{background:#f7f7f7;border-radius:6px;padding:8px;margin:8px 0;max-height:220px;overflow:auto}.msg{margin:4px 0;padding:6px 9px;border-radius:8px;max-width:85%}
+.b{background:#fff;border:1px solid #e5e5e5}.s{background:#e3edfb;margin-left:auto}.chat .who{font-size:11px;color:#777}
+.pill{display:inline-block;border-radius:10px;padding:1px 8px;font-size:12px;font-weight:600}.ok{background:#e6f4ea;color:#1e7e34}.no{background:#fdecea;color:#c62828}.pend{background:#fff3cd;color:#8a6d00}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:5px 6px;border-bottom:1px solid #eee;text-align:left}
+dialog{border:0;border-radius:10px;padding:20px;width:420px;box-shadow:0 10px 40px rgba(0,0,0,.3)}dialog input,dialog textarea,dialog select{width:100%;padding:8px;margin:4px 0 10px;border:1px solid #ccc;border-radius:6px;font:inherit}
+label{font-size:12px;color:#666}
+</style>
+</head>
+<body>
+<div class="top"><b>Mercado Libre</b><span class="tag">simulador de laboratorio · no es el sitio real</span><span id="conexion" class="muted"></span>
+<select id="buyer" title="Comprador"></select></div>
+<main>
+<div>
+<section><h2>Publicaciones de VMANQUE_TIENDA</h2><div class="grid" id="pubs"></div></section>
+<section style="margin-top:20px"><h2>Mis compras</h2><div id="compras"></div></section>
+</div>
+<div>
+<section><h2>Mis preguntas</h2><div id="preguntas"></div></section>
+<section style="margin-top:20px"><h2>Notificaciones enviadas a la aplicación</h2><p class="muted" id="callback"></p>
+<table><thead><tr><th>Hora</th><th>Tópico</th><th>Recurso</th><th>Intentos</th><th>Respuesta</th></tr></thead><tbody id="notifs"></tbody></table></section>
+</div>
+</main>
+<dialog id="dlg"><form method="dialog" id="frm"></form></dialog>
+<script>
+let E = null;
+const $ = (s) => document.querySelector(s);
+const clp = (n) => "$ " + n.toLocaleString("es-CL");
+const hora = (iso) => new Date(iso).toLocaleTimeString("es-CL");
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const buyer = () => Number($("#buyer").value || 0);
+async function post(a, body) {
+  const r = await fetch("/sim/" + a, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  await cargar();
+  return r.json();
+}
+function dialogo(titulo, campos, enviar) {
+  $("#frm").innerHTML = `<h3 style="margin-top:0">${titulo}</h3>` + campos.map(([n, l, v, tipo]) =>
+    `<label>${l}</label>` + (tipo === "area" ? `<textarea name="${n}" rows="3">${esc(v)}</textarea>` : tipo === "check" ? `<select name="${n}"><option value="false">No</option><option value="true">Sí</option></select>` : `<input name="${n}" value="${esc(v)}">`)).join("") +
+    `<div class="row" style="justify-content:flex-end"><button class="sec" value="x">Cancelar</button><button id="enviar" value="ok">Enviar</button></div>`;
+  $("#dlg").showModal();
+  $("#dlg").onclose = () => { if ($("#dlg").returnValue === "ok") enviar(Object.fromEntries(new FormData($("#frm")))); };
+}
+function comprar(id) {
+  const b = E.buyers[buyer()];
+  dialogo("Comprar", [["qty", "Cantidad", "1"], ["nombre", "Recibe", b.first_name + " " + b.last_name], ["calle", "Calle", "Av. Providencia"], ["numero", "Número", "1234"], ["comuna", "Comuna", "Providencia"], ["telefono", "Teléfono", "+56 9 5555 1234"]],
+    (f) => post("comprar", { ...f, buyer: buyer(), item: id }));
+}
+const preguntar = (id) => dialogo("Preguntar al vendedor", [["texto", "Pregunta", "Hola, ¿tienen stock para despacho hoy?", "area"]], (f) => post("preguntar", { ...f, buyer: buyer(), item: id }));
+const mensaje = (o) => dialogo("Mensaje al vendedor", [["texto", "Mensaje", "Hola, ¿cuándo despachan mi compra?", "area"]], (f) => post("mensaje", { ...f, order: o }));
+const reclamo = (o) => dialogo("Abrir reclamo", [["texto", "¿Qué pasó?", "El producto llegó dañado, la caja venía rota.", "area"], ["devolucion", "¿Quieres devolverlo?", "", "check"]], (f) => post("reclamo", { ...f, order: o }));
+const msgReclamo = (c) => dialogo("Mensaje en el reclamo", [["texto", "Mensaje", "Adjunto fotos, ¿cómo sigo?", "area"]], (f) => post("mensaje-reclamo", { ...f, claim: c }));
+async function cargar() {
+  E = await (await fetch("/sim/estado")).json();
+  if (!$("#buyer").options.length) $("#buyer").innerHTML = E.buyers.map((b, i) => `<option value="${i}">Comprador: ${b.nickname}</option>`).join("");
+  $("#conexion").textContent = E.conectado ? "● aplicación VManque WMS autorizada" : "○ ninguna aplicación autorizada";
+  $("#callback").textContent = "URL de notificaciones registrada: " + E.app.callbackUrl;
+  $("#pubs").innerHTML = E.publicaciones.map((p) => `<div class="pub">${p.thumbnail ? `<img src="${p.thumbnail}" alt="">` : ""}<div class="t">${esc(p.title)}</div><div class="price">${clp(p.price)}</div>
+    <div class="muted">${p.id} · SKU ${p.seller_sku}</div><div class="row"><button onclick="comprar('${p.id}')">Comprar</button><button class="sec" onclick="preguntar('${p.id}')">Preguntar</button></div></div>`).join("");
+  const me = E.buyers[buyer()].id;
+  const compras = E.orders.filter((o) => o.buyer.id === me);
+  $("#compras").innerHTML = compras.length ? compras.map((o) => {
+    const msgs = E.messages.filter((m) => m.pack === String(o.id)).sort((a, b) => a.message_date.created.localeCompare(b.message_date.created));
+    const cl = E.claims.filter((c) => c.resource_id === o.id);
+    return `<div class="card"><b>Compra #${o.id}</b> <span class="pill ${o.status === "paid" ? "ok" : "no"}">${o.status === "paid" ? "pagada" : "cancelada"}</span>
+      <div>${o.order_items.map((i) => `${i.quantity} × ${esc(i.item.title)}`).join(", ")} · ${clp(o.total_amount)}</div>
+      ${msgs.length ? `<div class="chat">${msgs.map((m) => `<div class="msg ${m.from.user_id === me ? "b" : "s"}"><div class="who">${m.from.user_id === me ? "Tú" : "Vendedor"} · ${hora(m.message_date.created)}</div>${esc(m.text)}</div>`).join("")}</div>` : ""}
+      ${cl.map((c) => `<div class="card" style="background:#fff8f8"><b>Reclamo #${c.id}</b> ${c.return ? '<span class="pill pend">con devolución</span>' : ""}<div class="chat">${c.messages.map((m) => `<div class="msg ${m.sender_role === "complainant" ? "b" : "s"}"><div class="who">${m.sender_role === "complainant" ? "Tú" : "Vendedor"} · ${hora(m.date_created)}</div>${esc(m.message)}</div>`).join("")}</div><button class="sec" onclick="msgReclamo(${c.id})">Escribir en el reclamo</button></div>`).join("")}
+      <div class="row"><button class="sec" onclick="mensaje(${o.id})">Mensaje al vendedor</button><button class="warn" onclick="reclamo(${o.id})">Abrir reclamo</button>${o.status === "paid" ? `<button class="warn" onclick="post('cancelar',{order:${o.id}})">Cancelar compra</button>` : ""}</div></div>`;
+  }).join("") : '<p class="muted">Todavía no compras nada con este comprador.</p>';
+  const qs = E.questions.filter((q) => q.from.id === me);
+  $("#preguntas").innerHTML = qs.length ? qs.map((q) => `<div class="card"><div class="muted">${q.item_id} · ${hora(q.date_created)}</div><div>❓ ${esc(q.text)}</div>
+    ${q.answer ? `<div style="margin-top:6px;color:#1e7e34">↳ ${esc(q.answer.text)}</div>` : '<span class="pill pend">sin responder</span>'}</div>`).join("") : '<p class="muted">Sin preguntas.</p>';
+  $("#notifs").innerHTML = E.notifs.map((n) => `<tr><td>${hora(n.sent ?? n.received)}</td><td>${n.topic}</td><td>${esc(n.resource).slice(0, 34)}</td><td>${n.attempts}</td><td><span class="pill ${n.estado === "entregada" ? "ok" : n.estado === "fallida" ? "no" : "pend"}">${n.http ?? "-"}${n.ms != null ? " · " + n.ms + " ms" : ""}</span></td></tr>`).join("");
+}
+$("#buyer").onchange = cargar;
+cargar();
+setInterval(() => { if (!$("#dlg").open) cargar(); }, 2000);
+</script>
+</body>
+</html>

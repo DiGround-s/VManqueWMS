@@ -104,7 +104,7 @@ export async function syncOrderStatus(tx: Tx, orderIds: string[], userId?: strin
  * Cancels an order. Unpicked units are simply released; picked units become put-back tasks
  * (someone scans a shelf to return them). Open pick tasks of a wave in progress shrink accordingly.
  */
-export async function cancelOrder(orderId: string, userId: string, reason: string) {
+export async function cancelOrder(orderId: string, userId: string | null, reason: string) {
   return db.$transaction(async (tx) => {
     const [order] = await lockOrders(tx, [orderId]);
     if (!order) throw new UserError("Pedido no encontrado");

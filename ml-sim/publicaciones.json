@@ -1,0 +1,106 @@
+[
+ {
+  "id": "MLC1500000000",
+  "title": "Termo acero inoxidable 1 L",
+  "price": 24990,
+  "available_quantity": 63,
+  "seller_sku": "VM-0001",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0001.jpg"
+ },
+ {
+  "id": "MLC1500000037",
+  "title": "Mate de calabaza tallado",
+  "price": 18990,
+  "available_quantity": 72,
+  "seller_sku": "VM-0002",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0002.jpg"
+ },
+ {
+  "id": "MLC1500000074",
+  "title": "Bombilla de alpaca",
+  "price": 12990,
+  "available_quantity": 39,
+  "seller_sku": "VM-0003",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0003.jpg"
+ },
+ {
+  "id": "MLC1500000111",
+  "title": "Yerba mate 1 kg",
+  "price": 6490,
+  "available_quantity": 86,
+  "seller_sku": "VM-0004",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0004.jpg"
+ },
+ {
+  "id": "MLC1500000148",
+  "title": "Merkén ahumado 100 g",
+  "price": 3990,
+  "available_quantity": 59,
+  "seller_sku": "VM-0005",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0005.jpg"
+ },
+ {
+  "id": "MLC1500000185",
+  "title": "Sal de mar de Cáhuil 500 g",
+  "price": 2990,
+  "available_quantity": 34,
+  "seller_sku": "VM-0006",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0006.jpg"
+ },
+ {
+  "id": "MLC1500000222",
+  "title": "Miel de ulmo 500 g",
+  "price": 8990,
+  "available_quantity": 57,
+  "seller_sku": "VM-0007",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0007.jpg"
+ },
+ {
+  "id": "MLC1500000259",
+  "title": "Mermelada de murta 250 g",
+  "price": 4590,
+  "available_quantity": 59,
+  "seller_sku": "VM-0008",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0008.jpg"
+ },
+ {
+  "id": "MLC1500000296",
+  "title": "Huesillos secos 500 g",
+  "price": 3490,
+  "available_quantity": 65,
+  "seller_sku": "VM-0009",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0009.jpg"
+ },
+ {
+  "id": "MLC1500000333",
+  "title": "Mote de trigo 1 kg",
+  "price": 2190,
+  "available_quantity": 57,
+  "seller_sku": "VM-0010",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0010.jpg"
+ },
+ {
+  "id": "MLC1500000370",
+  "title": "Harina tostada 500 g",
+  "price": 2490,
+  "available_quantity": 77,
+  "seller_sku": "VM-0011",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0011.jpg"
+ },
+ {
+  "id": "MLC1500000407",
+  "title": "Té de boldo 20 bolsitas",
+  "price": 1990,
+  "available_quantity": 20,
+  "seller_sku": "VM-0012",
+  "thumbnail": "http://localhost:3000/products/photos/vm-0012.jpg"
+ },
+ {
+  "id": "MLC1599999999",
+  "title": "Publicación de prueba con SKU inexistente",
+  "price": 1000,
+  "available_quantity": 5,
+  "seller_sku": "SKU-NO-EXISTE",
+  "thumbnail": null
+ }
+]

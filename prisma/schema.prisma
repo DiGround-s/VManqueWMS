@@ -463,6 +463,8 @@ model Conversation {
 
 model Message {
   id             String        @id @default(cuid())
+  /// Id of the message in the marketplace (dedupes re-synced threads).
+  externalId     String?       @unique
   conversationId String
   author         MessageAuthor
   authorName     String?
@@ -472,4 +474,41 @@ model Message {
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId, createdAt])
+}
+
+/// A store account connected through the marketplace's OAuth. Tokens are stored encrypted (AES-256-GCM).
+model MarketplaceAccount {
+  id           String       @id @default(cuid())
+  channel      SalesChannel @unique
+  sellerId     String
+  nickname     String
+  accessToken  String
+  refreshToken String
+  expiresAt    DateTime
+  connectedAt  DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum NotificationStatus {
+  RECEIVED
+  PROCESSED
+  IGNORED
+  ERROR
+}
+
+/// Every notification a marketplace sends (webhook), kept as an audit log and retry queue.
+model MarketplaceNotification {
+  id          String             @id @default(cuid())
+  channel     SalesChannel
+  externalId  String             @unique
+  topic       String
+  resource    String
+  userId      String
+  attempts    Int                @default(1)
+  status      NotificationStatus @default(RECEIVED)
+  result      String?
+  receivedAt  DateTime           @default(now())
+  processedAt DateTime?
+
+  @@index([channel, receivedAt])
 }
