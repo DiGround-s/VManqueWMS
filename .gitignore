@@ -31,3 +31,6 @@ iot-lab/wokwi/sketch/
 informe/
 *.pdf
 *.docx
+red-lab/capturas/
+red-lab/evidencia/
+red-lab/config-*.xml
