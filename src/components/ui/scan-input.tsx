@@ -129,83 +129,103 @@ type Detector = { detect: (source: HTMLVideoElement) => Promise<Detected[]> };
 type DetectorCtor = { new (o: { formats: string[] }): Detector; getSupportedFormats?: () => Promise<string[]> };
 
 /**
- * Reads codes from the camera. Uses the phone's built-in detector when there is one (Android Chrome:
- * fast and robust) and falls back to ZXing limited to the same formats, scanning ~10 frames a second.
+ * Reads codes from the camera. Uses the phone's built-in detector when there is one (Android Chrome)
+ * and otherwise ZXing (iPhone): it decodes only the square in the middle of the frame, scaled down,
+ * several times a second — fast on a phone, and a QR beside the target stays out of the crop.
  */
 function CameraReader({ onResult, accept }: { onResult: (code: string) => void; accept: (code: string) => boolean }) {
   const video = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const done = useRef(false);
-  // The latest callback, so a parent re-render never restarts the camera mid-scan.
+  // The latest callbacks, so a parent re-render never restarts the camera mid-scan.
   const result = useRef(onResult);
   result.current = onResult;
   const wanted = useRef(accept);
   wanted.current = accept;
 
   useEffect(() => {
-    let stop: (() => void) | undefined;
     let cancelled = false;
-    const finish = (text: string) => {
-      if (done.current || !text || !wanted.current(text)) return;
+    let timer = 0;
+    let stream: MediaStream | null = null;
+    const stop = () => {
+      clearTimeout(timer);
+      stream?.getTracks().forEach((t) => t.stop());
+    };
+    const finish = (text: string | null | undefined) => {
+      if (done.current || !text || !wanted.current(text)) return false;
       done.current = true;
-      stop?.();
+      stop();
       result.current(text);
+      return true;
     };
     (async () => {
       try {
+        stream = await navigator.mediaDevices.getUserMedia(CAMERA);
+        const el = video.current;
+        if (cancelled || !el) return stop();
+        el.srcObject = stream;
+        await el.play();
+        if (cancelled) return stop();
+
         const Native = (globalThis as { BarcodeDetector?: DetectorCtor }).BarcodeDetector;
         const supported = Native ? await Native.getSupportedFormats?.().catch(() => []) : [];
         const formats = NATIVE_FORMATS.filter((f) => supported?.includes(f));
+        let read: () => Promise<string | null>;
+
         if (Native && formats.includes("qr_code")) {
-          const stream = await navigator.mediaDevices.getUserMedia(CAMERA);
-          if (cancelled || !video.current) return stream.getTracks().forEach((t) => t.stop());
-          const el = video.current;
-          el.srcObject = stream;
-          await el.play();
           const detector = new Native({ formats });
-          let timer = 0;
-          stop = () => {
-            clearTimeout(timer);
-            stream.getTracks().forEach((t) => t.stop());
+          read = async () => {
+            // Several codes in view: keep the expected kind, then the one nearest the centre of the frame.
+            const cx = el.videoWidth / 2, cy = el.videoHeight / 2;
+            const dist = (d: Detected) => (d.boundingBox ? Math.hypot(d.boundingBox.x + d.boundingBox.width / 2 - cx, d.boundingBox.y + d.boundingBox.height / 2 - cy) : 0);
+            const best = (await detector.detect(el)).filter((d) => wanted.current(d.rawValue)).sort((a, b) => dist(a) - dist(b))[0];
+            return best?.rawValue ?? null;
           };
-          if (cancelled) return stop();
-          const tick = async () => {
-            if (cancelled || done.current) return;
+        } else {
+          const [{ HTMLCanvasElementLuminanceSource }, zx] = await Promise.all([import("@zxing/browser"), import("@zxing/library")]);
+          const reader = new zx.MultiFormatReader();
+          reader.setHints(new Map([[zx.DecodeHintType.POSSIBLE_FORMATS, [zx.BarcodeFormat.QR_CODE, zx.BarcodeFormat.EAN_13, zx.BarcodeFormat.CODE_128]]]));
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+          let n = 0;
+          read = async () => {
+            const vw = el.videoWidth, vh = el.videoHeight;
+            // Mostly the centre square (what the frame on screen shows); every 4th try the whole picture.
+            const whole = ++n % 4 === 0;
+            const side = whole ? Math.max(vw, vh) : Math.round(Math.min(vw, vh) * 0.75);
+            const sw = whole ? vw : side, sh = whole ? vh : side;
+            const scale = Math.min(1, 640 / Math.max(sw, sh));
+            canvas.width = Math.round(sw * scale);
+            canvas.height = Math.round(sh * scale);
+            ctx.drawImage(el, (vw - sw) / 2, (vh - sh) / 2, sw, sh, 0, 0, canvas.width, canvas.height);
             try {
-              if (el.readyState >= 2) {
-                // Several codes in view: keep the expected kind, then the one nearest the centre of the frame.
-                const cx = el.videoWidth / 2, cy = el.videoHeight / 2;
-                const dist = (d: Detected) => (d.boundingBox ? Math.hypot(d.boundingBox.x + d.boundingBox.width / 2 - cx, d.boundingBox.y + d.boundingBox.height / 2 - cy) : 0);
-                const best = (await detector.detect(el)).filter((d) => wanted.current(d.rawValue)).sort((a, b) => dist(a) - dist(b))[0];
-                if (best) return finish(best.rawValue);
-              }
-            } catch {}
-            timer = window.setTimeout(tick, 90);
+              return reader.decodeWithState(new zx.BinaryBitmap(new zx.HybridBinarizer(new HTMLCanvasElementLuminanceSource(canvas)))).getText();
+            } catch {
+              return null;
+            } finally {
+              reader.reset();
+            }
           };
-          setReady(true);
-          void tick();
-          return;
         }
 
-        const [{ BrowserMultiFormatReader }, { BarcodeFormat, DecodeHintType }] = await Promise.all([import("@zxing/browser"), import("@zxing/library")]);
-        if (cancelled || !video.current) return;
-        const hints = new Map<unknown, unknown>([
-          [DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128]],
-          [DecodeHintType.TRY_HARDER, true],
-        ]);
-        const reader = new BrowserMultiFormatReader(hints as Map<never, unknown>, { delayBetweenScanAttempts: 100 });
-        const controls = await reader.decodeFromConstraints(CAMERA, video.current, (r) => r && finish(r.getText()));
-        stop = () => controls.stop();
-        if (cancelled) stop();
-        else setReady(true);
+        const tick = async () => {
+          if (cancelled || done.current) return;
+          try {
+            if (el.readyState >= 2 && finish(await read())) return;
+          } catch {}
+          timer = window.setTimeout(tick, 80);
+        };
+        setReady(true);
+        void tick();
       } catch {
-        setError("No se pudo abrir la cámara. Revisa el permiso del navegador (requiere HTTPS o localhost).");
+        stop();
+        if (!cancelled) setError("No se pudo abrir la cámara. Revisa el permiso del navegador (requiere HTTPS o localhost).");
       }
     })();
     return () => {
       cancelled = true;
-      stop?.();
+      stop();
     };
   }, []);
 
@@ -213,15 +233,15 @@ function CameraReader({ onResult, accept }: { onResult: (code: string) => void; 
   return (
     <div className="space-y-3">
       <div className="relative overflow-hidden rounded-2xl bg-black">
-        <video ref={video} className="aspect-[3/4] w-full object-cover" muted playsInline />
+        <video ref={video} className="aspect-[3/4] w-full object-cover" muted playsInline autoPlay />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>
-          <div className="relative h-2/5 w-4/5 rounded-3xl border-[3px] border-white/90 shadow-[0_0_0_200vmax_rgb(0_0_0/0.45)]">
+          <div className="relative aspect-square w-3/4 rounded-3xl border-[3px] border-white/90 shadow-[0_0_0_200vmax_rgb(0_0_0/0.45)]">
             {ready && <div className="absolute inset-x-3 top-1/2 h-0.5 animate-pulse bg-brand" />}
           </div>
         </div>
         {!ready && <Loader2 className="absolute left-1/2 top-1/2 size-8 -translate-x-1/2 -translate-y-1/2 animate-spin text-white" aria-label="Abriendo cámara" />}
       </div>
-      <p className="text-center text-sm text-muted">Centra el código de barras o QR dentro del marco.</p>
+      <p className="text-center text-sm text-muted">Centra el código dentro del cuadro, a unos 20–30 cm.</p>
     </div>
   );
 }
