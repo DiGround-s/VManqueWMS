@@ -12,6 +12,7 @@ import { fmtTime } from "@/lib/format";
 import { demoStateAction, demoWaveAction, startDemoAction } from "./actions";
 import { DEMO, DEMO_CODES, DEMO_LAST, DEMO_STEPS, type DemoCode } from "./steps";
 import type { DemoState } from "./service";
+import { DemoShelf, type ShelfSlot } from "./demo-shelf";
 
 export type DemoQr = { key: DemoCode; svg: string };
 
@@ -33,7 +34,7 @@ function useDemoState(initial: DemoState, ms: number) {
   return [state, setState] as const;
 }
 
-export function DemoGuide({ initial, qrs, canRun, phone }: { initial: DemoState; qrs: DemoQr[]; canRun: boolean; phone?: { url: string; svg: string } }) {
+export function DemoGuide({ initial, qrs, canRun, phone, shelf }: { initial: DemoState; qrs: DemoQr[]; canRun: boolean; phone?: { url: string; svg: string }; shelf: ShelfSlot[] }) {
   const [state, setState] = useDemoState(initial, 2000);
   const [pending, run] = useAction();
   const [big, setBig] = useState<DemoCode | null>(null);
@@ -75,6 +76,8 @@ export function DemoGuide({ initial, qrs, canRun, phone }: { initial: DemoState;
             ))}
           </div>
         </Card>
+
+        {shelf.length > 0 && <DemoShelf slots={shelf} step={step} />}
 
         <ol className="space-y-3" aria-label="Pasos de la prueba">
           {DEMO_STEPS.map((s, i) => {

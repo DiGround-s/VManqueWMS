@@ -204,3 +204,10 @@ dialog::backdrop {
 .led-px { box-shadow: 0 0 6px 1px #22ff88; animation: led-blink 0.9s ease-in-out infinite; }
 @keyframes led-blink { 50% { opacity: 0.35; box-shadow: none; } }
 @media (prefers-reduced-motion: reduce) { .led-px { animation: none; } }
+
+/* Guided test: MQTT message travelling along the wire and the lit shelf slot. */
+.mqtt-dot { left: 0; animation: mqtt-travel 1.6s linear infinite; box-shadow: 0 0 6px 1px #22ff88; }
+@keyframes mqtt-travel { from { left: 0; opacity: 1; } 90% { opacity: 1; } to { left: calc(100% - 8px); opacity: 0; } }
+.slot-glow { box-shadow: 0 6px 18px -2px #22ff88aa, inset 0 -10px 16px -8px #22ff8866; animation: slot-glow 0.9s ease-in-out infinite; }
+@keyframes slot-glow { 50% { box-shadow: 0 4px 10px -4px #22ff8833, inset 0 -6px 10px -8px #22ff8833; } }
+@media (prefers-reduced-motion: reduce) { .mqtt-dot, .slot-glow { animation: none; } }
