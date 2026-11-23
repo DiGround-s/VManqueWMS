@@ -18,7 +18,7 @@ export function PhoneNav() {
   const path = usePathname();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-[max(env(safe-area-inset-bottom),12px)]" aria-label="Tareas">
-      <ul className="mx-auto grid max-w-lg grid-cols-5 rounded-[28px] bg-panel p-1.5 shadow-lift ring-1 ring-border/70">
+      <ul className="mx-auto grid max-w-lg grid-cols-5 material-bar rounded-[28px] p-1.5 shadow-lift ring-[0.5px] ring-border">
         {TABS.map(({ href, label, icon: Icon }) => {
           const active = href === "/m" ? path === "/m" : path.startsWith(href);
           return (
@@ -28,10 +28,10 @@ export function PhoneNav() {
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "flex h-14 flex-col items-center justify-center gap-0.5 rounded-[22px] text-[11px] font-semibold transition-colors",
-                  active ? "bg-accent text-accent-ink" : "text-muted active:bg-panel-2",
+                  active ? "bg-accent-soft text-accent" : "text-muted active:scale-95 active:bg-rail-2",
                 )}
               >
-                <Icon className={cn("size-[22px]", active && "text-brand")} aria-hidden />
+                <Icon className="size-[22px]" aria-hidden />
                 {label}
               </Link>
             </li>

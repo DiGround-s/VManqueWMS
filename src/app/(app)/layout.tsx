@@ -5,6 +5,7 @@ import { requirePageRole, hasRole } from "@/server/auth/current";
 import { logout } from "@/features/auth/actions";
 import { NavLinks, type NavItem } from "@/components/nav-links";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LiquidToggle } from "@/components/liquid-toggle";
 import { GlobalScan } from "@/components/global-scan";
 import { ScanStamp } from "@/components/scan-stamp";
 import { Wordmark } from "@/components/wordmark";
@@ -63,7 +64,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div id="app-shell" data-rail={railMin ? "min" : "full"} className="group/shell min-h-dvh lg:grid lg:grid-cols-[256px_1fr] lg:transition-[grid-template-columns] lg:duration-200 lg:data-[rail=min]:grid-cols-[76px_1fr]">
-      <aside className="border-b border-border bg-rail text-rail-ink lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r">
+      <aside className="material-rail border-b border-border text-rail-ink lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r">
         <div className="flex items-start gap-1 pb-2 pl-5 pr-3 pt-4 lg:pt-6 lg:group-data-[rail=min]/shell:flex-col lg:group-data-[rail=min]/shell:items-center lg:group-data-[rail=min]/shell:gap-3 lg:group-data-[rail=min]/shell:pl-0 lg:group-data-[rail=min]/shell:pr-0">
           <Link href="/" className="block min-w-0 flex-1 lg:group-data-[rail=min]/shell:flex-none" aria-label="Inicio">
             <Wordmark className="whitespace-nowrap lg:group-data-[rail=min]/shell:[&>span:last-child]:hidden" />
@@ -85,7 +86,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </Link>
       </aside>
       <div className="min-w-0">
-        <header className="sticky top-0 z-30 flex flex-wrap items-center gap-3 bg-surface/85 px-4 py-3 backdrop-blur-md lg:px-8">
+        <header className="material-bar sticky top-0 z-30 flex flex-wrap items-center gap-3 px-4 py-3 lg:px-8">
           <GlobalScan />
           <div className="ml-auto flex items-center gap-2">
             <Link href="/m" className={buttonClass("secondary", "md", "lg:hidden")}>
@@ -100,6 +101,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
                 <span className="text-muted">{ROLE[user.role]}</span>
               </span>
             </Link>
+            <LiquidToggle />
             <ThemeToggle />
             <form action={logout}>
               <button className="flex size-10 items-center justify-center rounded-full bg-panel ring-1 ring-inset ring-border hover:bg-panel-2" aria-label="Cerrar sesión" title="Cerrar sesión">

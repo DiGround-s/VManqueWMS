@@ -61,7 +61,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
         </Rack>
       </section>
 
-      <Link href="/ventas" className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl bg-accent px-5 py-4 text-accent-ink shadow-card transition-opacity hover:opacity-95">
+      <Link href="/ventas" className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl bg-hero px-5 py-4 text-hero-ink shadow-card transition-opacity hover:opacity-95">
         <div>
           <div className="text-xs font-medium opacity-70">Ventas de hoy · todas las tiendas</div>
           <div className="text-2xl font-semibold tracking-tight tabular-nums">{clp(sales.today)}</div>

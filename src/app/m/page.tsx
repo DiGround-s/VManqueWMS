@@ -49,7 +49,7 @@ export default async function PhoneHome() {
       <PhoneHomeScan />
 
       {(myWaves || waves > 0) && (
-        <Link href="/m/picking" className="flex items-center gap-4 rounded-3xl bg-accent p-5 text-accent-ink shadow-lift active:scale-[0.99]">
+        <Link href="/m/picking" className="flex items-center gap-4 rounded-3xl bg-hero p-5 text-hero-ink shadow-lift active:scale-[0.99]">
           <span className="flex size-12 items-center justify-center rounded-2xl bg-brand text-brand-ink">
             <Waves className="size-6" aria-hidden />
           </span>

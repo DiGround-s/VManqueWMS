@@ -6,11 +6,11 @@ type Variant = "primary" | "secondary" | "danger" | "ghost" | "success";
 type Size = "sm" | "md" | "lg" | "xl";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-accent text-accent-ink hover:opacity-90 active:scale-[0.98]",
-  secondary: "bg-panel text-text ring-1 ring-inset ring-border hover:bg-panel-2 active:scale-[0.98]",
-  danger: "bg-danger-bg text-danger hover:bg-danger hover:text-white active:scale-[0.98]",
-  success: "bg-brand text-brand-ink hover:brightness-105 active:scale-[0.98]",
-  ghost: "bg-transparent text-text hover:bg-panel-2",
+  primary: "bg-accent text-accent-ink hover:brightness-110 active:scale-[0.97] active:brightness-95",
+  secondary: "bg-panel text-text ring-1 ring-inset ring-border hover:bg-panel-2 active:scale-[0.97] active:brightness-95",
+  danger: "bg-danger-bg text-danger hover:bg-danger hover:text-white active:scale-[0.97] active:brightness-95",
+  success: "bg-brand text-brand-ink hover:brightness-105 active:scale-[0.97] active:brightness-95",
+  ghost: "bg-transparent text-accent hover:bg-accent-soft active:scale-[0.97]",
 };
 
 const SIZES: Record<Size, string> = {
@@ -28,7 +28,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export const buttonClass = (variant: Variant = "secondary", size: Size = "md", extra?: string) =>
   cn(
-    "inline-flex items-center justify-center rounded-full font-semibold transition-[background-color,color,opacity,transform,filter] duration-150 select-none",
+    "inline-flex items-center justify-center rounded-full font-semibold transition-[background-color,color,opacity,transform,filter] duration-150 ease-out select-none",
     "disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100",
     VARIANTS[variant],
     SIZES[size],

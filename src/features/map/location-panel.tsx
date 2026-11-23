@@ -41,7 +41,7 @@ export function LocationPanel({ location, productById, locations, canAdjust, onC
   const total = location.slots.reduce((n, s) => n + s.qty, 0);
   return (
     <Card className="overflow-hidden xl:sticky xl:top-24 xl:max-h-[calc(100dvh-7rem)] xl:self-start xl:overflow-y-auto">
-      <div className="flex items-start justify-between gap-3 bg-accent px-5 py-4 text-accent-ink">
+      <div className="flex items-start justify-between gap-3 bg-hero px-5 py-4 text-hero-ink">
         <div>
           <div className="flex items-center gap-1.5 text-xs opacity-70">
             <MapPin className="size-3.5" aria-hidden /> Zona {location.zone}

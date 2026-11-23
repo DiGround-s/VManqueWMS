@@ -186,7 +186,7 @@ function Slot({ p, s, texture, selected, hovered, onHover, onSelect, dark }: { p
       )}
       {(hovered || selected) && (
         <Html position={[0, SLOT.h / 2 + 0.35, 0]} center zIndexRange={[20, 10]}>
-          <div className="pointer-events-none whitespace-nowrap rounded-2xl bg-accent px-3 py-1.5 text-center text-xs font-semibold text-accent-ink shadow-lift">
+          <div className="pointer-events-none whitespace-nowrap rounded-2xl bg-hero px-3 py-1.5 text-center text-xs font-semibold text-hero-ink shadow-lift">
             <span className="font-mono">{s.code}</span>
             <span className="ml-2 opacity-70">{s.state === "empty" ? "vacía" : `${s.qty} u.`}</span>
           </div>

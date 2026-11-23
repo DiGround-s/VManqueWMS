@@ -59,7 +59,7 @@ function Hub({ connected }: { connected: Set<SalesChannel> }) {
           );
         })}
       </div>
-      <div className="rounded-2xl bg-accent px-5 py-4 text-center text-accent-ink">
+      <div className="rounded-2xl bg-hero px-5 py-4 text-center text-hero-ink">
         <div className="text-lg font-semibold">Conectores del WMS</div>
         <div className="text-sm opacity-75">Reciben el aviso, traen el pedido completo y lo guardan en PostgreSQL</div>
       </div>

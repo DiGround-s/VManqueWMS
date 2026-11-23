@@ -3,6 +3,7 @@ import { Monitor } from "lucide-react";
 import { requirePageRole } from "@/server/auth/current";
 import { PhoneNav } from "@/components/phone-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LiquidToggle } from "@/components/liquid-toggle";
 import { ScanStamp } from "@/components/scan-stamp";
 import { Wordmark } from "@/components/wordmark";
 import { demoState } from "@/features/demo/service";
@@ -15,11 +16,12 @@ export default async function PhoneLayout({ children }: { children: React.ReactN
   const demo = await demoState();
   return (
     <div className="min-h-dvh pb-32">
-      <header className="sticky top-0 z-30 flex h-16 items-center gap-2 bg-surface/85 px-4 backdrop-blur-md">
+      <header className="sticky top-0 z-30 flex h-16 items-center gap-2 material-bar px-4">
         <Link href="/m" aria-label="Inicio del modo bodega">
           <Wordmark compact />
         </Link>
         <span className="ml-auto" />
+        <LiquidToggle />
         <ThemeToggle />
         <Link
           href="/"
