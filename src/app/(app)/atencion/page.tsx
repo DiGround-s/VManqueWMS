@@ -80,7 +80,7 @@ export default async function InboxPage({ searchParams }: { searchParams: Promis
             <Card className="flex h-full flex-col gap-3 p-4 transition-shadow hover:shadow-lift">
               <div className="flex items-center justify-between gap-2">
                 <span className="label">{k.label}</span>
-                <span className={cn("flex size-8 items-center justify-center rounded-full", k.danger ? "bg-danger-bg text-danger" : "bg-brand-soft text-success")}>{k.icon}</span>
+                <span className={cn("flex size-8 items-center justify-center rounded-full", k.danger ? "bg-danger-bg text-danger" : "bg-accent-soft text-accent")}>{k.icon}</span>
               </div>
               <span className={cn("text-3xl font-semibold leading-none tracking-tight tabular-nums", k.danger && "text-danger")}>{k.value}</span>
             </Card>

@@ -2,7 +2,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Apple-style look (iOS/macOS system palette): grouped grey ground, white cards, system blue for actions. */
+/* Unified palette (Apple system colours):
+   - accent  #007AFF / #0A84FF  brand, actions, selection, information
+   - neutral #F2F2F7 ground · #FFFFFF cards · #1D1D1F text and hero panels · #6E6E73 secondary text
+   - status  green = done, orange = warning, red = error or pending (only where it means something)
+   - data    one colour per sales channel, only in charts and store logos */
 :root {
   --surface: #f2f2f7;
   --panel: #ffffff;
@@ -17,9 +21,10 @@
   --accent-soft: rgb(0 122 255 / 0.1);
   --hero: #1d1d1f;
   --hero-ink: #f5f5f7;
-  --brand: #248a3d;
-  --brand-ink: #ffffff;
-  --brand-soft: rgb(52 199 89 / 0.14);
+  /* One accent: brand, actions, selection and information share Apple's system blue. */
+  --brand: var(--accent);
+  --brand-ink: var(--accent-ink);
+  --brand-soft: var(--accent-soft);
   --rail: rgb(246 246 248 / 0.72);
   --rail-2: rgb(118 118 128 / 0.12);
   --rail-ink: #1d1d1f;
@@ -28,11 +33,11 @@
   --success-bg: rgb(52 199 89 / 0.14);
   --danger: #d70015;
   --danger-bg: rgb(255 59 48 / 0.12);
-  --info: #0066d6;
-  --info-bg: rgb(0 122 255 / 0.1);
+  --info: var(--accent-strong);
+  --info-bg: var(--accent-soft);
   --warn: #b25000;
   --warn-bg: rgb(255 149 0 / 0.14);
-  --yellow: #ffcc00;
+  --yellow: var(--warn);
   --focus: #007aff;
   --selection: rgb(0 122 255 / 0.2);
   --shadow-card: 0 0.5px 1px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
@@ -60,9 +65,9 @@
   --accent-soft: rgb(10 132 255 / 0.18);
   --hero: #2c2c2e;
   --hero-ink: #f5f5f7;
-  --brand: #30d158;
-  --brand-ink: #00330f;
-  --brand-soft: rgb(48 209 88 / 0.18);
+  --brand: var(--accent);
+  --brand-ink: var(--accent-ink);
+  --brand-soft: var(--accent-soft);
   --rail: rgb(28 28 30 / 0.72);
   --rail-2: rgb(118 118 128 / 0.24);
   --rail-ink: #f5f5f7;
@@ -71,11 +76,11 @@
   --success-bg: rgb(48 209 88 / 0.18);
   --danger: #ff453a;
   --danger-bg: rgb(255 69 58 / 0.18);
-  --info: #64a8ff;
-  --info-bg: rgb(10 132 255 / 0.18);
+  --info: var(--accent-strong);
+  --info-bg: var(--accent-soft);
   --warn: #ffb340;
   --warn-bg: rgb(255 159 10 / 0.18);
-  --yellow: #ffd60a;
+  --yellow: var(--warn);
   --focus: #0a84ff;
   --selection: rgb(10 132 255 / 0.35);
   --shadow-card: 0 0 0 0.5px rgb(255 255 255 / 0.04);

@@ -28,7 +28,7 @@ export function ScanStamp() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-28 z-50 flex justify-center px-4 no-print lg:bottom-8" role="status" aria-live="polite">
       <div key={stamp.key} className="pop-in flex items-center gap-2.5 rounded-full bg-accent py-2 pl-2 pr-4 text-sm font-semibold text-accent-ink shadow-lift">
-        <span className={cn("flex size-7 items-center justify-center rounded-full", stamp.ok ? "bg-brand text-brand-ink" : "bg-danger text-white")}>
+        <span className={cn("flex size-7 items-center justify-center rounded-full", stamp.ok ? "bg-success text-white" : "bg-danger text-white")}>
           {stamp.ok ? <Check className="size-4" strokeWidth={3} aria-hidden /> : <X className="size-4" strokeWidth={3} aria-hidden />}
         </span>
         {stamp.ok ? "Escaneado" : (stamp.message ?? "Código rechazado")}

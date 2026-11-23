@@ -29,7 +29,7 @@ export function LocationPanel({ location, productById, locations, canAdjust, onC
   if (!location) {
     return (
       <Card className="flex flex-col items-center justify-center gap-3 p-8 text-center xl:sticky xl:top-24 xl:self-start">
-        <span className="flex size-14 items-center justify-center rounded-full bg-brand-soft text-success">
+        <span className="flex size-14 items-center justify-center rounded-full bg-accent-soft text-accent">
           <MousePointerClick className="size-6" aria-hidden />
         </span>
         <p className="font-semibold">Toca una casilla del mapa</p>
@@ -111,7 +111,7 @@ function ProductCard({ slot, product: p, location, locations, canAdjust, onPickP
         {p.description && <p className="text-sm leading-relaxed text-muted">{p.description}</p>}
 
         <dl className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-2xl bg-brand-soft p-2"><dt className="text-[11px] text-success">Disponible</dt><dd className="text-lg font-semibold text-success">{p.available}</dd></div>
+          <div className="rounded-2xl bg-success-bg p-2"><dt className="text-[11px] text-success">Disponible</dt><dd className="text-lg font-semibold text-success">{p.available}</dd></div>
           <div className="rounded-2xl bg-panel-2 p-2"><dt className="text-[11px] text-muted">Comprometido</dt><dd className="text-lg font-semibold">{p.committed}</dd></div>
           <div className="rounded-2xl bg-panel-2 p-2"><dt className="text-[11px] text-muted">En proceso</dt><dd className="text-lg font-semibold">{p.inProcess}</dd></div>
         </dl>

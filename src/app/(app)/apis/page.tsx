@@ -109,7 +109,7 @@ function ApiCard({ s, connected }: { s: StoreApi; connected: boolean }) {
       <div className="mt-3 flex flex-wrap items-center gap-1.5">
         <span className="text-xs font-semibold text-muted">Trae:</span>
         {s.brings.map((b) => (
-          <span key={b} className="rounded-full bg-brand-soft px-2.5 py-0.5 text-xs font-semibold text-success">
+          <span key={b} className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent">
             {b}
           </span>
         ))}

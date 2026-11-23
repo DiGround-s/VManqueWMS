@@ -76,7 +76,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <Link
           href="/m"
           title="Modo bodega"
-          className="mx-3 mb-4 mt-auto hidden items-center gap-3 rounded-2xl bg-brand-soft px-4 py-3 text-sm font-semibold text-success transition-colors hover:brightness-95 lg:flex lg:group-data-[rail=min]/shell:justify-center lg:group-data-[rail=min]/shell:px-0"
+          className="mx-3 mb-4 mt-auto hidden items-center gap-3 rounded-2xl bg-accent-soft px-4 py-3 text-sm font-semibold text-accent transition-colors hover:brightness-95 lg:flex lg:group-data-[rail=min]/shell:justify-center lg:group-data-[rail=min]/shell:px-0"
         >
           <Smartphone className="size-5 shrink-0" aria-hidden />
           <span className="lg:group-data-[rail=min]/shell:hidden">

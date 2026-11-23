@@ -26,16 +26,16 @@ export default async function PhoneHome() {
     }),
   ]);
   const tiles: Tile[] = [
-    { href: "/m/picking", label: "Picking", icon: Waves, count: waves, hint: mine ? `${mine} tuyas` : "Olas", hot: mine > 0, tint: "bg-info-bg text-info" },
-    { href: "/m/separar", label: "Separar", icon: Grid3x3, count: sorting, hint: "En mesa", tint: "bg-warn-bg text-warn" },
-    { href: "/m/empacar", label: "Empacar", icon: PackageCheck, count: toPack, hint: "Separados", tint: "bg-brand-soft text-success" },
-    { href: "/m/despachar", label: "Despachar", icon: Truck, count: toShip, hint: "Empacados", tint: "bg-accent-soft text-text" },
-    { href: "/m/recibir", label: "Recibir", icon: ArrowDownToLine, hint: "Entrada", tint: "bg-brand-soft text-success" },
-    { href: "/m/ubicar", label: "Ubicar", icon: PackagePlus, count: dock._sum.qty ?? 0, hint: "En andén", tint: "bg-info-bg text-info" },
-    { href: "/m/mover", label: "Mover", icon: ArrowRightLeft, hint: "Traspaso", tint: "bg-accent-soft text-text" },
-    { href: "/m/contar", label: "Contar", icon: ClipboardCheck, hint: "Conteo", tint: "bg-warn-bg text-warn" },
-    { href: "/m/reponer", label: "Reponer", icon: Undo2, count: putbacks, hint: "Cancelados", hot: putbacks > 0, tint: "bg-danger-bg text-danger" },
-    { href: "/mapa", label: "Mapa 3D", icon: MapIcon, hint: "Bodega", tint: "bg-info-bg text-info" },
+    { href: "/m/picking", label: "Picking", icon: Waves, count: waves, hint: mine ? `${mine} tuyas` : "Olas", hot: mine > 0, tint: "bg-accent-soft text-accent" },
+    { href: "/m/separar", label: "Separar", icon: Grid3x3, count: sorting, hint: "En mesa", tint: "bg-accent-soft text-accent" },
+    { href: "/m/empacar", label: "Empacar", icon: PackageCheck, count: toPack, hint: "Separados", tint: "bg-accent-soft text-accent" },
+    { href: "/m/despachar", label: "Despachar", icon: Truck, count: toShip, hint: "Empacados", tint: "bg-accent-soft text-accent" },
+    { href: "/m/recibir", label: "Recibir", icon: ArrowDownToLine, hint: "Entrada", tint: "bg-accent-soft text-accent" },
+    { href: "/m/ubicar", label: "Ubicar", icon: PackagePlus, count: dock._sum.qty ?? 0, hint: "En andén", tint: "bg-accent-soft text-accent" },
+    { href: "/m/mover", label: "Mover", icon: ArrowRightLeft, hint: "Traspaso", tint: "bg-accent-soft text-accent" },
+    { href: "/m/contar", label: "Contar", icon: ClipboardCheck, hint: "Conteo", tint: "bg-accent-soft text-accent" },
+    { href: "/m/reponer", label: "Reponer", icon: Undo2, count: putbacks, hint: "Cancelados", hot: putbacks > 0, tint: "bg-accent-soft text-accent" },
+    { href: "/mapa", label: "Mapa 3D", icon: MapIcon, hint: "Bodega", tint: "bg-accent-soft text-accent" },
   ];
   const first = user.name.split(" ")[0];
   const myWaves = mine > 0;

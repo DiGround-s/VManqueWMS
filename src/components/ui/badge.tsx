@@ -4,7 +4,7 @@ import type { Tone } from "@/lib/labels";
 
 const TONES: Record<Tone, string> = {
   neutral: "bg-panel-2 text-muted",
-  accent: "bg-brand-soft text-success",
+  accent: "bg-accent-soft text-accent",
   success: "bg-success-bg text-success",
   danger: "bg-danger-bg text-danger",
   info: "bg-info-bg text-info",

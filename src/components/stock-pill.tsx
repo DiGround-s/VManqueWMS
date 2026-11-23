@@ -6,7 +6,7 @@ export function StockPill({ available, className }: { available: number; classNa
   const label = available < 0 ? `Faltan ${-available}` : available === 0 ? "Sin stock" : `${available} disp.`;
   return (
     <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold shadow-card", tone, className)}>
-      {available > 0 && <span className="size-1.5 rounded-full bg-brand" aria-hidden />}
+      {available > 0 && <span className="size-1.5 rounded-full bg-success" aria-hidden />}
       {label}
     </span>
   );

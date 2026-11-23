@@ -20,7 +20,7 @@ export function Stat({ label, value, tone, href, share, icon }: { label: string;
     <Card className={cn("flex h-full flex-col gap-3 p-4", href && "transition-shadow hover:shadow-lift")}>
       <div className="flex items-center justify-between gap-2">
         <span className="label">{label}</span>
-        {icon && <span className={cn("flex size-8 items-center justify-center rounded-full", tone === "danger" ? "bg-danger-bg text-danger" : "bg-brand-soft text-success")}>{icon}</span>}
+        {icon && <span className={cn("flex size-8 items-center justify-center rounded-full", tone === "danger" ? "bg-danger-bg text-danger" : "bg-accent-soft text-accent")}>{icon}</span>}
       </div>
       <div className={cn("text-3xl font-semibold leading-none tracking-tight", tone === "danger" && "text-danger", tone === "accent" && "text-success")}>{value}</div>
       {share != null && (
