@@ -21,6 +21,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         { href: "/", label: "Inicio", icon: "LayoutDashboard" },
         { href: "/en-vivo", label: "Pedidos en vivo", icon: "Activity" },
         { href: "/ventas", label: "Ventas y canales", icon: "Store" },
+        { href: "/apis", label: "APIs de tiendas", icon: "Webhook" },
         { href: "/atencion", label: "Atención", icon: "MessagesSquare", badge: unanswered },
       ],
     },

@@ -211,3 +211,8 @@ dialog::backdrop {
 .slot-glow { box-shadow: 0 6px 18px -2px #22ff88aa, inset 0 -10px 16px -8px #22ff8866; animation: slot-glow 0.9s ease-in-out infinite; }
 @keyframes slot-glow { 50% { box-shadow: 0 4px 10px -4px #22ff8833, inset 0 -6px 10px -8px #22ff8833; } }
 @media (prefers-reduced-motion: reduce) { .mqtt-dot, .slot-glow { animation: none; } }
+
+/* APIs de tiendas: a request moving down each store's line into the WMS. */
+.api-dot { top: 0; animation: api-travel 2.1s ease-in infinite; }
+@keyframes api-travel { from { top: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { top: calc(100% - 8px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .api-dot { animation: none; top: 40%; } }
