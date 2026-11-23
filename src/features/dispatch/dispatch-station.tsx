@@ -24,6 +24,7 @@ export function DispatchStation({ phone }: { phone?: boolean }) {
     <div className="space-y-4">
       <ScanInput
         size={phone ? "xl" : "md"}
+        expect="order"
         pending={pending}
         placeholder="Escanea la etiqueta del bulto"
         onScan={(code) =>

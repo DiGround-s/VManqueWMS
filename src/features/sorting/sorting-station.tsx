@@ -52,7 +52,7 @@ export function SortingStation({ waves, selected, basePath, phone }: { waves: { 
           <option value="" disabled>Elige la ola…</option>
           {waves.map((w) => <option key={w.id} value={w.code}>{w.code}</option>)}
         </Select>
-        {waveId && <ScanInput onScan={onScan} pending={pending} size={phone ? "xl" : "md"} placeholder="Escanea un producto" />}
+        {waveId && <ScanInput expect="product" onScan={onScan} pending={pending} size={phone ? "xl" : "md"} placeholder="Escanea un producto" />}
       </div>
       {waveId && (
         <div

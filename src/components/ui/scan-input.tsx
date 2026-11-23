@@ -12,13 +12,27 @@ type Props = {
   size?: "md" | "xl";
   autoFocus?: boolean;
   label?: string;
+  /** What this field expects. The camera ignores other kinds of codes, so a neighbouring QR can't be read by mistake. */
+  expect?: ScanKind;
 };
+
+export type ScanKind = "location" | "product" | "order";
+const LOCATION = /^(LOC:\s*)?[A-Z]+-\d+-\d+-\d+$/i;
+const ORDER = /^PED-\d+$/i;
+/** Whether a code read by the camera is the kind a field expects. */
+export function isKind(code: string, kind?: ScanKind) {
+  const c = code.trim();
+  if (!kind) return true;
+  if (kind === "location") return /^LOC:/i.test(c) || LOCATION.test(c);
+  if (kind === "order") return ORDER.test(c);
+  return !/^LOC:/i.test(c) && !LOCATION.test(c) && !ORDER.test(c) && !/^https?:\/\//i.test(c);
+}
 
 /**
  * Scan field for keyboard-wedge readers (USB/Bluetooth: they type the code and press Enter)
  * plus a camera button. Keeps focus after each scan so a reader can fire continuously.
  */
-export function ScanInput({ onScan, placeholder = "Escanea o escribe el código", pending, size = "md", autoFocus = true, label }: Props) {
+export function ScanInput({ onScan, placeholder = "Escanea o escribe el código", pending, size = "md", autoFocus = true, label, expect }: Props) {
   const ref = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
   const [camera, setCamera] = useState(false);
@@ -85,6 +99,7 @@ export function ScanInput({ onScan, placeholder = "Escanea o escribe el código"
       <Dialog open={camera} onClose={() => setCamera(false)} title="Escanear con la cámara">
         {camera && (
           <CameraReader
+            accept={(code) => isKind(code, expect)}
             onResult={(code) => {
               setCamera(false);
               void submit(code);
@@ -109,14 +124,15 @@ const CAMERA: MediaStreamConstraints = {
 /** Only what the warehouse prints: QR labels, EAN-13 product barcodes and Code 128. */
 const NATIVE_FORMATS = ["qr_code", "ean_13", "code_128"];
 
-type Detector = { detect: (source: HTMLVideoElement) => Promise<{ rawValue: string }[]> };
+type Detected = { rawValue: string; boundingBox?: DOMRectReadOnly };
+type Detector = { detect: (source: HTMLVideoElement) => Promise<Detected[]> };
 type DetectorCtor = { new (o: { formats: string[] }): Detector; getSupportedFormats?: () => Promise<string[]> };
 
 /**
  * Reads codes from the camera. Uses the phone's built-in detector when there is one (Android Chrome:
  * fast and robust) and falls back to ZXing limited to the same formats, scanning ~10 frames a second.
  */
-function CameraReader({ onResult }: { onResult: (code: string) => void }) {
+function CameraReader({ onResult, accept }: { onResult: (code: string) => void; accept: (code: string) => boolean }) {
   const video = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
@@ -124,12 +140,14 @@ function CameraReader({ onResult }: { onResult: (code: string) => void }) {
   // The latest callback, so a parent re-render never restarts the camera mid-scan.
   const result = useRef(onResult);
   result.current = onResult;
+  const wanted = useRef(accept);
+  wanted.current = accept;
 
   useEffect(() => {
     let stop: (() => void) | undefined;
     let cancelled = false;
     const finish = (text: string) => {
-      if (done.current || !text) return;
+      if (done.current || !text || !wanted.current(text)) return;
       done.current = true;
       stop?.();
       result.current(text);
@@ -156,8 +174,11 @@ function CameraReader({ onResult }: { onResult: (code: string) => void }) {
             if (cancelled || done.current) return;
             try {
               if (el.readyState >= 2) {
-                const found = await detector.detect(el);
-                if (found[0]) return finish(found[0].rawValue);
+                // Several codes in view: keep the expected kind, then the one nearest the centre of the frame.
+                const cx = el.videoWidth / 2, cy = el.videoHeight / 2;
+                const dist = (d: Detected) => (d.boundingBox ? Math.hypot(d.boundingBox.x + d.boundingBox.width / 2 - cx, d.boundingBox.y + d.boundingBox.height / 2 - cy) : 0);
+                const best = (await detector.detect(el)).filter((d) => wanted.current(d.rawValue)).sort((a, b) => dist(a) - dist(b))[0];
+                if (best) return finish(best.rawValue);
               }
             } catch {}
             timer = window.setTimeout(tick, 90);
@@ -169,7 +190,10 @@ function CameraReader({ onResult }: { onResult: (code: string) => void }) {
 
         const [{ BrowserMultiFormatReader }, { BarcodeFormat, DecodeHintType }] = await Promise.all([import("@zxing/browser"), import("@zxing/library")]);
         if (cancelled || !video.current) return;
-        const hints = new Map<unknown, unknown>([[DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128]]]);
+        const hints = new Map<unknown, unknown>([
+          [DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128]],
+          [DecodeHintType.TRY_HARDER, true],
+        ]);
         const reader = new BrowserMultiFormatReader(hints as Map<never, unknown>, { delayBetweenScanAttempts: 100 });
         const controls = await reader.decodeFromConstraints(CAMERA, video.current, (r) => r && finish(r.getText()));
         stop = () => controls.stop();

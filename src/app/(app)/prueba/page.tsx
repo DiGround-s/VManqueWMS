@@ -20,7 +20,7 @@ async function phoneLink() {
   if (!host || /^(localhost|127\.|\[::1\])/.test(host)) return undefined;
   const proto = h.get("x-forwarded-proto") ?? "http";
   const url = `${proto}://${host}/m`;
-  return { url, svg: await qrSvg(url) };
+  return { url, svg: await qrSvg(url, 4) };
 }
 
 /** The demo slot's rack and its neighbours, every level, with what each slot holds. */
@@ -46,7 +46,7 @@ export default async function DemoPage() {
   const user = await requirePageRole();
   const [initial, qrs, phone, shelf] = await Promise.all([
     demoState(),
-    Promise.all(ORDER.map(async (key) => ({ key, svg: await qrSvg(DEMO_CODES[key].value) }))),
+    Promise.all(ORDER.map(async (key) => ({ key, svg: await qrSvg(DEMO_CODES[key].value, 4) }))),
     phoneLink(),
     shelfSlots(),
   ]);

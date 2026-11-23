@@ -56,7 +56,7 @@ export function PackingStation({ phone }: { phone?: boolean }) {
   if (!order) {
     return (
       <Card className="space-y-5 p-4">
-        <ScanInput onScan={(c) => openOrder(c)} pending={pending} size={size} label="Pedido" placeholder="Escanea o escribe el código del pedido" />
+        <ScanInput expect="order" onScan={(c) => openOrder(c)} pending={pending} size={size} label="Pedido" placeholder="Escanea o escribe el código del pedido" />
         <form
           className="flex flex-wrap items-end gap-2"
           onSubmit={(e) => {
@@ -101,7 +101,7 @@ export function PackingStation({ phone }: { phone?: boolean }) {
         </div>
       ) : (
         <>
-          <ScanInput onScan={onProduct} pending={pending} size={size} placeholder="Escanea cada producto" />
+          <ScanInput expect="product" onScan={onProduct} pending={pending} size={size} placeholder="Escanea cada producto" />
           {error && (
             <div key={error.key} className="flash-bad rounded-xl border border-danger p-4 text-center text-xl font-bold text-danger" role="alert">
               ✕ {error.msg}

@@ -66,6 +66,7 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
       {!atLocation ? (
         <ScanInput
           size="xl"
+          expect="location"
           placeholder="Escanea la ubicación"
           onScan={(code) => {
             if (norm(code) !== task.location.toUpperCase()) return scanError(`Ubicación incorrecta: ve a ${task.location}`);
@@ -93,7 +94,7 @@ export function PickRunner({ task, progress, waveCode }: { task: Task; progress:
               ))}
             </div>
           </div>
-          <ScanInput size="xl" pending={pending} placeholder="Escanea cada unidad" onScan={onProduct} />
+          <ScanInput size="xl" expect="product" pending={pending} placeholder="Escanea cada unidad" onScan={onProduct} />
           <div className="flex items-center gap-2">
             <Input type="number" inputMode="numeric" min={0} max={task.left} value={count} onChange={(e) => setCount(Math.min(task.left, Math.max(0, Number(e.target.value) || 0)))} className="h-14 w-24 text-center font-mono text-2xl" aria-label="Cantidad recogida" />
             <Button variant="primary" size="xl" className="flex-1" disabled={count === 0} pending={pending} onClick={() => confirm(count, false)}>
