@@ -63,8 +63,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div id="app-shell" data-rail={railMin ? "min" : "full"} className="group/shell min-h-dvh lg:grid lg:grid-cols-[256px_1fr] lg:transition-[grid-template-columns] lg:duration-200 lg:data-[rail=min]:grid-cols-[76px_1fr]">
-      <aside className="material-rail border-b border-border text-rail-ink lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r">
+    <div id="app-shell" data-rail={railMin ? "min" : "full"} className="group/shell min-h-dvh lg:grid lg:grid-cols-[264px_1fr] lg:transition-[grid-template-columns] lg:duration-200 lg:data-[rail=min]:grid-cols-[84px_1fr]">
+      <aside className="glass-sidebar border-b border-border text-rail-ink lg:sticky lg:top-2 lg:m-2 lg:mr-0 lg:flex lg:h-[calc(100dvh-1rem)] lg:flex-col lg:overflow-y-auto lg:rounded-[22px] lg:border-b-0">
         <div className="flex items-start gap-1 pb-2 pl-5 pr-3 pt-4 lg:pt-6 lg:group-data-[rail=min]/shell:flex-col lg:group-data-[rail=min]/shell:items-center lg:group-data-[rail=min]/shell:gap-3 lg:group-data-[rail=min]/shell:pl-0 lg:group-data-[rail=min]/shell:pr-0">
           <Link href="/" className="block min-w-0 flex-1 lg:group-data-[rail=min]/shell:flex-none" aria-label="Inicio">
             <Wordmark className="whitespace-nowrap lg:group-data-[rail=min]/shell:[&>span:last-child]:hidden" />
@@ -86,13 +86,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </Link>
       </aside>
       <div className="min-w-0">
-        <header className="material-bar sticky top-0 z-30 flex flex-wrap items-center gap-3 px-4 py-3 lg:px-8">
+        <header className="scroll-edge sticky top-0 z-30 flex flex-wrap items-center gap-3 px-4 py-3 lg:px-8">
           <GlobalScan />
-          <div className="ml-auto flex items-center gap-2">
+          <div className="glass-capsule ml-auto flex items-center gap-1 rounded-full p-1">
             <Link href="/m" className={buttonClass("secondary", "md", "lg:hidden")}>
               <Smartphone className="size-4" aria-hidden /> Bodega
             </Link>
-            <Link href="/cuenta" className="hidden items-center gap-2.5 rounded-full py-1 pl-1 pr-3 hover:bg-panel sm:flex">
+            <Link href="/cuenta" className="hidden items-center gap-2.5 rounded-full py-1 pl-1 pr-3 hover:bg-rail-2 sm:flex">
               <span className="flex size-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-ink" aria-hidden>
                 {user.name.slice(0, 1).toUpperCase()}
               </span>
@@ -101,10 +101,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
                 <span className="text-muted">{ROLE[user.role]}</span>
               </span>
             </Link>
-            <LiquidToggle />
-            <ThemeToggle />
+            <LiquidToggle className="bg-transparent ring-0 hover:bg-rail-2" />
+            <ThemeToggle className="bg-transparent ring-0 hover:bg-rail-2" />
             <form action={logout}>
-              <button className="flex size-10 items-center justify-center rounded-full bg-panel ring-1 ring-inset ring-border hover:bg-panel-2" aria-label="Cerrar sesión" title="Cerrar sesión">
+              <button className="flex size-10 items-center justify-center rounded-full hover:bg-rail-2" aria-label="Cerrar sesión" title="Cerrar sesión">
                 <LogOut className="size-4" />
               </button>
             </form>

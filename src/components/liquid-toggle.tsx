@@ -30,9 +30,9 @@ export function LiquidToggle({ className }: { className?: string }) {
       aria-label={label}
       title={label}
       className={cn(
-        "flex size-10 items-center justify-center rounded-full ring-1 ring-inset transition-[background-color,transform] duration-150 active:scale-95",
-        on ? "bg-accent-soft text-accent ring-accent/40" : "bg-panel ring-border hover:bg-panel-2",
-        className,
+        "flex size-10 items-center justify-center rounded-full transition-[background-color,transform] duration-150 active:scale-95",
+        on && "text-accent",
+        className ?? (on ? "bg-accent-soft ring-1 ring-inset ring-accent/40" : "bg-panel ring-1 ring-inset ring-border hover:bg-panel-2"),
       )}
     >
       <Droplets className="size-4" />

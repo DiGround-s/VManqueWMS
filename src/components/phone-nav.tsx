@@ -18,7 +18,7 @@ export function PhoneNav() {
   const path = usePathname();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-[max(env(safe-area-inset-bottom),12px)]" aria-label="Tareas">
-      <ul className="mx-auto grid max-w-lg grid-cols-5 material-bar rounded-[28px] p-1.5 shadow-lift ring-[0.5px] ring-border">
+      <ul className="mx-auto grid max-w-lg grid-cols-5 glass-capsule rounded-[30px] p-1.5">
         {TABS.map(({ href, label, icon: Icon }) => {
           const active = href === "/m" ? path === "/m" : path.startsWith(href);
           return (

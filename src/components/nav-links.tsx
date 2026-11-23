@@ -34,7 +34,7 @@ export function NavLinks({ groups }: { groups: { title: string; items: NavItem[]
                 <Icon className={cn("size-[18px] shrink-0", active ? "text-accent" : "text-accent/80")} aria-hidden />
                 <span className="lg:group-data-[rail=min]/shell:sr-only">{item.label}</span>
                 {!!item.badge && (
-                  <span className="ml-auto min-w-5 rounded-full bg-brand px-1.5 text-center text-[11px] font-bold leading-5 text-brand-ink tabular-nums lg:group-data-[rail=min]/shell:absolute lg:group-data-[rail=min]/shell:right-1 lg:group-data-[rail=min]/shell:top-0 lg:group-data-[rail=min]/shell:min-w-4 lg:group-data-[rail=min]/shell:px-1 lg:group-data-[rail=min]/shell:text-[10px] lg:group-data-[rail=min]/shell:leading-4" aria-label={`${item.badge} por responder`}>
+                  <span className="ml-auto min-w-5 rounded-full bg-[#ff3b30] px-1.5 text-center text-[11px] font-bold leading-5 text-white tabular-nums lg:group-data-[rail=min]/shell:absolute lg:group-data-[rail=min]/shell:right-1 lg:group-data-[rail=min]/shell:top-0 lg:group-data-[rail=min]/shell:min-w-4 lg:group-data-[rail=min]/shell:px-1 lg:group-data-[rail=min]/shell:text-[10px] lg:group-data-[rail=min]/shell:leading-4" aria-label={`${item.badge} por responder`}>
                     {item.badge}
                   </span>
                 )}
