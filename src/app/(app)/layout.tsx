@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { LogOut, Smartphone } from "lucide-react";
 import { requirePageRole, hasRole } from "@/server/auth/current";
 import { logout } from "@/features/auth/actions";
@@ -7,13 +8,15 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { GlobalScan } from "@/components/global-scan";
 import { ScanStamp } from "@/components/scan-stamp";
 import { Wordmark } from "@/components/wordmark";
+import { RailToggle } from "@/components/rail-toggle";
 import { ROLE } from "@/lib/labels";
 import { buttonClass } from "@/components/ui/button";
 import { getCompanyName } from "@/features/settings/service";
 import { unansweredCount } from "@/features/inbox/service";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const [user, company, unanswered] = await Promise.all([requirePageRole("OPERATOR"), getCompanyName(), unansweredCount()]);
+  const [user, company, unanswered, jar] = await Promise.all([requirePageRole("OPERATOR"), getCompanyName(), unansweredCount(), cookies()]);
+  const railMin = jar.get("rail")?.value === "min";
   const groups: { title: string; items: NavItem[] }[] = [
     {
       title: "General",
@@ -59,19 +62,23 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[256px_1fr]">
+    <div id="app-shell" data-rail={railMin ? "min" : "full"} className="group/shell min-h-dvh lg:grid lg:grid-cols-[256px_1fr] lg:transition-[grid-template-columns] lg:duration-200 lg:data-[rail=min]:grid-cols-[76px_1fr]">
       <aside className="border-b border-border bg-rail text-rail-ink lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r">
-        <Link href="/" className="block px-5 pb-2 pt-4 lg:pt-6">
-          <Wordmark />
-          <div className="mt-1.5 truncate pl-[46px] text-xs text-rail-muted">{company}</div>
-        </Link>
+        <div className="flex items-start gap-1 pb-2 pl-5 pr-3 pt-4 lg:pt-6 lg:group-data-[rail=min]/shell:flex-col lg:group-data-[rail=min]/shell:items-center lg:group-data-[rail=min]/shell:gap-3 lg:group-data-[rail=min]/shell:pl-0 lg:group-data-[rail=min]/shell:pr-0">
+          <Link href="/" className="block min-w-0 flex-1 lg:group-data-[rail=min]/shell:flex-none" aria-label="Inicio">
+            <Wordmark className="whitespace-nowrap lg:group-data-[rail=min]/shell:[&>span:last-child]:hidden" />
+            <div className="mt-1.5 truncate pl-[46px] text-xs text-rail-muted lg:group-data-[rail=min]/shell:hidden">{company}</div>
+          </Link>
+          <RailToggle initial={railMin} />
+        </div>
         <NavLinks groups={groups} />
         <Link
           href="/m"
-          className="mx-3 mb-4 mt-auto hidden items-center gap-3 rounded-2xl bg-brand-soft px-4 py-3 text-sm font-semibold text-success transition-colors hover:brightness-95 lg:flex"
+          title="Modo bodega"
+          className="mx-3 mb-4 mt-auto hidden items-center gap-3 rounded-2xl bg-brand-soft px-4 py-3 text-sm font-semibold text-success transition-colors hover:brightness-95 lg:flex lg:group-data-[rail=min]/shell:justify-center lg:group-data-[rail=min]/shell:px-0"
         >
-          <Smartphone className="size-5" aria-hidden />
-          <span>
+          <Smartphone className="size-5 shrink-0" aria-hidden />
+          <span className="lg:group-data-[rail=min]/shell:hidden">
             Modo bodega
             <span className="block text-xs font-normal opacity-80">Ábrelo en el teléfono</span>
           </span>

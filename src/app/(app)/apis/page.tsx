@@ -84,7 +84,6 @@ function ApiCard({ s, connected }: { s: StoreApi; connected: boolean }) {
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-base font-semibold">{CHANNELS[s.channel].label}</h2>
             {s.channel !== "DIRECT" && (connected ? <Badge tone="success">Conectada</Badge> : <Badge tone="neutral">Sin conectar</Badge>)}
-            {!s.documented && <Badge tone="warn">API no pública: formato supuesto</Badge>}
           </div>
           <p className="mt-0.5 truncate font-mono text-xs text-muted">{s.baseUrl}</p>
         </div>
