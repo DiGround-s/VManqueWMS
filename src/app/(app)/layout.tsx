@@ -32,6 +32,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         { href: "/mesa", label: "Mesa de separación", icon: "Grid3x3" },
         { href: "/preparacion", label: "Preparación", icon: "PackageCheck" },
         { href: "/despacho", label: "Despacho", icon: "Truck" },
+        { href: "/prueba", label: "Prueba guiada", icon: "Route" },
       ],
     },
     {
