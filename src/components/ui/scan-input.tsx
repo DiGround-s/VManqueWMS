@@ -96,27 +96,82 @@ export function ScanInput({ onScan, placeholder = "Escanea o escribe el código"
   );
 }
 
+/** Back camera, sharp enough to read a QR off a screen or a small label, with continuous focus where supported. */
+const CAMERA: MediaStreamConstraints = {
+  audio: false,
+  video: {
+    facingMode: { ideal: "environment" },
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+    advanced: [{ focusMode: "continuous" } as MediaTrackConstraintSet],
+  },
+};
+/** Only what the warehouse prints: QR labels, EAN-13 product barcodes and Code 128. */
+const NATIVE_FORMATS = ["qr_code", "ean_13", "code_128"];
+
+type Detector = { detect: (source: HTMLVideoElement) => Promise<{ rawValue: string }[]> };
+type DetectorCtor = { new (o: { formats: string[] }): Detector; getSupportedFormats?: () => Promise<string[]> };
+
+/**
+ * Reads codes from the camera. Uses the phone's built-in detector when there is one (Android Chrome:
+ * fast and robust) and falls back to ZXing limited to the same formats, scanning ~10 frames a second.
+ */
 function CameraReader({ onResult }: { onResult: (code: string) => void }) {
   const video = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const done = useRef(false);
+  // The latest callback, so a parent re-render never restarts the camera mid-scan.
+  const result = useRef(onResult);
+  result.current = onResult;
 
   useEffect(() => {
     let stop: (() => void) | undefined;
     let cancelled = false;
+    const finish = (text: string) => {
+      if (done.current || !text) return;
+      done.current = true;
+      stop?.();
+      result.current(text);
+    };
     (async () => {
       try {
-        const { BrowserMultiFormatReader } = await import("@zxing/browser");
+        const Native = (globalThis as { BarcodeDetector?: DetectorCtor }).BarcodeDetector;
+        const supported = Native ? await Native.getSupportedFormats?.().catch(() => []) : [];
+        const formats = NATIVE_FORMATS.filter((f) => supported?.includes(f));
+        if (Native && formats.includes("qr_code")) {
+          const stream = await navigator.mediaDevices.getUserMedia(CAMERA);
+          if (cancelled || !video.current) return stream.getTracks().forEach((t) => t.stop());
+          const el = video.current;
+          el.srcObject = stream;
+          await el.play();
+          const detector = new Native({ formats });
+          let timer = 0;
+          stop = () => {
+            clearTimeout(timer);
+            stream.getTracks().forEach((t) => t.stop());
+          };
+          if (cancelled) return stop();
+          const tick = async () => {
+            if (cancelled || done.current) return;
+            try {
+              if (el.readyState >= 2) {
+                const found = await detector.detect(el);
+                if (found[0]) return finish(found[0].rawValue);
+              }
+            } catch {}
+            timer = window.setTimeout(tick, 90);
+          };
+          setReady(true);
+          void tick();
+          return;
+        }
+
+        const [{ BrowserMultiFormatReader }, { BarcodeFormat, DecodeHintType }] = await Promise.all([import("@zxing/browser"), import("@zxing/library")]);
         if (cancelled || !video.current) return;
-        const reader = new BrowserMultiFormatReader();
-        const controls = await reader.decodeFromConstraints({ video: { facingMode: "environment" } }, video.current, (result) => {
-          if (result && !done.current) {
-            done.current = true;
-            controls.stop();
-            onResult(result.getText());
-          }
-        });
+        const hints = new Map<unknown, unknown>([[DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128]]]);
+        const reader = new BrowserMultiFormatReader(hints as Map<never, unknown>, { delayBetweenScanAttempts: 100 });
+        const controls = await reader.decodeFromConstraints(CAMERA, video.current, (r) => r && finish(r.getText()));
         stop = () => controls.stop();
         if (cancelled) stop();
         else setReady(true);
@@ -128,7 +183,7 @@ function CameraReader({ onResult }: { onResult: (code: string) => void }) {
       cancelled = true;
       stop?.();
     };
-  }, [onResult]);
+  }, []);
 
   if (error) return <p className="rounded-xl bg-danger-bg p-3 font-medium text-danger">{error}</p>;
   return (
