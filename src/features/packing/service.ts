@@ -24,6 +24,8 @@ export async function openPacking(code: string, slot?: number) {
     orderId = wo?.orderId ?? null;
   } else {
     const r = await resolveCode(code);
+    if (r.type === "product") throw new UserError(`${r.product.sku} es un producto: primero escanea el código del pedido (PED-…)`);
+    if (r.type === "location") throw new UserError(`${r.location.code} es una ubicación: primero escanea el código del pedido (PED-…)`);
     orderId = r.type === "order" ? r.order.id : null;
   }
   if (!orderId) throw new UserError("Pedido no encontrado");

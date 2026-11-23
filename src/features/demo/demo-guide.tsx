@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ExternalLink, Monitor, Play, Printer, RotateCcw, ScanLine, Smartphone, Waves } from "lucide-react";
+import { CheckCircle2, ExternalLink, Maximize2, Monitor, Play, Printer, RotateCcw, ScanLine, Smartphone, Waves } from "lucide-react";
 import { Button, buttonClass } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Dialog } from "@/components/ui/dialog";
 import { useAction } from "@/lib/use-action";
 import { cn } from "@/lib/cn";
 import { fmtTime } from "@/lib/format";
@@ -35,7 +36,9 @@ function useDemoState(initial: DemoState, ms: number) {
 export function DemoGuide({ initial, qrs, canRun, phone }: { initial: DemoState; qrs: DemoQr[]; canRun: boolean; phone?: { url: string; svg: string } }) {
   const [state, setState] = useDemoState(initial, 2000);
   const [pending, run] = useAction();
+  const [big, setBig] = useState<DemoCode | null>(null);
   const step = state.step;
+  const bigQr = qrs.find((q) => q.key === big);
 
   const refresh = async () => {
     const r = await demoStateAction({});
@@ -109,9 +112,16 @@ export function DemoGuide({ initial, qrs, canRun, phone }: { initial: DemoState;
                               <ScanLine className="size-4 text-muted" aria-hidden />
                               <span className="text-sm text-muted">Escanea, en este orden:</span>
                               {s.scans.map((c, n) => (
-                                <span key={c} className="rounded-full bg-accent-soft px-3 py-1 font-mono text-sm font-semibold">
+                                <button
+                                  key={c}
+                                  type="button"
+                                  onClick={() => setBig(c)}
+                                  className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 font-mono text-sm font-semibold hover:ring-2 hover:ring-accent"
+                                  title="Mostrar este QR solo y en grande"
+                                >
                                   {n + 1}. {DEMO_CODES[c].label} {DEMO_CODES[c].caption.split(" · ")[0]}
-                                </span>
+                                  <Maximize2 className="size-3.5" aria-hidden />
+                                </button>
                               ))}
                             </div>
                           )}
@@ -171,12 +181,18 @@ export function DemoGuide({ initial, qrs, canRun, phone }: { initial: DemoState;
               <Printer className="size-4" /> Imprimir
             </Link>
           </div>
-          <p className="mb-4 text-sm text-muted">Siempre son los mismos. Puedes escanearlos desde esta pantalla o imprimir la hoja.</p>
+          <p className="mb-4 text-sm text-muted">Siempre son los mismos. Toca uno para verlo solo y en grande: así la cámara no lee otro por error.</p>
           <ul className="space-y-4">
             {qrs.map((q) => {
               const used = DEMO_STEPS[step]?.scans.includes(q.key) && step < DEMO_LAST;
               return (
-                <li key={q.key} className={cn("flex items-center gap-4 rounded-2xl p-2 transition-colors", used && "bg-accent-soft ring-2 ring-accent")}>
+                <li key={q.key}>
+                  <button
+                    type="button"
+                    onClick={() => setBig(q.key)}
+                    className={cn("flex w-full items-center gap-4 rounded-2xl p-2 text-left transition-colors hover:bg-panel-2", used && "bg-accent-soft ring-2 ring-accent hover:bg-accent-soft")}
+                    aria-label={`Mostrar en grande el QR de ${DEMO_CODES[q.key].label}`}
+                  >
                   <div className="size-28 shrink-0 rounded-xl bg-white p-2 [&_svg]:size-full" dangerouslySetInnerHTML={{ __html: q.svg }} />
                   <div className="min-w-0">
                     <div className="label">{DEMO_CODES[q.key].label}</div>
@@ -184,11 +200,21 @@ export function DemoGuide({ initial, qrs, canRun, phone }: { initial: DemoState;
                     {q.key === "product" && <div className="text-sm text-muted">{DEMO.productName}</div>}
                     {used && <div className="mt-1 text-xs font-semibold text-accent-strong">Se usa en este paso</div>}
                   </div>
+                  <Maximize2 className="ml-auto size-4 shrink-0 text-muted" aria-hidden />
+                  </button>
                 </li>
               );
             })}
           </ul>
         </Card>
+        <Dialog open={!!bigQr} onClose={() => setBig(null)} title={big ? `${DEMO_CODES[big].label}: escanéalo con el teléfono` : ""}>
+          {bigQr && (
+            <div className="flex flex-col items-center gap-3 px-5 pb-6">
+              <div className="aspect-square w-full max-w-[min(420px,60vh)] rounded-2xl bg-white p-5 [&_svg]:size-full" dangerouslySetInnerHTML={{ __html: bigQr.svg }} />
+              <div className="font-mono text-2xl font-bold">{DEMO_CODES[bigQr.key].caption.split(" · ")[0]}</div>
+            </div>
+          )}
+        </Dialog>
         {phone && (
           <Card className="flex items-center gap-4 p-5">
             <div className="size-28 shrink-0 rounded-xl bg-white p-2 [&_svg]:size-full" dangerouslySetInnerHTML={{ __html: phone.svg }} />
